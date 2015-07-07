@@ -5,6 +5,7 @@ import jinja2
 import random
 
 from models import Spoogler
+from google.appengine.api import mail
 
 jinja_env = jinja2.Environment(loader = 
 jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -47,6 +48,33 @@ class FormHandler(webapp2.RequestHandler):
   
   def _generate_token(self):
     return random.randint(11111, 99999)
-  
-app = webapp2.WSGIApplication([(r'/form', FormHandler)], debug = True)
+
+class ConfirmHandler(webapp2.RequestHandler):
+  def get(self):
+    template_context = {'user': self.request.get('u'),
+                        'token': self.request.get('t')}
+    self.response.out.write(self._render_template('confirmation.html', 
+                            template_context))
+                            
+  def _render_template(self, template_name, context=None):
+    if context is None:
+      context = {}
+    
+    template = jinja_env.get_template(template_name)
+    
+    return template.render(context)
+
+class EmailHandler(webapp2.RequestHandler):
+  def post(self):
+    email = "mlopezj14@gmail.com"
+    
+    sender_address = "Spooglers Webmaster <bayareaspooglers.webmaster@gmail.com>"
+    subject = "Test"
+    body = "Test email"
+    mail.send_mail(sender_address, email, subject, body)
+
+app = webapp2.WSGIApplication([(r'/form', FormHandler), 
+                               (r'/confirm', ConfirmHandler), 
+                               (r'/', FormHandler)], 
+                               debug = True)
 
