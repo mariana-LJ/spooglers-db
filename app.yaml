@@ -9,6 +9,8 @@ handlers:
   script: main.app
 - url: /confirm\.html
   script: main.app
+- url: /thankyou\.html
+  script: main.app
 - url: /.*
   script: main.app
   secure: always
