@@ -5,9 +5,11 @@ api_version: 1
 threadsafe: yes
 
 handlers:
-- url: /static
-  static_dir: static
-- url: .*
+- url: /welcome_form\.html
+  script: main.app
+- url: /confirm\.html
+  script: main.app
+- url: /.*
   script: main.app
   secure: always
 
@@ -16,6 +18,6 @@ libraries:
   version: "2.5.2"
 - name: jinja2
   version: latest
-
+  
 inbound_services:
 - mail

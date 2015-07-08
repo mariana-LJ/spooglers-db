@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
   <meta charset="UTF-8">
-  <title>BAS Join</title>  
+  <title>BAS Join</title>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
@@ -11,6 +11,7 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  
 </head>
 <body>
   <div class="container">
@@ -27,32 +28,33 @@
     
     <p><b>* Required</b></p>
     
+    
     <form role="form" class="form-horizontal" action="" method="post">
       <div class="form-group">
-        <label class="control-label col-sm-3" for="firstn">*Your First Name: </label>
+        <label class="control-label col-sm-3" for="firstn">*Spoogler's First Name: </label>
         <div class="col-sm-5">
           <input type="text" class="form-control" id="firstn" name="firstn" value="{{firstname}}"/>
         </div>
       </div>
       <div class="form-group has-error">
-        <label class="control-label col-sm-3" for="lastn">*Your Last Name: </label>
+        <label class="control-label col-sm-3" for="lastn">*Spoogler's Last Name: </label>
         <div class="col-sm-5">
           <input type="text" class="form-control" id="lastn" name="lastn" value="{{lastname}}"/>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-sm-3" for="email">*Your email: </label>
+        <label class="control-label col-sm-3" for="email">*Spoogler's email: </label>
         <div class="col-sm-5">
           <input type="text" class="form-control" id="email" name="email" value="{{email}}"/>
         </div>
       </div>
       <div class="form-group">
-       <label class="control-label col-sm-3" for="googlr">*Your Googler's @google.com email: </label>
+       <label class="control-label col-sm-3" for="googlr">*Googler's @google.com email: </label>
        <div class="col-sm-5">
          <input type="text" class="form-control" id="googlr" name="googlr" value="{{googlremail}}"/>
        </div>
       </div>
-      <div class="form-group">
+      <div class="col-md-4 text-center">
         <button type="submit" class="btn btn-lg btn-primary">Submit</button>
       </div>
     </form>

@@ -34,7 +34,7 @@ class FormHandler(webapp2.RequestHandler):
                         
     # An entity is persisted in the Datastore:
     spoogler.put()
-    
+        
     self.response.out.write(self._render_template('main.html', 
                             template_context))
   
@@ -46,9 +46,6 @@ class FormHandler(webapp2.RequestHandler):
     
     return template.render(context)
   
-  def _generate_token(self):
-    return random.randint(11111, 99999)
-
 class ConfirmHandler(webapp2.RequestHandler):
   def get(self):
     template_context = {'user': self.request.get('u'),
@@ -72,9 +69,8 @@ class EmailHandler(webapp2.RequestHandler):
     subject = "Test"
     body = "Test email"
     mail.send_mail(sender_address, email, subject, body)
-
-app = webapp2.WSGIApplication([(r'/form', FormHandler), 
-                               (r'/confirm', ConfirmHandler), 
-                               (r'/', FormHandler)], 
-                               debug = True)
+    
+app = webapp2.WSGIApplication([(r'/welcome_form\.html', FormHandler),
+                               (r'/confirm\.html', ConfirmHandler),
+                              ], debug = True)
 
