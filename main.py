@@ -1,3 +1,14 @@
+# Locally disabling the following messages in pylint: 
+# E1101: Function %r has no %r member (This message may report object members 
+# that are created dynamically, but exist at the time they are accessed.)
+# F0401: Used when PyLint has been unable to import a module.
+# E0602: Used when an undefined variable is accessed.
+# C0103: Used when a name doesn't doesn't fit the naming convention associated 
+# to its type (constant, variable, class…). Disabled for the "app" object 
+# created at the end 
+# Source: http://pylint-messages.wikidot.com/all-codes
+#pylint: disable=E1101, F0401, E0602, C0103
+
 """This program contains the class that handles the logic to display and 
 update the welcome membership form for the Spooglers group."""
 
@@ -42,7 +53,7 @@ class FormHandler(webapp2.RequestHandler):
             token_value = FormHandler._generate_token()
             
             if self._create_spoogler(template_context, token_value):
-                self._send_confirmation_email(template_context['googler_email'], 
+                self._send_confirmation_email(template_context['googler_email'],
                                               token_value)
             template_context['first_name'] = ""
             template_context['last_name'] = ""
