@@ -14,8 +14,7 @@
   
 </head>
 <body>
-  <div class="container">
-  
+  <div class="container">  
     <h1>Request to join the Bay Area Spooglers Group</h1>
     
     <p>This form is for partners/spouses of Googlers who have recently 
@@ -28,36 +27,39 @@
     
     <p><b>* Required</b></p>
     
-    
+    {% if not validForm %}
+    <p>There are errors in the form.</p>
+    {% endif %}
+
     <form role="form" class="form-horizontal" action="" method="post">
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="firstn">*Spoogler's First Name: </label>
+      <div class="form-group {% if first_name_error %} has-error {% endif %}">
+        <label class="control-label col-sm-3" for="first_name">*Spoogler's First Name: </label>
         <div class="col-sm-5">
-          <input type="text" class="form-control" id="firstn" name="firstn" value="{{firstname}}"/>
+          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ first_name }}" />
         </div>
       </div>
-      <div class="form-group has-error">
-        <label class="control-label col-sm-3" for="lastn">*Spoogler's Last Name: </label>
+      <div class="form-group {% if last_name_error %} has-error {% endif %}">
+        <label class="control-label col-sm-3" for="last_name">*Spoogler's Last Name: </label>
         <div class="col-sm-5">
-          <input type="text" class="form-control" id="lastn" name="lastn" value="{{lastname}}"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-3" for="email">*Spoogler's email: </label>
-        <div class="col-sm-5">
-          <input type="text" class="form-control" id="email" name="email" value="{{email}}"/>
+          <input type="text" class="form-control" id="last_name" name="last_name"/>
         </div>
       </div>
       <div class="form-group">
-       <label class="control-label col-sm-3" for="googlr">*Googler's @google.com email: </label>
+        <label class="control-label col-sm-3" for="spoogler_email">*Spoogler's email: </label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="spoogler_email" name="spoogler_email"/>
+        </div>
+      </div>
+      <div class="form-group">
+       <label class="control-label col-sm-3" for="googler_email">*Googler's @google.com email: </label>
        <div class="col-sm-5">
-         <input type="text" class="form-control" id="googlr" name="googlr" value="{{googlremail}}"/>
+         <input type="text" class="form-control" id="googler_email" name="googler_email"/>
        </div>
       </div>
       <div class="col-md-4 text-center">
         <button type="submit" class="btn btn-lg btn-primary">Submit</button>
       </div>
     </form>
-  </div>
+  </div>  
 </body>
 </html>
