@@ -27,7 +27,7 @@
     
     <p><b>* Required</b></p>
     
-    {% if not validForm %}
+    {% if not valid_form %}
     <p>There are errors in the form.</p>
     {% endif %}
 
@@ -44,13 +44,13 @@
           <input type="text" class="form-control" id="last_name" name="last_name"/>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
         <label class="control-label col-sm-3" for="spoogler_email">*Spoogler's email: </label>
         <div class="col-sm-5">
           <input type="text" class="form-control" id="spoogler_email" name="spoogler_email"/>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group {% if googler_email_error %} has-error {% endif %}">
        <label class="control-label col-sm-3" for="googler_email">*Googler's @google.com email: </label>
        <div class="col-sm-5">
          <input type="text" class="form-control" id="googler_email" name="googler_email"/>

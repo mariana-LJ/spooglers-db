@@ -40,9 +40,10 @@ class FormHandler(webapp2.RequestHandler):
         if FormHandler._validate_form(template_context):
             template_context['valid_form'] = True
             token_value = FormHandler._generate_token()
-        if self._create_spoogler(template_context, token_value):
-            self._send_confirmation_email(template_context['googler_email'], 
-                                          token_value)
+            
+            if self._create_spoogler(template_context, token_value):
+                self._send_confirmation_email(template_context['googler_email'], 
+                                              token_value)
             template_context['first_name'] = ""
             template_context['last_name'] = ""
         else:
@@ -72,6 +73,12 @@ class FormHandler(webapp2.RequestHandler):
             result = False
         if not template_context['last_name']:
             template_context['last_name_error'] = True
+            result = False
+        if not template_context['spoogler_email']:
+            template_context['spoogler_email_error'] = True
+            result = False
+        if not template_context['googler_email']:
+            template_context['googler_email_error'] = True
             result = False
         return result
     
