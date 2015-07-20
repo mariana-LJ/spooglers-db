@@ -13,7 +13,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   
 </head>
-<body>
+<body {% if successful_submission %}onload="showAlert()"{% endif %}>
   <div class="container">  
     <h1>Request to join the Bay Area Spooglers Group</h1>
     
@@ -28,9 +28,10 @@
     <p><b>* Required</b></p>
     
     {% if not valid_form %}
-    <p>There are errors in the form.</p>
+    <p style="color:red"><b>There are errors in the form.</b></p>
     {% endif %}
-
+    
+    
     <form role="form" class="form-horizontal" action="" method="post">
       <div class="form-group {% if first_name_error %} has-error {% endif %}">
         <label class="control-label col-sm-3" for="first_name">*Spoogler's First Name: </label>
@@ -51,15 +52,25 @@
         </div>
       </div>
       <div class="form-group {% if googler_email_error %} has-error {% endif %}">
-       <label class="control-label col-sm-3" for="googler_email">*Googler's @google.com email: </label>
+       <label class="control-label col-sm-3" for="googler_email">*Googler's ldap: </label>
        <div class="col-sm-5">
          <input type="text" class="form-control" id="googler_email" name="googler_email"/>
+       </div>
+       <div class="col-sm-3">
+         <label class="control-label col-sm-3" for="">@google.com</label>
        </div>
       </div>
       <div class="col-md-4 text-center">
         <button type="submit" class="btn btn-lg btn-primary">Submit</button>
       </div>
     </form>
-  </div>  
+  </div>
+  
+     <script>
+    function showAlert() {
+        alert("Thank you for filling out the membership form. A confirmation email has been sent to the @google.com email of the Googler.");  
+    }
+  </script>
+  
 </body>
 </html>

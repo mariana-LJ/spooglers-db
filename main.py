@@ -1,16 +1,17 @@
-# Locally disabling the following messages in pylint: 
-# E1101: Function %r has no %r member (This message may report object members 
-# that are created dynamically, but exist at the time they are accessed.)
-# F0401: Used when PyLint has been unable to import a module.
-# E0602: Used when an undefined variable is accessed.
-# C0103: Used when a name doesn't doesn't fit the naming convention associated 
-# to its type (constant, variable, class…). Disabled for the "app" object 
-# created at the end 
-# Source: http://pylint-messages.wikidot.com/all-codes
-#pylint: disable=E1101, F0401, E0602, C0103
-
 """This program contains the class that handles the logic to display and 
-update the welcome membership form for the Spooglers group."""
+update the welcome membership form for the Spooglers group.
+
+To avoid pylint errors, the following messages in pylint were disabled: 
+E1101: Function %r has no %r member (This message may report object members 
+that are created dynamically, but exist at the time they are accessed.)
+F0401: Used when PyLint has been unable to import a module.
+E0602: Used when an undefined variable is accessed.
+C0103: Used when a name doesn't doesn't fit the naming convention associated 
+to its type (constant, variable, class). Disabled for the "app" object 
+created at the end """
+
+#pylint: disable=E1101, F0401, E0602
+#Source: http://pylint-messages.wikidot.com/all-codes
 
 import jinja2
 import os
@@ -30,7 +31,8 @@ class FormHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
-        template_context = {'valid_form' : True}
+        template_context = {'valid_form' : True, 
+                            'successful_submission' : False}
         self.response.out.write(self._render_template('main.html', 
                                 template_context))
 
@@ -57,6 +59,9 @@ class FormHandler(webapp2.RequestHandler):
                                               token_value)
             template_context['first_name'] = ""
             template_context['last_name'] = ""
+            template_context['spoogler_email'] = ""
+            template_context['googler_email'] = ""
+            template_context['successful_submission'] = True
         else:
             template_context['valid_form'] = False
     
@@ -109,9 +114,10 @@ class FormHandler(webapp2.RequestHandler):
                          <bayareaspooglers.webmaster@gmail.com>"
         subject = "Test"
         body = "Test spoogler_email "
-        body += "<a href=https://'" + self.request.host + "/confirm.html?g=" + \
+        body += "<a href=\"https://" + self.request.host + \
+                "/confirm.html?g=" + \
                 googler_email + "&t=" + str(token_value) + \
-                "'>click to confirm</a>"
+                "\">click to confirm</a>"
         mail.send_mail(sender_address, googler_email, subject, body)
         
     @ndb.transactional
@@ -169,8 +175,8 @@ class ConfirmHandler(webapp2.RequestHandler):
     
         return template.render(context)
 
-    def __init__(self):
-        pass
+    def __init__(self, request, response):
+        self.initialize(request, response)
 
 
 class EmailHandler(webapp2.RequestHandler):
@@ -210,7 +216,7 @@ class EmailHandler(webapp2.RequestHandler):
     def __init__(self):
         pass
 
-
+#pylint: disable = C0103
 app = webapp2.WSGIApplication([(r'/welcome_form\.html', FormHandler),
                                (r'/confirm\.html', ConfirmHandler),
                                (r'/thankyou\.html', EmailHandler), 
