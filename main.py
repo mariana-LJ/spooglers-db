@@ -16,6 +16,7 @@ created at the end """
 import jinja2
 import os
 import webapp2
+import re
 
 from google.appengine.api import mail
 from google.appengine.ext import ndb
@@ -47,7 +48,7 @@ class FormHandler(webapp2.RequestHandler):
           'first_name': self.request.get('first_name').strip(), 
           'last_name': self.request.get('last_name').strip(), 
           'spoogler_email': self.request.get('spoogler_email').strip(), 
-          'googler_email': self.request.get('googler_email').strip(),
+          'googler_ldap': self.request.get('googler_ldap').strip(),
         }
     
         if FormHandler._validate_form(template_context):
@@ -60,8 +61,14 @@ class FormHandler(webapp2.RequestHandler):
             template_context['first_name'] = ""
             template_context['last_name'] = ""
             template_context['spoogler_email'] = ""
-            template_context['googler_email'] = ""
+            template_context['googler_ldap'] = ""
             template_context['successful_submission'] = True
+            
+            # Clean error flags
+            template_context['first_name_error'] = False
+            template_context['last_name_error'] = False
+            template_context['spoogler_email_error'] = False
+            template_context['googler_ldap_error'] = False
         else:
             template_context['valid_form'] = False
     
@@ -84,18 +91,22 @@ class FormHandler(webapp2.RequestHandler):
         """Verifies that the information entered in the form is complete and 
         correct according to the instructions."""
         result = True
+        mail_re = re.compile(r'^.+@.+$')
+        # Verify that the user entered information in the fields:
         if not template_context['first_name']:
             template_context['first_name_error'] = True
             result = False
         if not template_context['last_name']:
             template_context['last_name_error'] = True
             result = False
-        if not template_context['spoogler_email']:
+        if not template_context['spoogler_email'] or \
+           not mail_re.search(template_context['spoogler_email']):
             template_context['spoogler_email_error'] = True
             result = False
-        if not template_context['googler_email']:
-            template_context['googler_email_error'] = True
+        if not template_context['googler_ldap']:
+            template_context['googler_ldap_error'] = True
             result = False
+            
         return result
     
     @classmethod
@@ -104,7 +115,7 @@ class FormHandler(webapp2.RequestHandler):
         
         return randint(111111, 999999)
         
-    def _send_confirmation_email(self, googler_email, token_value):
+    def _send_confirmation_email(self, googler_ldap, token_value):
         """After the form was filled out successfully, a confirmation email 
         is sent to the Googler's email (@google.com) that contains a customized 
         confirmation url. When the Googler clicks on this url, the Spoogler is 
@@ -112,11 +123,12 @@ class FormHandler(webapp2.RequestHandler):
         
         sender_address = "Spooglers Webmaster \
                          <bayareaspooglers.webmaster@gmail.com>"
-        subject = "Test"
-        body = "Test spoogler_email "
+        googler_email = googler_ldap + "@google.com"
+        subject = "Spooglers Welcome form test"
+        body = "Test with googler email."
         body += "<a href=\"https://" + self.request.host + \
                 "/confirm.html?g=" + \
-                googler_email + "&t=" + str(token_value) + \
+                googler_ldap + "&t=" + str(token_value) + \
                 "\">click to confirm</a>"
         mail.send_mail(sender_address, googler_email, subject, body)
         
