@@ -56,7 +56,7 @@ class FormHandler(webapp2.RequestHandler):
             token_value = FormHandler._generate_token()
             
             if self._create_spoogler(template_context, token_value):
-                self._send_confirmation_email(template_context['googler_email'],
+                self._send_confirmation_email(template_context['googler_ldap'],
                                               token_value)
             template_context['first_name'] = ""
             template_context['last_name'] = ""
@@ -141,7 +141,7 @@ class FormHandler(webapp2.RequestHandler):
         spoogler = Spoogler(first_name = template_context['first_name'], 
                    last_name = template_context['last_name'], 
                    spoogler_email = template_context['spoogler_email'], 
-                   googler_email = template_context['googler_email'],
+                   googler_ldap = template_context['googler_ldap'],
                    status = 'inactive', 
                    token = token_value)
                         
