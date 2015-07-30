@@ -28,7 +28,10 @@
     <p><b>* Required</b></p>
     
     {% if not valid_form %}
-    <p style="color:red"><b>There are errors in the form.</b></p>
+        <p style="color:red"><b>There are errors in the form.</b></p>
+        {% if googler_ldap_error %}
+            <p style="color:red">Please write the Googler's ldap without the "@google.com".</p>
+        {% endif %}
     {% endif %}
     
     

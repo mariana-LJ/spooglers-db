@@ -103,7 +103,8 @@ class FormHandler(webapp2.RequestHandler):
            not mail_re.search(template_context['spoogler_email']):
             template_context['spoogler_email_error'] = True
             result = False
-        if not template_context['googler_ldap']:
+        if not template_context['googler_ldap'] or \
+           mail_re.search(template_context['googler_ldap']):
             template_context['googler_ldap_error'] = True
             result = False
             
@@ -123,7 +124,8 @@ class FormHandler(webapp2.RequestHandler):
         
         sender_address = "Spooglers Webmaster \
                          <bayareaspooglers.webmaster@gmail.com>"
-        googler_email = googler_ldap + "@google.com"
+        email_domain_name = "@gmail.com"
+        googler_email = googler_ldap + email_domain_name
         subject = "Spooglers Welcome form test"
         body = "Test with googler email."
         body += "<a href=\"https://" + self.request.host + \
