@@ -167,16 +167,33 @@ class ConfirmHandler(webapp2.RequestHandler):
         """This function takes two parameters from the given URL: the googler's 
         email and a pseudo-randomly generated token and displays a confirmation 
         message of the activation of the new Spoogler."""
-    
-        template_context = {'googler': self.request.get('g'),
-                            'token': self.request.get('t')}
+        
+        template_context = {'googler': self.request.get('g').strip(),
+                            'token': self.request.get('t').strip()}
         self.response.out.write(self._render_template('confirmation.html', 
                             template_context))
+        
+        # Once the Googler clicks on the confirmation link, the status of the 
+        # Spoogler changes from inactive to active
+        spoogler = Spoogler.query(Spoogler.googler_ldap == template_context['googler']).fetch()
+        if spoogler:
+            self._activate_spoogler(spoogler[0])
+        
 
     def post(self):
         """A dummy method to avoid formatting errors when using pylint."""
         pass
     
+    @ndb.transactional
+    def _activate_spoogler(self, spoogler):
+        """It changes the status of the Spoogler from 'inactive' to 'active' 
+        using a query."""        
+        spoogler.status = 'active'
+        try:
+            spoogler.put()
+        except datastore_errors.TransactionFailedError:
+            self.response.out.write('Something went wrong, please try again')
+        
     @classmethod
     def _render_template(cls, template_name, context=None):
         """It displays the webpage according to the information inside the 
