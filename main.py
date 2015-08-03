@@ -68,6 +68,7 @@ class FormHandler(webapp2.RequestHandler):
             template_context['first_name_error'] = False
             template_context['last_name_error'] = False
             template_context['spoogler_email_error'] = False
+            template_context['spoogler_email_duplicate'] = False
             template_context['googler_ldap_error'] = False
         else:
             template_context['valid_form'] = False
@@ -92,6 +93,7 @@ class FormHandler(webapp2.RequestHandler):
         correct according to the instructions."""
         result = True
         mail_re = re.compile(r'^.+@.+$')
+        at_sign_re = re.compile(r'@')
         # Verify that the user entered information in the fields:
         if not template_context['first_name']:
             template_context['first_name_error'] = True
@@ -103,11 +105,27 @@ class FormHandler(webapp2.RequestHandler):
            not mail_re.search(template_context['spoogler_email']):
             template_context['spoogler_email_error'] = True
             result = False
+        # Check uniqueness of spoogler_email
+        if template_context['spoogler_email']:
+            spoogler_email_qry = Spoogler.query(Spoogler.spoogler_email == \
+                                 template_context['spoogler_email']).fetch()
+            if spoogler_email_qry:
+                template_context['spoogler_email_error'] = True
+                template_context['spoogler_email_duplicate'] = True
+                result = False
         if not template_context['googler_ldap'] or \
-           mail_re.search(template_context['googler_ldap']):
+           at_sign_re.search(template_context['googler_ldap']):
             template_context['googler_ldap_error'] = True
             result = False
-            
+        # Check uniqueness of googler_ldap
+        if template_context['googler_ldap']:
+            googler_ldap_qry = Spoogler.query(Spoogler.googler_ldap == \
+                               template_context['googler_ldap']).fetch()
+            if googler_ldap_qry:
+                template_context['googler_ldap_error'] = True
+                template_context['googler_ldap_duplicate'] = True
+                result = False
+        
         return result
     
     @classmethod
@@ -160,8 +178,7 @@ class FormHandler(webapp2.RequestHandler):
         self.initialize(request, response)
 
 class ConfirmHandler(webapp2.RequestHandler):
-    """An experimental class to start building a confirmation for the Googler's 
-    email."""
+    """A class to start building a confirmation for the Googler's ldap."""
     
     def get(self):
         """This function takes two parameters from the given URL: the googler's 
@@ -169,16 +186,31 @@ class ConfirmHandler(webapp2.RequestHandler):
         message of the activation of the new Spoogler."""
         
         template_context = {'googler': self.request.get('g').strip(),
-                            'token': self.request.get('t').strip()}
-        self.response.out.write(self._render_template('confirmation.html', 
-                            template_context))
-        
-        # Once the Googler clicks on the confirmation link, the status of the 
-        # Spoogler changes from inactive to active
-        spoogler = Spoogler.query(Spoogler.googler_ldap == template_context['googler']).fetch()
+                            'token': int(self.request.get('t').strip())}
+         
+        # The status of the Spoogler changes from inactive to active
+        spoogler = Spoogler.query(Spoogler.googler_ldap == \
+                   template_context['googler']).fetch()
         if spoogler:
-            self._activate_spoogler(spoogler[0])
+            if template_context['token'] == spoogler[0].token:
+                if spoogler[0].status != 'inactive':
+                    template_context['confirmation_message'] = 'The Spoogler ' \
+                    'is already an active member on this group.'
+                else:
+                    if self._activate_spoogler(spoogler[0]):
+                        template_context['confirmation_message'] = \
+                        'Congratulations! The Spoogler is now an active ' \
+                        'member of this group and has received a Welcome email.'
+                        #send email Spoogler
+            else:
+                template_context['confirmation_message'] = 'Wrong information.'\
+                ' Please contact us: bayareaspooglers.webmaster@gmail.com'
+        else:
+            template_context['confirmation_message'] = 'Wrong information.'\
+                ' Please contact us: bayareaspooglers.webmaster@gmail.com'
         
+        self.response.out.write(self._render_template('confirmation.html', 
+                            template_context))        
 
     def post(self):
         """A dummy method to avoid formatting errors when using pylint."""
@@ -187,13 +219,32 @@ class ConfirmHandler(webapp2.RequestHandler):
     @ndb.transactional
     def _activate_spoogler(self, spoogler):
         """It changes the status of the Spoogler from 'inactive' to 'active' 
-        using a query."""        
+        using a query."""
         spoogler.status = 'active'
+        activation_success = False
         try:
             spoogler.put()
+            activation_success = True
         except datastore_errors.TransactionFailedError:
             self.response.out.write('Something went wrong, please try again')
         
+        return activation_success
+        
+    def _send_welcome_email(self, template_context):
+        """It sends a Welcome email once the new spoogler has been successfully
+        activated by the Googler."""
+        spoogler_qry = Spoogler.query(Spoogler.googler_ldap == \
+                       template_context['googler']).fetch()
+        sender_address = "Spooglers Webmaster \
+                         <bayareaspooglers.webmaster@gmail.com>"
+        subject = "Welcome to the Bay Area Spooglers group"
+        body = "Test with googler email."
+        body += "<a href=\"https://" + self.request.host + \
+                "/confirm.html?g=" + \
+                googler_ldap + "&t=" + str(token_value) + \
+                "\">click to confirm</a>"
+        mail.send_mail(sender_address, googler_email, subject, body)
+    
     @classmethod
     def _render_template(cls, template_name, context=None):
         """It displays the webpage according to the information inside the 
