@@ -201,7 +201,7 @@ class ConfirmHandler(webapp2.RequestHandler):
                         template_context['confirmation_message'] = \
                         'Congratulations! The Spoogler is now an active ' \
                         'member of this group and has received a Welcome email.'
-                        #send email Spoogler
+                        self._send_welcome_email(template_context)
             else:
                 template_context['confirmation_message'] = 'Wrong information.'\
                 ' Please contact us: bayareaspooglers.webmaster@gmail.com'
@@ -235,15 +235,12 @@ class ConfirmHandler(webapp2.RequestHandler):
         activated by the Googler."""
         spoogler_qry = Spoogler.query(Spoogler.googler_ldap == \
                        template_context['googler']).fetch()
-        sender_address = "Spooglers Webmaster \
-                         <bayareaspooglers.webmaster@gmail.com>"
+        sender_email = "Spooglers Webmaster \
+                       <bayareaspooglers.webmaster@gmail.com>"
+        recipient_email = spoogler_qry[0].spoogler_email
         subject = "Welcome to the Bay Area Spooglers group"
-        body = "Test with googler email."
-        body += "<a href=\"https://" + self.request.host + \
-                "/confirm.html?g=" + \
-                googler_ldap + "&t=" + str(token_value) + \
-                "\">click to confirm</a>"
-        mail.send_mail(sender_address, googler_email, subject, body)
+        body = "Welcome to the Bay Area Spooglers group."
+        mail.send_mail(sender_email, recipient_email, subject, body)
     
     @classmethod
     def _render_template(cls, template_name, context=None):
