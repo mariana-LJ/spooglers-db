@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head lang="en">
   <meta charset="UTF-8">
   <title>BAS Join</title>
@@ -11,6 +10,37 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  
+  <!-- JQuery library -->
+  <script type="text/javascript" src="/javascript_files/jquery-1.11.3.js"></script>
+  <!-- JQuery form actions -->
+  <script type="text/javascript" language="javascript">
+      $(document).ready(function() {
+        $("#submit").hide();
+        $("#demographics").hide();
+        $("#language_work").hide();
+        $("#events").hide();
+        $("#children_support").hide();
+        var clicks = 0;
+         $("#next").click(function () {
+            clicks++;
+            if(clicks == 1) {
+                $("#demographics").show();
+            } else if(clicks == 2) {
+                $("#language_work").show();
+            } else if(clicks == 3) {
+                $("#events").show();
+            } else if(clicks == 4) {
+                $("#children_support").show();
+            }
+            else {
+                $("#next").hide();
+                $("#submit").show();
+            }
+        });
+      
+      });
+  </script>
   
 </head>
 <body {% if successful_submission %}onload="showAlert()"{% endif %}>
@@ -41,41 +71,191 @@
     {% endif %}
     
     
-    <form role="form" class="form-horizontal" action="" method="post">
+  <form role="form" class="form-horizontal" action="" method="post">
+    <!-- BASIC INFORMATION -->
+    <div id="basic_info">
+      <!-- Spoogler's First Name -->
       <div class="form-group {% if first_name_error %} has-error {% endif %}">
-        <label class="control-label col-sm-3" for="first_name">*Spoogler's First Name: </label>
-        <div class="col-sm-5">
+        <label class="control-label col-sm-5" for="first_name">*Spoogler's First Name: </label>
+        <div class="col-sm-4">
           <input type="text" class="form-control" id="first_name" name="first_name" value="{{ first_name }}" />
         </div>
       </div>
+      <!-- Spoogler's Last Name -->
       <div class="form-group {% if last_name_error %} has-error {% endif %}">
-        <label class="control-label col-sm-3" for="last_name">*Spoogler's Last Name: </label>
-        <div class="col-sm-5">
+        <label class="control-label col-sm-5" for="last_name">*Spoogler's Last Name: </label>
+        <div class="col-sm-4">
           <input type="text" class="form-control" id="last_name" name="last_name" value="{{ last_name }}" />
         </div>
       </div>
+      <!-- Spoogler's email -->      
       <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
-        <label class="control-label col-sm-3" for="spoogler_email">*Spoogler's email: </label>
-        <div class="col-sm-5">
+        <label class="control-label col-sm-5" for="spoogler_email">*Spoogler's email: </label>
+        <div class="col-sm-4">
           <input type="text" class="form-control" id="spoogler_email" name="spoogler_email" value="{{ spoogler_email }}" />
         </div>
       </div>
+      <!-- Googler's ldap -->      
       <div class="form-group {% if googler_ldap_error %} has-error {% endif %}">
-       <label class="control-label col-sm-3" for="googler_ldap">*Googler's ldap: </label>
-       <div class="col-sm-5">
+       <label class="control-label col-sm-5" for="googler_ldap">*Googler's ldap: </label>
+       <div class="col-sm-4">
          <input type="text" class="form-control" id="googler_ldap" name="googler_ldap" value="{{ googler_ldap }}" />
        </div>
        <div class="col-sm-3">
-         <label class="control-label col-sm-3" for="">@google.com</label>
+         <p class="form-control-static">@google.com</p>
        </div>
       </div>
-      <div class="col-md-4 text-center">
-        <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+      <!-- TO DO: From here, update class, for, errors (in main.py) -->
+      <!-- Spoogler's Facebook email -->      
+      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
+        <label class="control-label col-sm-5" for="spoogler_fb_email">*If you (the Spoogler) have a Facebook account, what is the email you use in your account? </label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
+        </div>
       </div>
-    </form>
+    </div>
+    <!-- DEMOGRAPHICS -->
+    <div id="demographics">
+      <!-- Spoogler's main form of transportation -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_transport">Spoogler's main form of transportation to get around in the Bay Area: </label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_transport" name="spoogler_transport" value="{{ spoogler_transport }}" />
+        </div>
+      </div>
+      <!-- Side of the road Spoogler is accostumed to driving -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_driving" name="spoogler_driving" value="{{ spoogler_driving }}" />
+        </div>
+      </div>
+      <!-- From what country did you relocate? -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_country">From what country did you relocate?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_country" name="spoogler_country" value="{{ spoogler_country }}" />
+        </div>
+      </div>
+      <!-- Where do you live in the Bay Area? -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_address">Where do you live in the Bay Area?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_address" name="spoogler_address" value="{{ spoogler_address }}" />
+        </div>
+      </div>
+      <!-- How long have you been in the Bay Area? -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_time">How long have you been in the Bay Area?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_time" name="spoogler_time" value="{{ spoogler_time }}" />
+        </div>
+      </div>
+    </div>
+    <!-- LANGUAGE AND WORK STATUS -->
+    <div id="language_work">
+      <!-- Spoogler's native language -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_lang">Spoogler's native language:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_lang" name="spoogler_lang" value="{{ spoogler_lang }}" />
+        </div>
+      </div>    
+      <!-- Spoogler's English language proficiency -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_english">Spoogler's English language proficiency: </label>
+        <div class="col-sm-4">
+          <div class="radio">
+          <label><input type="radio" id="proficiency0" name="proficiency" value="{{ proficiency0 }}" checked> No proficiency</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="proficiency1" name="proficiency" value="{{ proficiency1 }}"> Elementary proficiency</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="proficiency2" name="proficiency" value="{{ proficiency2 }}"> Limited working proficiency</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="proficiency3" name="proficiency" value="{{ proficiency3 }}"> Professional working proficiency</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="proficiency4" name="proficiency" value="{{ proficiency4 }}"> Full professional proficiency</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="proficiency5" name="proficiency" value="{{ proficiency5 }}"> Native or bilingual proficiency</label>
+          </div>
+        </div>
+      </div>
+      <!-- Other languages spoken by Spoogler -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_lang">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_lang" name="spoogler_lang" value="{{ spoogler_lang }}" />
+        </div>
+      </div>
+      <!-- Spoogler's current work status: -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_work">Spoogler's current work status:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_work" name="spoogler_work" value="{{ spoogler_work }}" />
+        </div>
+      </div>
+    </div>
+    <!-- EVENTS -->
+    <div id="events">
+      <!-- What type of events would you be interested in attending? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_events">What type of events would you be interested in attending?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_events" name="spoogler_events" value="{{ spoogler_events }}" />
+        </div>
+      </div>
+      <!-- What size of events would you be interested in attending? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_events_size">What size of events would you be interested in attending?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_events_size" name="spoogler_events_size" value="{{ spoogler_events_size }}" />
+        </div>
+      </div>      
+    </div>
+    <!-- CHILDREN AND SUPPORT SERVICES -->
+    <div id="children_support">
+      <!-- If you have any children, please select their age group: -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_children">If you have any children, please select their age group:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_children" name="spoogler_children" value="{{ spoogler_children }}" />
+        </div>
+      </div>      
+      <!-- What type of support services would you find useful from this group? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_support1">What type of support services would you find useful from this group?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_support1" name="spoogler_support1" value="{{ spoogler_support1 }}" />
+        </div>
+      </div>
+      <!-- What other forms of support do you have or will you access? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_support2">What other forms of support do you have or will you access?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_support2" name="spoogler_support2" value="{{ spoogler_support2 }}" />
+        </div>
+      </div>
+      <!-- What have you found challenging about your relocation to the Bay Area? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_relo">What have you found challenging about your relocation to the Bay Area?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_relo" name="spoogler_relo" value="{{ spoogler_relo }}" />
+        </div>
+      </div>
+    </div>
+      <div class="col-md-12 text-center">
+        <input class="btn btn-lg btn-success" id="next" type="button" value="Next"/>
+        <button type="submit" class="btn btn-lg btn-primary" id="submit">Submit</button>
+      </div>
+  </form>
   </div>
   
-     <script>
+  <script>
     function showAlert() {
         alert("Thank you for filling out the membership form. A confirmation email has been sent to the @google.com email of the Googler.");  
     }

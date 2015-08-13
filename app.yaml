@@ -5,6 +5,8 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+- url: /javascript_files
+  static_dir: javascript_files
 - url: /welcome_form\.html
   script: main.app
 - url: /confirm\.html
