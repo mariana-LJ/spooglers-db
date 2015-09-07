@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head lang="en">
   <meta charset="UTF-8">
   <title>BAS Join</title>
@@ -14,34 +15,67 @@
   <!-- JQuery library -->
   <script type="text/javascript" src="/javascript_files/jquery-1.11.3.js"></script>
   <!-- JQuery form actions -->
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
   <script type="text/javascript" language="javascript">
-      $(document).ready(function() {
+    $(document).ready(function() {
         $("#submit").hide();
-        $("#demographics").hide();
         $("#language_work").hide();
+        $("#demographics").hide();
         $("#events").hide();
         $("#children_support").hide();
-        var clicks = 0;
-         $("#next").click(function () {
-            clicks++;
-            if(clicks == 1) {
-                $("#demographics").show();
-            } else if(clicks == 2) {
-                $("#language_work").show();
-            } else if(clicks == 3) {
-                $("#events").show();
-            } else if(clicks == 4) {
-                $("#children_support").show();
-            }
-            else {
-                $("#next").hide();
-                $("#submit").show();
-            }
+
+        var welcome_form = $("#welcome");
+        var click_counter = 0;
+
+        $("#next").click(function () {
+          welcome_form.validate({
+            rules: {
+              full_name: "required",
+              spoogler_email: {
+                required: true,
+                email: true
+              },
+              spoogler_fb_email: "email",
+              googler_ldap: "required",
+            },
+            messages:{
+              full_name: "Please enter the Spoogler's full name",
+              spoogler_email: {
+                required: "Please enter the Spoogler's email",
+                email: "Please enter a valid email"
+              },
+              googler_ldap: "Please enter the Googler's ldap"
+            },
+          });
+
+          if(welcome_form.valid()) {
+            click_counter++;
+          }
+          if(click_counter == 1) {
+            $("#language_work").show("slow");
+          }
+          else if(click_counter == 2) {
+            $("#demographics").show("slow");
+          }
+          else if(click_counter == 3) {
+            $("#events").show("slow");
+          }
+          else if(click_counter >= 4) {
+            $("#children_support").show("slow");
+            $("#submit").show();
+            $("#next").hide();
+          }
         });
-      
-      });
+    });
   </script>
-  
+
+  <!-- Text color for the errors detected through the JQuery validation plugin -->
+  <style>
+  .error {
+      color:red;
+  }
+  </style>
+
 </head>
 <body {% if successful_submission %}onload="showAlert()"{% endif %}>
   <div class="container">  
@@ -49,7 +83,7 @@
     
     <p>This form is for partners/spouses of Googlers who have recently 
     relocated to the Bay Area.</p>
-    <p>Please fill in the information below if you are interrested in joining 
+    <p>Please fill in the information below if you are interested in joining 
     the Bay Area Spooglers Group to connect with other Spooglers. You will be 
     added to the group once your information is verified.</p>
     <p>Many of the group's activities are planned based on your response to 
@@ -71,21 +105,14 @@
     {% endif %}
     
     
-  <form role="form" class="form-horizontal" action="" method="post">
+  <form role="form" class="form-horizontal" action="" method="post" id="welcome">
     <!-- BASIC INFORMATION -->
     <div id="basic_info">
-      <!-- Spoogler's First Name -->
+      <!-- Spoogler's Full Name -->
       <div class="form-group {% if first_name_error %} has-error {% endif %}">
-        <label class="control-label col-sm-5" for="first_name">*Spoogler's First Name: </label>
+        <label class="control-label col-sm-5" for="full_name">*Spoogler's Full Name: </label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ first_name }}" />
-        </div>
-      </div>
-      <!-- Spoogler's Last Name -->
-      <div class="form-group {% if last_name_error %} has-error {% endif %}">
-        <label class="control-label col-sm-5" for="last_name">*Spoogler's Last Name: </label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="last_name" name="last_name" value="{{ last_name }}" />
+          <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}" />
         </div>
       </div>
       <!-- Spoogler's email -->      
@@ -95,7 +122,14 @@
           <input type="text" class="form-control" id="spoogler_email" name="spoogler_email" value="{{ spoogler_email }}" />
         </div>
       </div>
-      <!-- Googler's ldap -->      
+      <!-- Spoogler's Facebook email -->
+      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
+        <label class="control-label col-sm-5" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account? </label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
+        </div>
+      </div>
+      <!-- Googler's ldap -->
       <div class="form-group {% if googler_ldap_error %} has-error {% endif %}">
        <label class="control-label col-sm-5" for="googler_ldap">*Googler's ldap: </label>
        <div class="col-sm-4">
@@ -105,139 +139,111 @@
          <p class="form-control-static">@google.com</p>
        </div>
       </div>
-      <!-- TO DO: From here, update class, for, errors (in main.py) -->
-      <!-- Spoogler's Facebook email -->      
-      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
-        <label class="control-label col-sm-5" for="spoogler_fb_email">*If you (the Spoogler) have a Facebook account, what is the email you use in your account? </label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
-        </div>
-      </div>
     </div>
-    <!-- DEMOGRAPHICS -->
-    <div id="demographics">
-      <!-- Spoogler's main form of transportation -->      
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_transport">Spoogler's main form of transportation to get around in the Bay Area: </label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_transport" name="spoogler_transport" value="{{ spoogler_transport }}" />
-        </div>
-      </div>
-      <!-- Side of the road Spoogler is accostumed to driving -->      
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_driving" name="spoogler_driving" value="{{ spoogler_driving }}" />
-        </div>
-      </div>
-      <!-- From what country did you relocate? -->      
+    <!-- LANGUAGE AND WORK STATUS -->
+    <div id="language_work">
+      <!-- From what country did you relocate? -->
       <div class="form-group">
         <label class="control-label col-sm-5" for="spoogler_country">From what country did you relocate?</label>
         <div class="col-sm-4">
           <input type="text" class="form-control" id="spoogler_country" name="spoogler_country" value="{{ spoogler_country }}" />
         </div>
       </div>
-      <!-- Where do you live in the Bay Area? -->      
+      <!-- Spoogler's current work status: -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_address">Where do you live in the Bay Area?</label>
+        <label class="control-label col-sm-5" for="spoogler_work">Spoogler's current work status:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_address" name="spoogler_address" value="{{ spoogler_address }}" />
+          <div class="radio">
+            <label><input type="radio" id="work_status1" name="work_status" value="{{ work_status1 }}" checked> Visa allows work</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="work_status2" name="work_status" value="{{ work_status2 }}"> Visa does not allow work</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="work_status3" name="work_status" value="{{ work_status3 }}"> Able to work</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="work_status4" name="work_status" value="{{ work_status4 }}"> Not able to work</label>
+          </div>
         </div>
       </div>
-      <!-- How long have you been in the Bay Area? -->      
+      <!-- Spoogler's English language proficiency -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_time">How long have you been in the Bay Area?</label>
+        <label class="control-label col-sm-5" for="spoogler_english">Spoogler's English language proficiency: </label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_time" name="spoogler_time" value="{{ spoogler_time }}" />
+          <div class="radio">
+            <label><input type="radio" id="proficiency0" name="engl_proficiency" value="{{ proficiency0 }}" checked> Fully fluent/native speaker</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="proficiency1" name="engl_proficiency" value="{{ proficiency1 }}"> Almost fluent</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="proficiency2" name="engl_proficiency" value="{{ proficiency2 }}"> Conversational</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="proficiency3" name="engl_proficiency" value="{{ proficiency3 }}"> Minimal</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="proficiency4" name="engl_proficiency" value="{{ proficiency4 }}"> None</label>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- LANGUAGE AND WORK STATUS -->
-    <div id="language_work">
-      <!-- Spoogler's native language -->      
+      <!-- Other languages spoken by Spoogler -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_lang2">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="spoogler_lang2" name="spoogler_lang2" value="{{ spoogler_lang2 }}" />
+        </div>
+      </div>
+      <!-- Spoogler's native language -->
       <div class="form-group">
         <label class="control-label col-sm-5" for="spoogler_lang">Spoogler's native language:</label>
         <div class="col-sm-4">
           <input type="text" class="form-control" id="spoogler_lang" name="spoogler_lang" value="{{ spoogler_lang }}" />
         </div>
-      </div>    
-      <!-- Spoogler's English language proficiency -->      
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_english">Spoogler's English language proficiency: </label>
-        <div class="col-sm-4">
-          <div class="radio">
-          <label><input type="radio" id="proficiency0" name="proficiency" value="{{ proficiency0 }}" checked> No proficiency</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="proficiency1" name="proficiency" value="{{ proficiency1 }}"> Elementary proficiency</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="proficiency2" name="proficiency" value="{{ proficiency2 }}"> Limited working proficiency</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="proficiency3" name="proficiency" value="{{ proficiency3 }}"> Professional working proficiency</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="proficiency4" name="proficiency" value="{{ proficiency4 }}"> Full professional proficiency</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="proficiency5" name="proficiency" value="{{ proficiency5 }}"> Native or bilingual proficiency</label>
-          </div>
-        </div>
-      </div>
-      <!-- Other languages spoken by Spoogler -->      
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_lang">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_lang" name="spoogler_lang" value="{{ spoogler_lang }}" />
-        </div>
-      </div>
-      <!-- Spoogler's current work status: -->
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_work">Spoogler's current work status:</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_work" name="spoogler_work" value="{{ spoogler_work }}" />
-        </div>
       </div>
     </div>
-    <!-- EVENTS -->
-    <div id="events">
-      <!-- What type of events would you be interested in attending? -->
+    <!-- DEMOGRAPHICS -->
+    <div id="demographics">
+      <!-- Where do you live in the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_events">What type of events would you be interested in attending?</label>
+        <label class="control-label col-sm-5" for="spoogler_address">Where do you live in the Bay Area?</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_events" name="spoogler_events" value="{{ spoogler_events }}" />
+          <div class="radio">
+            <label><input type="radio" id="address1" name="address" value="{{ address1 }}" checked> East Bay</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="address2" name="address" value="{{ address2 }}"> South Bay</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="address3" name="address" value="{{ address3 }}"> Peninsula</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="address4" name="address" value="{{ address4 }}"> San Francisco</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="address5" name="address" value="{{ address5 }}"> North Bay</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="address6" name="address" value="{{ address6 }}"> Other:
+              <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
+          </label>
+          </div>
         </div>
       </div>
-      <!-- What size of events would you be interested in attending? -->
+      <!-- How long have you been in the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_events_size">What size of events would you be interested in attending?</label>
+        <label class="control-label col-sm-5" for="spoogler_time">How long have you been in the Bay Area?</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_events_size" name="spoogler_events_size" value="{{ spoogler_events_size }}" />
-        </div>
-      </div>      
-    </div>
-    <!-- CHILDREN AND SUPPORT SERVICES -->
-    <div id="children_support">
-      <!-- If you have any children, please select their age group: -->
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_children">If you have any children, please select their age group:</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_children" name="spoogler_children" value="{{ spoogler_children }}" />
-        </div>
-      </div>      
-      <!-- What type of support services would you find useful from this group? -->
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_support1">What type of support services would you find useful from this group?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_support1" name="spoogler_support1" value="{{ spoogler_support1 }}" />
-        </div>
-      </div>
-      <!-- What other forms of support do you have or will you access? -->
-      <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_support2">What other forms of support do you have or will you access?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_support2" name="spoogler_support2" value="{{ spoogler_support2 }}" />
+          <div class="radio">
+          <label><input type="radio" id="time1" name="time" value="{{ time1 }}" checked> 6 months or less</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="time2" name="time" value="{{ time2 }}"> Less than 1 year</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="time3" name="time" value="{{ time3 }}"> More than 1 year </label>
+          </div>
         </div>
       </div>
       <!-- What have you found challenging about your relocation to the Bay Area? -->
@@ -245,6 +251,185 @@
         <label class="control-label col-sm-5" for="spoogler_relo">What have you found challenging about your relocation to the Bay Area?</label>
         <div class="col-sm-4">
           <input type="text" class="form-control" id="spoogler_relo" name="spoogler_relo" value="{{ spoogler_relo }}" />
+        </div>
+      </div>
+      <!-- Spoogler's main form of transportation -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_transport">Spoogler's main form of transportation to get around in the Bay Area: </label>
+        <div class="col-sm-4">
+          <div class="radio">
+            <label><input type="radio" id="transport1" name="transportation" value="{{ transport1 }}" checked> Driving personal/family car</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="transport2" name="transportation" value="{{ transport2 }}"> Carpooling</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="transport3" name="transportation" value="{{ transport3 }}"> Public transit</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="transport4" name="transportation" value="{{ transport4 }}"> Bicycle</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" id="transport5" name="transportation" value="{{ transport5 }}"> Walking</label>
+          </div>
+        </div>
+      </div>
+      <!-- Side of the road Spoogler is accostumed to driving -->      
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="side_driving" name="side_driving" value="{{ side_driving }}" />
+        </div>
+      </div>
+    </div>
+    <!-- EVENTS -->
+    <div id="events">
+      <!-- What size of events would you be interested in attending? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_events_size">What size of events would you be interested in attending? Select all that apply.</label>
+        <div class="col-sm-4">
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_size1" name="event_size" value="{{ event_size1 }}"> Small, informal local groups (i.e. coffee at local cafe)</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_size2" name="event_size" value="{{ event_size2 }}"> Large groups (i.e. family picnics)</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_size3" name="event_size" value="{{ event_size3 }}"> Large regional get-togethers and parties for special occasions</label>
+          </div>
+        </div>
+      </div>
+      <!-- What type of events would you be interested in attending? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_events">What type of events would you be interested in attending? Select all that apply.</label>
+        <div class="col-sm-4">
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type1" name="event_type" value="{{ event_type1 }}"> Arts and crafts</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type2" name="event_type" value="{{ event_size2 }}"> Beauty/personal grooming</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type3" name="event_type" value="{{ event_type3 }}"> Book club</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type4" name="event_type" value="{{ event_type4 }}"> Career counseling (for those who cannot work)</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type5" name="event_type" value="{{ event_type5 }}"> Casual mid-morning coffee</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type6" name="event_type" value="{{ event_type6 }}"> Concerts, theater</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type7" name="event_type" value="{{ event_type7 }}"> Cooking</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type8" name="event_type" value="{{ event_type8 }}"> Date nights, movies</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type9" name="event_type" value="{{ event_type9 }}"> Dinner, drinks</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type10" name="event_type" value="{{ event_type10 }}"> Education/skills sharing</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type12" name="event_type" value="{{ event_type12 }}"> Family picnics</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type13" name="event_type" value="{{ event_type13 }}"> Games, board games</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type14" name="event_type" value="{{ event_type14 }}"> Playdates</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type15" name="event_type" value="{{ event_type15 }}"> Sightseeing</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type16" name="event_type" value="{{ event_type16 }}"> Sports</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type17" name="event_type" value="{{ event_type17 }}"> Volunteering</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type18" name="event_type" value="{{ event_type18 }}"> Other:
+              <input type = "text" class="form-control" id="event_type_other" name="spoogler_support1" value="{{ event_type_other }}"/>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CHILDREN AND SUPPORT SERVICES -->
+    <div id="children_support">
+      <!-- What type of support services would you find useful from this group? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_support1">What type of support services would you find useful from this group? Select all that apply.</label>
+        <div class="col-sm-4">
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type1" name="support_type" value="{{ support_type1 }}"> Local recommendations (i.e. for housing, health specialists, schools, etc.)</label>
+         </div>
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type2" name="support_type" value="{{ support_size2 }}"> Information (i.e. on US taxes, healthcare system, building credit, visas, etc.)</label>
+         </div>
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type3" name="support_type" value="{{ support_type3 }}"> Networking (based on home country, interests, current residence, etc.)</label>
+         </div>
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type4" name="support_type" value="{{ support_type4 }}"> Other:
+              <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/></label>
+         </div>
+        </div>
+      </div>
+      <!-- What other forms of support do you have or will you access? -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_support2">What other forms of support do you have or will you access? Select all that apply.</label>
+        <div class="col-sm-4">
+        <div class="checkbox">
+            <label><input type="checkbox" id="support_type21" name="support_type2" value="{{ support_type21 }}"> Family/friends here</label>
+         </div>
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type22" name="support_type2" value="{{ support_size22 }}"> Country of origin or ethnicity-based groups</label>
+         </div>
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type23" name="support_type2" value="{{ support_type23 }}"> Faith-based groups</label>
+         </div>
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type24" name="support_type2" value="{{ support_type24 }}"> Other:
+              <input type = "text" class="form-control" id="support_type_other2" name="support_type_other2" value="{{ support_type_other2 }}"/></label>
+         </div>
+        </div>
+      </div>
+      <!-- If you have any children, please select their age group: -->
+      <div class="form-group">
+        <label class="control-label col-sm-5" for="spoogler_children">If you have any children, please select their age group:</label>
+        <div class="col-sm-4">
+          <div class="radio">
+          <label><input type="radio" id="children_ages0" name="children_ages" value="{{ children_ages0 }}" checked> No children</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages1" name="children_ages" value="{{ children_ages1 }}"> Expecting</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages2" name="children_ages" value="{{ children_ages2 }}"> Infant</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages3" name="children_ages" value="{{ children_ages3 }}"> Preschool, kindergarten</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages4" name="children_ages" value="{{ children_ages4 }}"> Elementary school</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages5" name="children_ages" value="{{ children_ages5 }}"> Middle school</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages6" name="children_ages" value="{{ children_ages6 }}"> High school</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages7" name="children_ages" value="{{ children_ages7 }}"> College/university</label>
+          </div>
+          <div class="radio">
+          <label><input type="radio" id="children_ages8" name="children_ages" value="{{ children_ages8 }}"> Left home</label>
+          </div>          
         </div>
       </div>
     </div>

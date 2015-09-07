@@ -45,10 +45,15 @@ class FormHandler(webapp2.RequestHandler):
         
         token_value = 0
         template_context = {
-          'first_name': self.request.get('first_name').strip(), 
-          'last_name': self.request.get('last_name').strip(), 
+          # Basic information
+          'full_name': self.request.get('full_name').strip(),
           'spoogler_email': self.request.get('spoogler_email').strip(), 
+          'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
           'googler_ldap': self.request.get('googler_ldap').strip(),
+
+          # Language and work status
+          'spoogler_country': self.request.get('spoogler_country').strip(),
+
         }
     
         if FormHandler._validate_form(template_context):
@@ -58,15 +63,13 @@ class FormHandler(webapp2.RequestHandler):
             if self._create_spoogler(template_context, token_value):
                 self._send_confirmation_email(template_context['googler_ldap'],
                                               token_value)
-            template_context['first_name'] = ""
-            template_context['last_name'] = ""
+            template_context['full_name'] = ""
             template_context['spoogler_email'] = ""
             template_context['googler_ldap'] = ""
             template_context['successful_submission'] = True
             
             # Clean error flags
-            template_context['first_name_error'] = False
-            template_context['last_name_error'] = False
+            template_context['full_name_error'] = False
             template_context['spoogler_email_error'] = False
             template_context['spoogler_email_duplicate'] = False
             template_context['googler_ldap_error'] = False
@@ -95,11 +98,8 @@ class FormHandler(webapp2.RequestHandler):
         mail_re = re.compile(r'^.+@.+$')
         at_sign_re = re.compile(r'@')
         # Verify that the user entered information in the fields:
-        if not template_context['first_name']:
-            template_context['first_name_error'] = True
-            result = False
-        if not template_context['last_name']:
-            template_context['last_name_error'] = True
+        if not template_context['full_name']:
+            template_context['full_name_error'] = True
             result = False
         if not template_context['spoogler_email'] or \
            not mail_re.search(template_context['spoogler_email']):
@@ -158,8 +158,7 @@ class FormHandler(webapp2.RequestHandler):
         
         write_success = False
         #instantiation of the Spoogler class:
-        spoogler = Spoogler(first_name = template_context['first_name'], 
-                   last_name = template_context['last_name'], 
+        spoogler = Spoogler(full_name = template_context['full_name'],
                    spoogler_email = template_context['spoogler_email'], 
                    googler_ldap = template_context['googler_ldap'],
                    status = 'inactive', 

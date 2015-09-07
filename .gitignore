@@ -1,2 +1,8 @@
 # Ignore .pyc files
 *.pyc
+
+# Ignore png images
+*.png
+
+# Ignore test files
+test_validation.html
