@@ -7,12 +7,6 @@ threadsafe: yes
 handlers:
 - url: /javascript_files
   static_dir: javascript_files
-- url: /welcome_form\.html
-  script: main.app
-- url: /confirm\.html
-  script: main.app
-- url: /thankyou\.html
-  script: main.app
 - url: /.*
   script: main.app
   secure: always
