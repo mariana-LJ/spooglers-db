@@ -6,3 +6,7 @@
 
 # Ignore test files
 test_validation.html
+
+# Ignore IDE files
+.idea
+
