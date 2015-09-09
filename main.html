@@ -152,41 +152,24 @@
       </div>
       <!-- Spoogler's current work status: -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_work">Spoogler's current work status:</label>
+        <label class="control-label col-sm-5" for="work_status">Spoogler's current work status:</label>
         <div class="col-sm-4">
-          <div class="radio">
-            <label><input type="radio" id="work_status1" name="work_status" value="{{ work_status1 }}" checked> Visa allows work</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="work_status2" name="work_status" value="{{ work_status2 }}"> Visa does not allow work</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="work_status3" name="work_status" value="{{ work_status3 }}"> Able to work</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="work_status4" name="work_status" value="{{ work_status4 }}"> Not able to work</label>
-          </div>
+          {% for status in spoogler_work_status %}
+            <div class="radio">
+              <label><input type="radio" id="work_status" name="work_status" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ status }}</label>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <!-- Spoogler's English language proficiency -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_english">Spoogler's English language proficiency: </label>
+        <label class="control-label col-sm-5" for="engl_proficiency">Spoogler's English language proficiency: </label>
         <div class="col-sm-4">
-          <div class="radio">
-            <label><input type="radio" id="proficiency0" name="engl_proficiency" value="{{ proficiency0 }}" checked> Fully fluent/native speaker</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="proficiency1" name="engl_proficiency" value="{{ proficiency1 }}"> Almost fluent</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="proficiency2" name="engl_proficiency" value="{{ proficiency2 }}"> Conversational</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="proficiency3" name="engl_proficiency" value="{{ proficiency3 }}"> Minimal</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="proficiency4" name="engl_proficiency" value="{{ proficiency4 }}"> None</label>
-          </div>
+          {% for proficiency in  engl_proficiency %}
+            <div class="radio">
+              <label><input type="radio" id="engl_proficiency" name="engl_proficiency" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ proficiency }}</label>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <!-- Other languages spoken by Spoogler -->
@@ -208,43 +191,28 @@
     <div id="demographics">
       <!-- Where do you live in the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_address">Where do you live in the Bay Area?</label>
+        <label class="control-label col-sm-5" for="address">Where do you live in the Bay Area?</label>
         <div class="col-sm-4">
+          {% for option in address %}
           <div class="radio">
-            <label><input type="radio" id="address1" name="address" value="{{ address1 }}" checked> East Bay</label>
+            <label><input type="radio" id="address" name="address" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ option }}
+              {% if loop.last %}
+                <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
+              {% endif %}
+            </label>
           </div>
-          <div class="radio">
-            <label><input type="radio" id="address2" name="address" value="{{ address2 }}"> South Bay</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="address3" name="address" value="{{ address3 }}"> Peninsula</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="address4" name="address" value="{{ address4 }}"> San Francisco</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="address5" name="address" value="{{ address5 }}"> North Bay</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="address6" name="address" value="{{ address6 }}"> Other:
-              <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
-          </label>
-          </div>
+          {% endfor %}
         </div>
       </div>
       <!-- How long have you been in the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_time">How long have you been in the Bay Area?</label>
+        <label class="control-label col-sm-5" for="time_in_area">How long have you been in the Bay Area?</label>
         <div class="col-sm-4">
-          <div class="radio">
-          <label><input type="radio" id="time1" name="time" value="{{ time1 }}" checked> 6 months or less</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="time2" name="time" value="{{ time2 }}"> Less than 1 year</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="time3" name="time" value="{{ time3 }}"> More than 1 year </label>
-          </div>
+          {% for t in time %}
+            <div class="radio">
+            <label><input type="radio" id="time_in_area" name="time" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ t }}</label>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <!-- What have you found challenging about your relocation to the Bay Area? -->
@@ -256,30 +224,24 @@
       </div>
       <!-- Spoogler's main form of transportation -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_transport">Spoogler's main form of transportation to get around in the Bay Area: </label>
+        <label class="control-label col-sm-5" for="transportation">Spoogler's main form of transportation to get around in the Bay Area: </label>
         <div class="col-sm-4">
+          {% for transport in transportation %}
           <div class="radio">
-            <label><input type="radio" id="transport1" name="transportation" value="{{ transport1 }}" checked> Driving personal/family car</label>
+            <label><input type="radio" id="transportation" name="transportation" value="{{ loop.index0 }}" {% if loop.index0 == 0%} checked {% endif %}> {{ transport }}</label>
           </div>
-          <div class="radio">
-            <label><input type="radio" id="transport2" name="transportation" value="{{ transport2 }}"> Carpooling</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="transport3" name="transportation" value="{{ transport3 }}"> Public transit</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="transport4" name="transportation" value="{{ transport4 }}"> Bicycle</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" id="transport5" name="transportation" value="{{ transport5 }}"> Walking</label>
-          </div>
+          {% endfor %}
         </div>
       </div>
       <!-- Side of the road Spoogler is accostumed to driving -->      
       <div class="form-group">
         <label class="control-label col-sm-5" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="side_driving" name="side_driving" value="{{ side_driving }}" />
+          {% for side in side_driving %}
+          <div class="radio">
+            <label><input type="radio" id="side_driving" name="side_driving" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ side }}</label>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -287,76 +249,28 @@
     <div id="events">
       <!-- What size of events would you be interested in attending? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_events_size">What size of events would you be interested in attending? Select all that apply.</label>
+        <label class="control-label col-sm-5" for="event_size">What size of events would you be interested in attending? Select all that apply.</label>
         <div class="col-sm-4">
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_size1" name="event_size" value="{{ event_size1 }}"> Small, informal local groups (i.e. coffee at local cafe)</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_size2" name="event_size" value="{{ event_size2 }}"> Large groups (i.e. family picnics)</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_size3" name="event_size" value="{{ event_size3 }}"> Large regional get-togethers and parties for special occasions</label>
-          </div>
+          {% for size in event_size %}
+            <div class="checkbox">
+              <label><input type="checkbox" id="event_size" name="event_size" value="{{ loop.index0 }}"> {{ size }}</label>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <!-- What type of events would you be interested in attending? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_events">What type of events would you be interested in attending? Select all that apply.</label>
+        <label class="control-label col-sm-5" for="event_type">What type of events would you be interested in attending? Select all that apply.</label>
         <div class="col-sm-4">
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type1" name="event_type" value="{{ event_type1 }}"> Arts and crafts</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type2" name="event_type" value="{{ event_size2 }}"> Beauty/personal grooming</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type3" name="event_type" value="{{ event_type3 }}"> Book club</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type4" name="event_type" value="{{ event_type4 }}"> Career counseling (for those who cannot work)</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type5" name="event_type" value="{{ event_type5 }}"> Casual mid-morning coffee</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type6" name="event_type" value="{{ event_type6 }}"> Concerts, theater</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type7" name="event_type" value="{{ event_type7 }}"> Cooking</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type8" name="event_type" value="{{ event_type8 }}"> Date nights, movies</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type9" name="event_type" value="{{ event_type9 }}"> Dinner, drinks</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type10" name="event_type" value="{{ event_type10 }}"> Education/skills sharing</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type12" name="event_type" value="{{ event_type12 }}"> Family picnics</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type13" name="event_type" value="{{ event_type13 }}"> Games, board games</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type14" name="event_type" value="{{ event_type14 }}"> Playdates</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type15" name="event_type" value="{{ event_type15 }}"> Sightseeing</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type16" name="event_type" value="{{ event_type16 }}"> Sports</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type17" name="event_type" value="{{ event_type17 }}"> Volunteering</label>
-          </div>
-          <div class="checkbox">
-            <label><input type="checkbox" id="event_type18" name="event_type" value="{{ event_type18 }}"> Other:
-              <input type = "text" class="form-control" id="event_type_other" name="spoogler_support1" value="{{ event_type_other }}"/>
-            </label>
-          </div>
+          {% for type in event_type %}
+            <div class="checkbox">
+              <label><input type="checkbox" id="event_type" name="event_type" value="{{ loop.index0 }}"> {{ type }}
+                {% if loop.last %}
+                  <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}"/>
+                {% endif %}
+              </label>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -364,73 +278,43 @@
     <div id="children_support">
       <!-- What type of support services would you find useful from this group? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_support1">What type of support services would you find useful from this group? Select all that apply.</label>
+        <label class="control-label col-sm-5" for="support_type">What type of support services would you find useful from this group? Select all that apply.</label>
         <div class="col-sm-4">
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type1" name="support_type" value="{{ support_type1 }}"> Local recommendations (i.e. for housing, health specialists, schools, etc.)</label>
-         </div>
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type2" name="support_type" value="{{ support_size2 }}"> Information (i.e. on US taxes, healthcare system, building credit, visas, etc.)</label>
-         </div>
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type3" name="support_type" value="{{ support_type3 }}"> Networking (based on home country, interests, current residence, etc.)</label>
-         </div>
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type4" name="support_type" value="{{ support_type4 }}"> Other:
-              <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/></label>
-         </div>
+          {% for support in support_type %}
+           <div class="checkbox">
+              <label><input type="checkbox" id="support_type" name="support_type" value="{{ loop.index0 }}"> {{ support }}
+                {% if loop.last %}
+                  <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/>
+                {% endif %}
+              </label>
+           </div>
+          {% endfor %}
         </div>
       </div>
       <!-- What other forms of support do you have or will you access? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_support2">What other forms of support do you have or will you access? Select all that apply.</label>
+        <label class="control-label col-sm-5" for="support_other">What other forms of support do you have or will you access? Select all that apply.</label>
         <div class="col-sm-4">
+          {% for other in support_other %}
         <div class="checkbox">
-            <label><input type="checkbox" id="support_type21" name="support_type2" value="{{ support_type21 }}"> Family/friends here</label>
+            <label><input type="checkbox" id="support_other" name="support_other" value="{{ loop.index0 }}"> {{ other }}
+              {% if loop.last %}
+                <input type = "text" class="form-control" id="other" name="other" value="{{ support_type_other2 }}"/>
+              {% endif %}
+            </label>
          </div>
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type22" name="support_type2" value="{{ support_size22 }}"> Country of origin or ethnicity-based groups</label>
-         </div>
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type23" name="support_type2" value="{{ support_type23 }}"> Faith-based groups</label>
-         </div>
-         <div class="checkbox">
-            <label><input type="checkbox" id="support_type24" name="support_type2" value="{{ support_type24 }}"> Other:
-              <input type = "text" class="form-control" id="support_type_other2" name="support_type_other2" value="{{ support_type_other2 }}"/></label>
-         </div>
+          {% endfor %}
         </div>
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_children">If you have any children, please select their age group:</label>
+        <label class="control-label col-sm-5" for="children_ages">If you have any children, please select their age group:</label>
         <div class="col-sm-4">
-          <div class="radio">
-          <label><input type="radio" id="children_ages0" name="children_ages" value="{{ children_ages0 }}" checked> No children</label>
+          {% for age in children_ages %}
+          <div class="checkbox">
+          <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ loop.index0 }}"> {{ age }}</label>
           </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages1" name="children_ages" value="{{ children_ages1 }}"> Expecting</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages2" name="children_ages" value="{{ children_ages2 }}"> Infant</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages3" name="children_ages" value="{{ children_ages3 }}"> Preschool, kindergarten</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages4" name="children_ages" value="{{ children_ages4 }}"> Elementary school</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages5" name="children_ages" value="{{ children_ages5 }}"> Middle school</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages6" name="children_ages" value="{{ children_ages6 }}"> High school</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages7" name="children_ages" value="{{ children_ages7 }}"> College/university</label>
-          </div>
-          <div class="radio">
-          <label><input type="radio" id="children_ages8" name="children_ages" value="{{ children_ages8 }}"> Left home</label>
-          </div>          
+          {% endfor %}
         </div>
       </div>
     </div>

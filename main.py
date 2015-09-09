@@ -10,6 +10,8 @@ C0103: Used when a name doesn't doesn't fit the naming convention associated
 to its type (constant, variable, class). Disabled for the "app" object 
 created at the end """
 
+__author__ = 'bayareaspooglers.webmaster@gmail.com'
+
 #pylint: disable=E1101, F0401, E0602
 #Source: http://pylint-messages.wikidot.com/all-codes
 
@@ -23,7 +25,7 @@ from google.appengine.ext import ndb
 from models import Spoogler
 from random import randint
 
-JINJA_ENV = jinja2.Environment(loader = 
+JINJA_ENV = jinja2.Environment(loader=
 jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 
@@ -32,8 +34,12 @@ class FormHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
-        template_context = {'valid_form' : True, 
-                            'successful_submission' : False}
+        template_context = {'valid_form': True,
+                            'successful_submission': False,
+                            }
+
+        # Initialize the template fields that contain multiple options in the form
+        self._init_multiple_options(template_context)
         self.response.out.write(self._render_template('main.html', 
                                 template_context))
 
@@ -50,12 +56,11 @@ class FormHandler(webapp2.RequestHandler):
           'spoogler_email': self.request.get('spoogler_email').strip(), 
           'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
           'googler_ldap': self.request.get('googler_ldap').strip(),
-
-          # Language and work status
-          'spoogler_country': self.request.get('spoogler_country').strip(),
-
         }
-    
+
+        # Initialize the template fields that contain multiple options in the form
+        self._init_multiple_options(template_context)
+
         if FormHandler._validate_form(template_context):
             template_context['valid_form'] = True
             token_value = FormHandler._generate_token()
@@ -66,6 +71,8 @@ class FormHandler(webapp2.RequestHandler):
             template_context['full_name'] = ""
             template_context['spoogler_email'] = ""
             template_context['googler_ldap'] = ""
+            template_context['spoogler_fb_email'] = ""
+            template_context['spoogler_country'] = ""
             template_context['successful_submission'] = True
             
             # Clean error flags
@@ -159,8 +166,10 @@ class FormHandler(webapp2.RequestHandler):
         write_success = False
         #instantiation of the Spoogler class:
         spoogler = Spoogler(full_name = template_context['full_name'],
-                   spoogler_email = template_context['spoogler_email'], 
+                   spoogler_email = template_context['spoogler_email'],
+                   spoogler_fb_email = template_context['spoogler_fb_email'],
                    googler_ldap = template_context['googler_ldap'],
+                   spoogler_country = template_context['spoogler_country'],
                    status = 'inactive', 
                    token = token_value)
                         
@@ -171,9 +180,73 @@ class FormHandler(webapp2.RequestHandler):
         except datastore_errors.TransactionFailedError:
             self.response.out.write('Something went wrong, please try again')
         return write_success
-  
+
+    def _init_multiple_options(self, template_context):
+        """Initializes the template fields that contains multiple options
+        in the form."""
+
+        template_context['spoogler_country'] =  self.request.get('spoogler_country').strip()
+        template_context['spoogler_work_status'] =  self.work_status
+        template_context['engl_proficiency'] = self.english_proficiency
+        template_context['address'] = self.address_options
+        template_context['time'] = self.time
+        template_context['transportation'] = self.transportation
+        template_context['side_driving'] = self.side_driving
+        template_context['event_size'] = self.event_size
+        template_context['event_type'] = self.event_type
+        template_context['support_type']  = self.support_type
+        template_context['support_other'] = self.support_other
+        template_context['children_ages'] = self.children_ages
 
     def __init__(self, request, response):
+        # Spoogler's current work status
+        self.work_status = ["Visa allows work", "Visa does not allow work",
+                            "Able to work", "Not able to work"]
+        # Spoogler's English language proficiency
+        self.english_proficiency = ["Fully fluent/native speaker",
+                                    "Almost fluent", "Conversational",
+                                    "Minimal", "None"]
+        # Spoogler's address in the Bay Area
+        self.address_options = ["East Bay", "South Bay", "Peninsula",
+                                "San Francisco", "North Bay", "Other"]
+        # Time living in the Bay Area
+        self.time = ["6 months or less", "Less than 1 year", "More than 1 year"]
+        # Mode of transportation
+        self.transportation = ["Driving personal/family car", "Carpooling",
+                               "Public transit", "Bicycle", "Walking"]
+        # Side of the road to drive
+        self.side_driving = ["left", "right"]
+        # Size of events to attend
+        self.event_size = ["Small, informal local groups (i.e. coffee at \
+                           local cafe)", "Large groups (i.e. family picnics)",
+                           "Large regional get-togethers and parties for \
+                           special occasions"]
+        # Type of events to attend
+        self.event_type = ["Arts and crafts", "Beauty/personal grooming",
+                           "Book club", "Career counseling (for those who \
+                           cannot work)", "Casual mid-morning coffee",
+                           "Concerts, theater", "Cooking", "Date nights, \
+                           movies", "Dinner, drinks", "Education/skills \
+                           sharing", "Family picnics", "Games, board games",
+                           "Playdates", "Sightseeing", "Sports",
+                           "Volunteering", "Other"]
+        # Type of support services Spoogler is looking for
+        self.support_type = ["Local recommendations (i.e. for housing, \
+                             health specialists, schools, etc.)",
+                             "Information (i.e. on US taxes, healthcare \
+                             system, building credit, visas, etc.)",
+                             "Networking (based on home country, interests, \
+                             current residence, etc.)",
+                             "Other"]
+        # Other types of support used by Spoogler
+        self.support_other = ["Family/friends here",
+                              "Country of origin or ethnicity-based groups",
+                              "Faith-based groups", "Other"]
+        # Spoogler's children ages
+        self.children_ages = ["No children", "Expecting", "Infant",
+                              "Preschool, kindergarten", "Elementary school",
+                              "Middle school", "High school",
+                              "College/university", "Left home"]
         self.initialize(request, response)
 
 class ConfirmHandler(webapp2.RequestHandler):

@@ -18,7 +18,7 @@ class Spoogler(ndb.Model):
     spoogler_events_size = ndb.StringProperty()
     event_type = ndb.StringProperty()
     support_type = ndb.StringProperty()
-    support_type2 = ndb.StringProperty()
+    support_other = ndb.StringProperty()
     children_ages = ndb.StringProperty()
     status = ndb.StringProperty() # 'Inactive' or 'Active'
     token = ndb.IntegerProperty()
