@@ -156,7 +156,7 @@
         <div class="col-sm-4">
           {% for status in spoogler_work_status %}
             <div class="radio">
-              <label><input type="radio" id="work_status" name="work_status" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ status }}</label>
+              <label><input type="radio" id="work_status" name="work_status" value="{{ status[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ status[1] }}</label>
             </div>
           {% endfor %}
         </div>
@@ -167,7 +167,7 @@
         <div class="col-sm-4">
           {% for proficiency in  engl_proficiency %}
             <div class="radio">
-              <label><input type="radio" id="engl_proficiency" name="engl_proficiency" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ proficiency }}</label>
+              <label><input type="radio" id="engl_proficiency" name="engl_proficiency" value="{{ proficiency[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ proficiency[1] }}</label>
             </div>
           {% endfor %}
         </div>
@@ -195,7 +195,7 @@
         <div class="col-sm-4">
           {% for option in address %}
           <div class="radio">
-            <label><input type="radio" id="address" name="address" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ option }}
+            <label><input type="radio" id="address" name="address" value="{{ option[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ option[1] }}
               {% if loop.last %}
                 <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
               {% endif %}
@@ -210,7 +210,7 @@
         <div class="col-sm-4">
           {% for t in time %}
             <div class="radio">
-            <label><input type="radio" id="time_in_area" name="time" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ t }}</label>
+            <label><input type="radio" id="time_in_area" name="time" value="{{ t[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ t[1] }}</label>
             </div>
           {% endfor %}
         </div>
@@ -228,7 +228,7 @@
         <div class="col-sm-4">
           {% for transport in transportation %}
           <div class="radio">
-            <label><input type="radio" id="transportation" name="transportation" value="{{ loop.index0 }}" {% if loop.index0 == 0%} checked {% endif %}> {{ transport }}</label>
+            <label><input type="radio" id="transportation" name="transportation" value="{{ transport[0] }}" {% if loop.index0 == 0%} checked {% endif %}> {{ transport[1] }}</label>
           </div>
           {% endfor %}
         </div>
@@ -239,7 +239,7 @@
         <div class="col-sm-4">
           {% for side in side_driving %}
           <div class="radio">
-            <label><input type="radio" id="side_driving" name="side_driving" value="{{ loop.index0 }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ side }}</label>
+            <label><input type="radio" id="side_driving" name="side_driving" value="{{ side[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ side[1] }}</label>
           </div>
           {% endfor %}
         </div>
@@ -253,7 +253,7 @@
         <div class="col-sm-4">
           {% for size in event_size %}
             <div class="checkbox">
-              <label><input type="checkbox" id="event_size" name="event_size" value="{{ loop.index0 }}"> {{ size }}</label>
+              <label><input type="checkbox" id="event_size" name="event_size" value="{{ size[0] }}"> {{ size[1] }}</label>
             </div>
           {% endfor %}
         </div>
@@ -264,7 +264,7 @@
         <div class="col-sm-4">
           {% for type in event_type %}
             <div class="checkbox">
-              <label><input type="checkbox" id="event_type" name="event_type" value="{{ loop.index0 }}"> {{ type }}
+              <label><input type="checkbox" id="event_type" name="event_type" value="{{ type[0] }}"> {{ type[1] }}
                 {% if loop.last %}
                   <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}"/>
                 {% endif %}
@@ -282,7 +282,7 @@
         <div class="col-sm-4">
           {% for support in support_type %}
            <div class="checkbox">
-              <label><input type="checkbox" id="support_type" name="support_type" value="{{ loop.index0 }}"> {{ support }}
+              <label><input type="checkbox" id="support_type" name="support_type" value="{{ support[0] }}"> {{ support[1] }}
                 {% if loop.last %}
                   <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/>
                 {% endif %}
@@ -297,7 +297,7 @@
         <div class="col-sm-4">
           {% for other in support_other %}
         <div class="checkbox">
-            <label><input type="checkbox" id="support_other" name="support_other" value="{{ loop.index0 }}"> {{ other }}
+            <label><input type="checkbox" id="support_other" name="support_other" value="{{ other[0] }}"> {{ other[1] }}
               {% if loop.last %}
                 <input type = "text" class="form-control" id="other" name="other" value="{{ support_type_other2 }}"/>
               {% endif %}
@@ -312,7 +312,7 @@
         <div class="col-sm-4">
           {% for age in children_ages %}
           <div class="checkbox">
-          <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ loop.index0 }}"> {{ age }}</label>
+          <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}"> {{ age[1] }}</label>
           </div>
           {% endfor %}
         </div>
