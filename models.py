@@ -9,7 +9,7 @@ class Spoogler(ndb.Model):
     work_status = ndb.StringProperty()
     engl_proficiency = ndb.StringProperty()
     spoogler_lang2 = ndb.StringProperty()
-    spoogler_lang = ndb.StringProperty()
+    native_lang = ndb.StringProperty()
     address = ndb.StringProperty()
     time = ndb.StringProperty()
     spoogler_relo = ndb.StringProperty()

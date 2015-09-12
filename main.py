@@ -19,6 +19,7 @@ import jinja2
 import os
 import webapp2
 import re
+import logging
 
 from google.appengine.api import mail
 from google.appengine.ext import ndb
@@ -51,13 +52,18 @@ class FormHandler(webapp2.RequestHandler):
         
         token_value = 0
         template_context = {
-          # Basic information
-          'full_name': self.request.get('full_name').strip(),
-          'spoogler_email': self.request.get('spoogler_email').strip(), 
-          'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
-          'googler_ldap': self.request.get('googler_ldap').strip(),
+            # Basic information
+            'full_name': self.request.get('full_name').strip(),
+            'spoogler_email': self.request.get('spoogler_email').strip(),
+            'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
+            'googler_ldap': self.request.get('googler_ldap').strip(),
+            'work_status': self.request.params.get('work_status'),
+            'native_lang': self.request.get('native_lang').strip(),
+            'spoogler_relo': self.request.get('spoogler_relo').strip(),
         }
 
+        logging.info(self.request.get('work_status'))
+        logging.info(">>>>>" + str(self.request.get_all('event_size')))
         # Initialize the template fields that contain multiple options in the form
         self._init_multiple_options(template_context)
 
@@ -68,18 +74,9 @@ class FormHandler(webapp2.RequestHandler):
             if self._create_spoogler(template_context, token_value):
                 self._send_confirmation_email(template_context['googler_ldap'],
                                               token_value)
-            template_context['full_name'] = ""
-            template_context['spoogler_email'] = ""
-            template_context['googler_ldap'] = ""
-            template_context['spoogler_fb_email'] = ""
-            template_context['spoogler_country'] = ""
-            template_context['successful_submission'] = True
-            
-            # Clean error flags
-            template_context['full_name_error'] = False
-            template_context['spoogler_email_error'] = False
-            template_context['spoogler_email_duplicate'] = False
-            template_context['googler_ldap_error'] = False
+            self.response.out.write(template_context['work_status'])
+            FormHandler._clean_context(template_context)
+
         else:
             template_context['valid_form'] = False
     
@@ -164,14 +161,17 @@ class FormHandler(webapp2.RequestHandler):
         """Creates an instance of a Spoogler in the Datastore."""
         
         write_success = False
-        #instantiation of the Spoogler class:
+        # Instantiation of the Spoogler class:
         spoogler = Spoogler(full_name = template_context['full_name'],
-                   spoogler_email = template_context['spoogler_email'],
-                   spoogler_fb_email = template_context['spoogler_fb_email'],
-                   googler_ldap = template_context['googler_ldap'],
-                   spoogler_country = template_context['spoogler_country'],
-                   status = 'inactive', 
-                   token = token_value)
+                    spoogler_email = template_context['spoogler_email'],
+                    spoogler_fb_email = template_context['spoogler_fb_email'],
+                    googler_ldap = template_context['googler_ldap'],
+                    spoogler_country = template_context['spoogler_country'],
+                    work_status = template_context['work_status'],
+                    native_lang = template_context['native_lang'],
+                    spoogler_relo = template_context['spoogler_relo'],
+                    status = 'inactive',
+                    token = token_value)
                         
         # An entity is persisted in the Datastore:
         try:
@@ -197,6 +197,24 @@ class FormHandler(webapp2.RequestHandler):
         template_context['support_type']  = self.support_type
         template_context['support_other'] = self.support_other
         template_context['children_ages'] = self.children_ages
+
+    @classmethod
+    def _clean_context(cls, template_context):
+        """ Resets the fields of the template context after successful
+        submission."""
+        template_context['full_name'] = ""
+        template_context['spoogler_email'] = ""
+        template_context['googler_ldap'] = ""
+        template_context['spoogler_fb_email'] = ""
+        template_context['spoogler_country'] = ""
+        template_context['native_lang'] = ""
+        template_context['successful_submission'] = True
+
+        # Clean error flags
+        template_context['full_name_error'] = False
+        template_context['spoogler_email_error'] = False
+        template_context['spoogler_email_duplicate'] = False
+        template_context['googler_ldap_error'] = False
 
     def __init__(self, request, response):
         # Spoogler's current work status
