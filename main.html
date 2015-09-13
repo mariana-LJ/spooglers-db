@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html  lang="en">
 <head lang="en">
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>BAS Join</title>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -19,11 +22,11 @@
   <script type="text/javascript" src="/javascript_files/jquery.validate.js"></script>
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-        $("#submit").hide();
-        $("#language_work").hide();
-        $("#demographics").hide();
-        $("#events").hide();
-        $("#children_support").hide();
+        //$("#submit").hide();
+        //$("#language_work").hide();
+        //$("#demographics").hide();
+        //$("#events").hide();
+        //$("#children_support").hide();
 
         var welcome_form = $("#welcome");
         var click_counter = 0;
@@ -105,8 +108,8 @@
         {% endif %}
     {% endif %}
     
-    
-  <form role="form" class="form-horizontal" action="" method="post" id="welcome">
+
+  <form role="form" action="" method="post" id="welcome">
     <!-- BASIC INFORMATION -->
     <div id="basic_info">
       <!-- Spoogler's Full Name -->
@@ -174,10 +177,17 @@
       </div>
       <!-- Other languages spoken by Spoogler -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_lang2">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_lang2" name="spoogler_lang2" value="{{ spoogler_lang2 }}" />
-        </div>
+        <label class="control-label">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
+        {% for i in range(0,5) %}
+          <div class="form-group">
+            <input type="text" class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}" value="" />
+            <select class="form-control" id="spoogler_lang_prof{{ loop.index0 }}" name="spoogler_lang_prof{{ loop.index0 }}">
+              {% for proficiency in  engl_proficiency %}
+                <option value="{{ loop.index0 }}">{{ proficiency }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
       </div>
       <!-- Spoogler's native language -->
       <div class="form-group">
