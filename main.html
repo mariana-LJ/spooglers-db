@@ -22,17 +22,10 @@
   <script type="text/javascript" src="/javascript_files/jquery.validate.js"></script>
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-        //$("#submit").hide();
-        //$("#language_work").hide();
-        //$("#demographics").hide();
-        //$("#events").hide();
-        //$("#children_support").hide();
+        var signup_form = $("#signup");
 
-        var welcome_form = $("#welcome");
-        var click_counter = 0;
-
-        $("#next").click(function () {
-          welcome_form.validate({
+        signup_form.submit(function (event) {
+          signup_form.validate({
             rules: {
               full_name: "required",
               spoogler_email: {
@@ -52,22 +45,25 @@
             },
           });
 
-          if(welcome_form.valid()) {
-            click_counter++;
+          if(signup_form.valid()) {
+            signup_form.unbind('submit').submit();
+            return;
           }
-          if(click_counter == 1) {
-            $("#language_work").show("slow");
-          }
-          else if(click_counter == 2) {
-            $("#demographics").show("slow");
-          }
-          else if(click_counter == 3) {
-            $("#events").show("slow");
-          }
-          else if(click_counter >= 4) {
-            $("#children_support").show("slow");
-            $("#submit").show();
-            $("#next").hide();
+
+          $("html, body").animate({ scrollTop: 0}, 500);
+          event.preventDefault();
+          return false;
+        });
+
+        var address = $("#address")
+        var other_address = $("#other_address")
+        other_address.hide();
+        address.change(function() {
+          if($("#address option:selected").text() == "Other") {
+            other_address.show();
+          } else {
+            other_address.hide();
+            other_address.val("");
           }
         });
     });
@@ -109,7 +105,7 @@
     {% endif %}
     
 
-  <form action="" method="post" id="welcome">
+  <form action="" method="post" id="signup">
     <!-- BASIC INFORMATION -->
     <div id="basic_info">
       <!-- Spoogler's Full Name -->
@@ -186,15 +182,12 @@
       <!-- Where do you live in the Bay Area? -->
       <div class="form-group">
         <label class="control-label" for="address">Where do you live in the Bay Area?</label>
-        {% for address in address_list %}
-        <div class="radio">
-          <label><input type="radio" id="address" name="address" value="{{ address[0] }}" {% if address[0] == 0 %} checked {% endif %}> {{ address[1] }}
-            {% if loop.last %}
-              <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
-            {% endif %}
-          </label>
-        </div>
-        {% endfor %}
+        <select class="form-control" id="address" name="address">
+          {% for option in address_list %}
+            <option value="{{ option[0] }}">{{ option[1] }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}" placeholder="Please specify..."/>
       </div>
       <!-- How long have you been in the Bay Area? -->
       <div class="form-group">
@@ -284,7 +277,6 @@
       </div>
     </div>
       <div class="col-md-12 text-center">
-        <input class="btn btn-lg btn-success" id="next" type="button" value="Next"/>
         <button type="submit" class="btn btn-lg btn-primary" id="submit">Submit</button>
       </div>
   </form>
