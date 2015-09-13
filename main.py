@@ -64,6 +64,7 @@ class FormHandler(webapp2.RequestHandler):
 
         logging.info(self.request.get('work_status'))
         logging.info(">>>>>" + str(self.request.get_all('event_size')))
+
         # Initialize the template fields that contain multiple options in the form
         self._init_multiple_options(template_context)
 
@@ -218,53 +219,53 @@ class FormHandler(webapp2.RequestHandler):
 
     def __init__(self, request, response):
         # Spoogler's current work status
-        self.work_status = ["Visa allows work", "Visa does not allow work",
-                            "Able to work", "Not able to work"]
+        self.work_status = [(0, "Visa allows work"), (1, "Visa does not allow work"),
+                            (2, "Able to work"), (3, "Not able to work")]
         # Spoogler's English language proficiency
-        self.english_proficiency = ["Fully fluent/native speaker",
-                                    "Almost fluent", "Conversational",
-                                    "Minimal", "None"]
+        self.english_proficiency = [(0, "Fully fluent/native speaker"),
+                                    (1, "Almost fluent"), (2, "Conversational"),
+                                    (3, "Minimal"), (4, "None")]
         # Spoogler's address in the Bay Area
-        self.address_options = ["East Bay", "South Bay", "Peninsula",
-                                "San Francisco", "North Bay", "Other"]
+        self.address_options = [(0, "East Bay"), (1, "South Bay"), (2, "Peninsula"),
+                                (3, "San Francisco"), (4, "North Bay"), (5, "Other")]
         # Time living in the Bay Area
-        self.time = ["6 months or less", "Less than 1 year", "More than 1 year"]
+        self.time = [(0, "6 months or less"), (1, "Less than 1 year"), (2, "More than 1 year")]
         # Mode of transportation
-        self.transportation = ["Driving personal/family car", "Carpooling",
-                               "Public transit", "Bicycle", "Walking"]
+        self.transportation = [(0, "Driving personal/family car"), (1, "Carpooling"),
+                               (2, "Public transit"), (3, "Bicycle"), (4, "Walking")]
         # Side of the road to drive
-        self.side_driving = ["left", "right"]
+        self.side_driving = [(0, "left"), (1, "right")]
         # Size of events to attend
-        self.event_size = ["Small, informal local groups (i.e. coffee at \
-                           local cafe)", "Large groups (i.e. family picnics)",
-                           "Large regional get-togethers and parties for \
-                           special occasions"]
+        self.event_size = [(0, "Small, informal local groups (i.e. coffee at \
+                           local cafe)"), (1, "Large groups (i.e. family picnics)"),
+                           (2, "Large regional get-togethers and parties for \
+                           special occasions")]
         # Type of events to attend
-        self.event_type = ["Arts and crafts", "Beauty/personal grooming",
-                           "Book club", "Career counseling (for those who \
-                           cannot work)", "Casual mid-morning coffee",
-                           "Concerts, theater", "Cooking", "Date nights, \
-                           movies", "Dinner, drinks", "Education/skills \
-                           sharing", "Family picnics", "Games, board games",
-                           "Playdates", "Sightseeing", "Sports",
-                           "Volunteering", "Other"]
+        self.event_type = [(0, "Arts and crafts"), (1, "Beauty/personal grooming"),
+                           (2, "Book club"), (3, "Career counseling (for those who \
+                           cannot work)"), (4, "Casual mid-morning coffee"),
+                           (5, "Concerts, theater"), (6, "Cooking"), (7, "Date nights, \
+                           movies"), (8, "Dinner, drinks"), (9, "Education/skills \
+                           sharing"), (10, "Family picnics"), (11, "Games, board games"),
+                           (12, "Playdates"), (13, "Sightseeing"), (14, "Sports"),
+                           (15, "Volunteering"), (16, "Other")]
         # Type of support services Spoogler is looking for
-        self.support_type = ["Local recommendations (i.e. for housing, \
-                             health specialists, schools, etc.)",
-                             "Information (i.e. on US taxes, healthcare \
-                             system, building credit, visas, etc.)",
-                             "Networking (based on home country, interests, \
-                             current residence, etc.)",
-                             "Other"]
+        self.support_type = [(0, "Local recommendations (i.e. for housing, \
+                             health specialists, schools, etc.)"),
+                             (1, "Information (i.e. on US taxes, healthcare \
+                             system, building credit, visas, etc.)"),
+                             (2, "Networking (based on home country, interests, \
+                             current residence, etc.)"),
+                             (3, "Other")]
         # Other types of support used by Spoogler
-        self.support_other = ["Family/friends here",
-                              "Country of origin or ethnicity-based groups",
-                              "Faith-based groups", "Other"]
+        self.support_other = [(0, "Family/friends here"),
+                              (1, "Country of origin or ethnicity-based groups"),
+                              (2, "Faith-based groups"), (3, "Other")]
         # Spoogler's children ages
-        self.children_ages = ["No children", "Expecting", "Infant",
-                              "Preschool, kindergarten", "Elementary school",
-                              "Middle school", "High school",
-                              "College/university", "Left home"]
+        self.children_ages = [(0, "No children"), (1, "Expecting"), (2, "Infant"),
+                              (3, "Preschool, kindergarten"), (4, "Elementary school"),
+                              (5, "Middle school"), (6, "High school"),
+                              (7, "College/university"), (8, "Left home")]
         self.initialize(request, response)
 
 class ConfirmHandler(webapp2.RequestHandler):
