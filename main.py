@@ -24,17 +24,17 @@ import logging
 from google.appengine.api import mail
 from google.appengine.ext import ndb
 from models import Spoogler
-from models import work_status
+from models import work_status_list
 from models import english_proficiency
-from models import address_options
-from models import time
-from models import transportation
-from models import side_driving
-from models import event_size
-from models import event_type
-from models import support_type
-from models import support_other
-from models import children_ages
+from models import address_options_list
+from models import times_list
+from models import transportation_list
+from models import side_driving_list
+from models import event_size_list
+from models import event_type_list
+from models import support_type_list
+from models import support_other_list
+from models import children_ages_list
 from random import randint
 
 JINJA_ENV = jinja2.Environment(loader=
@@ -69,9 +69,18 @@ class FormHandler(webapp2.RequestHandler):
             'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
             'googler_ldap': self.request.get('googler_ldap').strip(),
             'spoogler_country': self.request.get('spoogler_country').strip(),
-            'work_status': int(self.request.get('work_status')),
+            'work_status': int(self.request.get('work_status').strip()),
             'native_lang': self.request.get('native_lang').strip(),
+            'address': int(self.request.get('address').strip()),
+            'time_in_area': int(self.request.get('time_in_area').strip()),
             'spoogler_relo': self.request.get('spoogler_relo').strip(),
+            'transportation': int(self.request.get('transportation').strip()),
+            'side_driving': int(self.request.get('side_driving').strip()),
+            'events_size': int(self.request.get_all('events_size')),
+            'event_types': int(self.request.get_all('event_types')),
+            'support_types': int(self.request.get_all('support_types')),
+            'support_others': int(self.request.get_all('support_others')),
+            'children_ages': int(self.request.get_all('children_ages')),
         }
 
         logging.info(self.request.get('work_status'))
@@ -182,7 +191,16 @@ class FormHandler(webapp2.RequestHandler):
                     spoogler_country = template_context['spoogler_country'],
                     work_status = template_context['work_status'],
                     native_lang = template_context['native_lang'],
+                    address = template_context['address'],
+                    time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
+                    transportation = template_context['transportation'],
+                    side_driving = template_context['side_driving'],
+                    events_size = template_context['events_size'],
+                    event_types = template_context['event_types'],
+                    support_types = template_context['support_types'],
+                    support_others = template_context['support_others'],
+                    children_ages = template_context['children_ages'],
                     status = 'inactive',
                     token = token_value)
                         
@@ -198,17 +216,17 @@ class FormHandler(webapp2.RequestHandler):
         """Initializes the template fields that contains multiple options
         in the form."""
 
-        template_context['spoogler_work_status'] = work_status
+        template_context['work_status_list'] = work_status_list
         template_context['engl_proficiency'] = english_proficiency
-        template_context['address'] = address_options
-        template_context['time'] = time
-        template_context['transportation'] = transportation
-        template_context['side_driving'] = side_driving
-        template_context['event_size'] = event_size
-        template_context['event_type'] = event_type
-        template_context['support_type'] = support_type
-        template_context['support_other'] = support_other
-        template_context['children_ages'] = children_ages
+        template_context['address_list'] = address_options_list
+        template_context['times_list'] = times_list
+        template_context['transportation_list'] = transportation_list
+        template_context['side_driving_list'] = side_driving_list
+        template_context['event_size_list'] = event_size_list
+        template_context['event_type_list'] = event_type_list
+        template_context['support_type_list'] = support_type_list
+        template_context['support_other_list'] = support_other_list
+        template_context['children_ages_list'] = children_ages_list
 
     @classmethod
     def _clean_context(cls, template_context):

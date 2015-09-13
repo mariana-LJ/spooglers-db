@@ -1,56 +1,73 @@
 from google.appengine.ext import ndb
 
 # Spoogler's current work status
-work_status = [
-    (0, "Visa allows work"),
-    (1, "Visa does not allow work"),
-    (2, "Able to work"),
-    (3, "Not able to work")]
+work_status_list = [
+    (0, "Please select"),
+    (1, "Visa allows work"),
+    (2, "Visa does not allow work"),
+    (3, "Able to work"),
+    (4, "Not able to work")]
 
 # Spoogler's English language proficiency
 english_proficiency = [
-    (0, "Fully fluent/native speaker"),
-    (1, "Almost fluent"),
-    (2, "Conversational"),
-    (3, "Minimal"),
-    (4, "None")]
+    (0, "Please select"),
+    (1, "Fully fluent/native speaker"),
+    (2, "Almost fluent"),
+    (3, "Conversational"),
+    (4, "Minimal"),
+    (5, "None")]
+
+# Spoogler languages
+languages_list = [
+    (0, "Please select"),
+    (1, "English"),
+    (2, "Mandarin"),
+    (3, "Hindi"),
+    (4, "French"),
+    (5, "Russian"),
+    (6, "German"),
+    (7, "Spanish")]
 
 # Spoogler's address in the Bay Area
-address_options = [
-    (0, "East Bay"),
-    (1, "South Bay"),
-    (2, "Peninsula"),
-    (3, "San Francisco"),
-    (4, "North Bay"),
-    (5, "Other")]
+address_options_list = [
+    (0, "Please select"),
+    (1, "East Bay"),
+    (2, "South Bay"),
+    (3, "Peninsula"),
+    (4, "San Francisco"),
+    (5, "North Bay"),
+    (6, "Other")]
 
 # Time living in the Bay Area
-time = [
-    (0, "6 months or less"),
-    (1, "Less than 1 year"),
-    (2, "More than 1 year")]
+times_list = [
+    (0, "Please select"),
+    (1, "6 months or less"),
+    (2, "Less than 1 year"),
+    (3, "More than 1 year")]
 
 # Mode of transportation
-transportation = [
-    (0, "Driving personal/family car"),
-    (1, "Carpooling"),
-    (2, "Public transit"),
-    (3, "Bicycle"),
-    (4, "Walking")]
+transportation_list = [
+    (0, "Please select"),
+    (1, "Driving personal/family car"),
+    (2, "Carpooling"),
+    (3, "Public transit"),
+    (4, "Bicycle"),
+    (5, "Walking")]
 
 # Side of the road to drive
-side_driving = [
-    (0, "left"),
-    (1, "right")]
+side_driving_list = [
+    (0, "Please select"),
+    (1, "left"),
+    (2, "right")]
 
 # Size of events to attend
-event_size = [
+event_size_list = [
     (0, "Small, informal local groups (i.e. coffee at local cafe)"),
     (1, "Large groups (i.e. family picnics)"),
     (2, "Large regional get-togethers and parties for special occasions")]
 
 # Type of events to attend
-event_type = [
+event_type_list = [
     (0, "Arts and crafts"),
     (1, "Beauty/personal grooming"),
     (2, "Book club"),
@@ -66,34 +83,30 @@ event_type = [
     (12, "Playdates"),
     (13, "Sightseeing"),
     (14, "Sports"),
-    (15, "Volunteering"),
-    (16, "Other")]
+    (15, "Volunteering")]
 
 # Type of support services Spoogler is looking for
-support_type = [
+support_type_list = [
     (0, "Local recommendations (i.e. for housing, health specialists, schools, etc.)"),
     (1, "Information (i.e. on US taxes, healthcare system, building credit, visas, etc.)"),
-    (2, "Networking (based on home country, interests, current residence, etc.)"),
-    (3, "Other")]
+    (2, "Networking (based on home country, interests, current residence, etc.)")]
 
 # Other types of support used by Spoogler
-support_other = [
+support_other_list = [
     (0, "Family/friends here"),
     (1, "Country of origin or ethnicity-based groups"),
-    (2, "Faith-based groups"),
-    (3, "Other")]
+    (2, "Faith-based groups")]
 
 # Spoogler's children ages
-children_ages = [
-    (0, "No children"),
-    (1, "Expecting"),
-    (2, "Infant"),
-    (3, "Preschool, kindergarten"),
-    (4, "Elementary school"),
-    (5, "Middle school"),
-    (6, "High school"),
-    (7, "College/university"),
-    (8, "Left home")]
+children_ages_list = [
+    (0, "Expecting"),
+    (1, "Infant"),
+    (2, "Preschool, kindergarten"),
+    (3, "Elementary school"),
+    (4, "Middle school"),
+    (5, "High school"),
+    (6, "College/university"),
+    (7, "Left home")]
 
 
 class Spoogler(ndb.Model):
@@ -102,19 +115,19 @@ class Spoogler(ndb.Model):
     spoogler_fb_email = ndb.StringProperty()
     googler_ldap = ndb.StringProperty()
     spoogler_country = ndb.StringProperty()
-    work_status = ndb.IntegerProperty(repeated=None)  # See work_status list
+    work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
     engl_proficiency = ndb.StringProperty()
     spoogler_lang2 = ndb.StringProperty()
     native_lang = ndb.StringProperty()
-    address = ndb.StringProperty()
-    time = ndb.StringProperty()
+    address = ndb.IntegerProperty(repeated=False)  # See address_options_list
+    time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list
     spoogler_relo = ndb.StringProperty()
-    transportation = ndb.StringProperty()
-    side_driving = ndb.StringProperty()
-    spoogler_events_size = ndb.StringProperty()
-    event_type = ndb.StringProperty()
-    support_type = ndb.StringProperty()
-    support_other = ndb.StringProperty()
-    children_ages = ndb.StringProperty()
+    transportation = ndb.IntegerProperty(repeated=False)  # See transportation_list
+    side_driving = ndb.IntegerProperty(repeated=False)  # See side_driving_list
+    events_size = ndb.IntegerProperty(repeated=True)  # See event_size_list
+    event_types = ndb.IntegerProperty(repeated=True)  # See event_type_list
+    support_types = ndb.IntegerProperty(repeated=True)  # See support_type_list
+    support_others = ndb.IntegerProperty(repeated=True)  # See support_other_list
+    children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
     status = ndb.StringProperty() # 'Inactive' or 'Active'
     token = ndb.IntegerProperty()
