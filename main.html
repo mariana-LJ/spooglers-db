@@ -213,20 +213,20 @@
       <!-- Spoogler's main form of transportation -->
       <div class="form-group">
         <label class="control-label" for="transportation">Spoogler's main form of transportation to get around in the Bay Area: </label>
-        {% for transport in transportation %}
-        <div class="radio">
-          <label><input type="radio" id="transportation" name="transportation" value="{{ transport[0] }}" {% if loop.index0 == 0%} checked {% endif %}> {{ transport[1] }}</label>
-        </div>
-        {% endfor %}
+        <select class="form-control" id="transportation" name="transportation">
+          {% for transport in transportation %}
+            <option value="{{ transport[0] }}">{{ transport[1] }}</option>
+          {% endfor %}
+        </select>
       </div>
       <!-- Side of the road Spoogler is accustomed to driving -->
       <div class="form-group">
         <label class="control-label" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
-        {% for side in side_driving %}
-        <div class="radio">
-          <label><input type="radio" id="side_driving" name="side_driving" value="{{ side[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ side[1] }}</label>
-        </div>
-        {% endfor %}
+        <select class="form-control" id="side_driving" name="side_driving">
+          {% for side in side_driving %}
+            <option value="{{ side[0] }}">{{ side[1] }}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
     <!-- EVENTS -->
@@ -245,13 +245,10 @@
         <label class="control-label" for="event_type">What type of events would you be interested in attending? Select all that apply.</label>
         {% for type in event_type %}
           <div class="checkbox">
-            <label><input type="checkbox" id="event_type" name="event_type" value="{{ type[0] }}"> {{ type[1] }}
-              {% if loop.last %}
-                <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}"/>
-              {% endif %}
-            </label>
+            <label><input type="checkbox" id="event_type" name="event_type" value="{{ type[0] }}"> {{ type[1] }}</label>
           </div>
         {% endfor %}
+        <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}" placeholder="Other..." />
       </div>
     </div>
     <!-- CHILDREN AND SUPPORT SERVICES -->
@@ -261,26 +258,20 @@
         <label class="control-label" for="support_type">What type of support services would you find useful from this group? Select all that apply.</label>
         {% for support in support_type %}
          <div class="checkbox">
-            <label><input type="checkbox" id="support_type" name="support_type" value="{{ support[0] }}"> {{ support[1] }}
-              {% if loop.last %}
-                <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/>
-              {% endif %}
-            </label>
+            <label><input type="checkbox" id="support_type" name="support_type" value="{{ support[0] }}"> {{ support[1] }}</label>
          </div>
         {% endfor %}
+        <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}" placeholder="Other..." />
       </div>
       <!-- What other forms of support do you have or will you access? -->
       <div class="form-group">
         <label class="control-label" for="support_other">What other forms of support do you have or will you access? Select all that apply.</label>
         {% for other in support_other %}
         <div class="checkbox">
-            <label><input type="checkbox" id="support_other" name="support_other" value="{{ other[0] }}"> {{ other[1] }}
-              {% if loop.last %}
-                <input type = "text" class="form-control" id="other" name="other" value="{{ support_type_other2 }}"/>
-              {% endif %}
-            </label>
+            <label><input type="checkbox" id="support_other" name="support_other" value="{{ other[0] }}"> {{ other[1] }}</label>
          </div>
         {% endfor %}
+        <input type = "text" class="form-control" id="support_other_other" name="support_other_other" value="{{ support_type_other2 }}" placeholder="Other..." />
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">
