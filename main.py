@@ -25,6 +25,7 @@ from google.appengine.api import mail
 from google.appengine.ext import ndb
 from models import Spoogler
 from models import work_status_list
+from models import languages_list
 from models import english_proficiency
 from models import address_options_list
 from models import times_list
@@ -217,6 +218,7 @@ class FormHandler(webapp2.RequestHandler):
         in the form."""
 
         template_context['work_status_list'] = work_status_list
+        template_context['languages_list'] = languages_list
         template_context['engl_proficiency'] = english_proficiency
         template_context['address_list'] = address_options_list
         template_context['times_list'] = times_list

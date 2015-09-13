@@ -148,21 +148,28 @@
           {% endfor %}
         </select>
       </div>
-      <!-- Spoogler's English language proficiency -->
+      <!-- Languages spoken by Spoogler -->
       <div class="form-group">
-        <label class="control-label" for="engl_proficiency">Spoogler's English language proficiency: </label>
-        <select class="form-control" id="engl_proficiency" name="engl_proficiency">
-          {% for proficiency in  engl_proficiency %}
-          <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <!-- Other languages spoken by Spoogler -->
-      <div class="form-group">
-        <label class="control-label">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
-        {% for i in range(0,5) %}
+        <label class="control-label">What languages do you (the Spoogler) speak and what is your proficiency?</label>
           <div class="form-group">
-            <input type="text" class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}" value="" />
+            <select class="form-control" id="spoogler_lang0" name="spoogler_lang0" disabled>
+              {% for language in  languages_list %}
+                <option value="{{ language[0] }}" {% if language[1] == "English" %} selected {% endif %}>{{ language[1] }}</option>
+              {% endfor %}
+            </select>
+            <select class="form-control" id="spoogler_lang_prof0" name="spoogler_lang_prof0">
+              {% for proficiency in  engl_proficiency %}
+                <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% for i in range(1,3) %}
+          <div class="form-group">
+            <select class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}">
+              {% for language in  languages_list %}
+                <option value="{{ language[0] }}">{{ language[1] }}</option>
+              {% endfor %}
+            </select>
             <select class="form-control" id="spoogler_lang_prof{{ loop.index0 }}" name="spoogler_lang_prof{{ loop.index0 }}">
               {% for proficiency in  engl_proficiency %}
                 <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
@@ -170,11 +177,16 @@
             </select>
           </div>
         {% endfor %}
-      </div>
-      <!-- Spoogler's native language -->
-      <div class="form-group">
-        <label class="control-label" for="native_lang">Spoogler's native language:</label>
-        <input type="text" class="form-control" id="native_lang" name="native_lang" value="{{ native_lang }}" />
+        {% for i in range(3,5) %}
+          <div class="form-group">
+            <input type="text" class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}" value="" placeholder="Other language..." />
+            <select class="form-control" id="spoogler_lang_prof{{ loop.index0 }}" name="spoogler_lang_prof{{ loop.index0 }}">
+              {% for proficiency in  engl_proficiency %}
+                <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
       </div>
     </div>
     <!-- DEMOGRAPHICS -->
