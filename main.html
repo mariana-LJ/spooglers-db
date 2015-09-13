@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html  lang="en">
 <head lang="en">
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>BAS Join</title>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -19,11 +22,11 @@
   <script type="text/javascript" src="/javascript_files/jquery.validate.js"></script>
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-        $("#submit").hide();
-        $("#language_work").hide();
-        $("#demographics").hide();
-        $("#events").hide();
-        $("#children_support").hide();
+        //$("#submit").hide();
+        //$("#language_work").hide();
+        //$("#demographics").hide();
+        //$("#events").hide();
+        //$("#children_support").hide();
 
         var welcome_form = $("#welcome");
         var click_counter = 0;
@@ -105,197 +108,171 @@
         {% endif %}
     {% endif %}
     
-    
-  <form role="form" class="form-horizontal" action="" method="post" id="welcome">
+
+  <form action="" method="post" id="welcome">
     <!-- BASIC INFORMATION -->
     <div id="basic_info">
       <!-- Spoogler's Full Name -->
       <div class="form-group {% if first_name_error %} has-error {% endif %}">
-        <label class="control-label col-sm-5" for="full_name">*Spoogler's Full Name: </label>
-        <div class="col-sm-4">
+        <label class="control-label" for="full_name">*Spoogler's Full Name: </label>
           <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}" />
-        </div>
       </div>
       <!-- Spoogler's email -->      
       <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
-        <label class="control-label col-sm-5" for="spoogler_email">*Spoogler's email: </label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_email" name="spoogler_email" value="{{ spoogler_email }}" />
-        </div>
+        <label class="control-label" for="spoogler_email">*Spoogler's email: </label>
+        <input type="text" class="form-control" id="spoogler_email" name="spoogler_email" value="{{ spoogler_email }}" />
       </div>
       <!-- Spoogler's Facebook email -->
       <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
-        <label class="control-label col-sm-5" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account? </label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
-        </div>
+        <label class="control-label" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account? </label>
+        <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
       </div>
       <!-- Googler's ldap -->
       <div class="form-group {% if googler_ldap_error %} has-error {% endif %}">
-       <label class="control-label col-sm-5" for="googler_ldap">*Googler's ldap: </label>
-       <div class="col-sm-4">
-         <input type="text" class="form-control" id="googler_ldap" name="googler_ldap" value="{{ googler_ldap }}" />
-       </div>
-       <div class="col-sm-3">
-         <p class="form-control-static">@google.com</p>
-       </div>
+       <label class="control-label" for="googler_ldap">*Googler's ldap: </label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="googler_ldap" name="googler_ldap" value="{{ googler_ldap }}" aria-describedby="basic-addon2" />
+          <span class="input-group-addon" id="basic-addon2">@google.com</span>
+        </div>
       </div>
     </div>
     <!-- LANGUAGE AND WORK STATUS -->
     <div id="language_work">
       <!-- From what country did you relocate? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_country">From what country did you relocate?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_country" name="spoogler_country" value="{{ spoogler_country }}" />
-        </div>
+        <label class="control-label" for="spoogler_country">From what country did you relocate?</label>
+        <input type="text" class="form-control" id="spoogler_country" name="spoogler_country" value="{{ spoogler_country }}" />
       </div>
       <!-- Spoogler's current work status: -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="work_status">Spoogler's current work status:</label>
-        <div class="col-sm-4">
+        <label class="control-label" for="work_status">Spoogler's current work status:</label>
+        <select class="form-control" id="work_status" name="work_status">
           {% for status in spoogler_work_status %}
-            <div class="radio">
-              <label><input type="radio" id="work_status" name="work_status" value="{{ status[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ status[1] }}</label>
-            </div>
+          <option value="{{ status[0] }}">{{ status[1] }}</option>
           {% endfor %}
-        </div>
+        </select>
       </div>
       <!-- Spoogler's English language proficiency -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="engl_proficiency">Spoogler's English language proficiency: </label>
-        <div class="col-sm-4">
+        <label class="control-label" for="engl_proficiency">Spoogler's English language proficiency: </label>
+        <select class="form-control" id="engl_proficiency" name="engl_proficiency">
           {% for proficiency in  engl_proficiency %}
-            <div class="radio">
-              <label><input type="radio" id="engl_proficiency" name="engl_proficiency" value="{{ proficiency[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ proficiency[1] }}</label>
-            </div>
+          <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
           {% endfor %}
-        </div>
+        </select>
       </div>
       <!-- Other languages spoken by Spoogler -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_lang2">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_lang2" name="spoogler_lang2" value="{{ spoogler_lang2 }}" />
-        </div>
+        <label class="control-label">What (if any) other languages do you (the Spoogler) speak and what is your proficiency?</label>
+        {% for i in range(0,5) %}
+          <div class="form-group">
+            <input type="text" class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}" value="" />
+            <select class="form-control" id="spoogler_lang_prof{{ loop.index0 }}" name="spoogler_lang_prof{{ loop.index0 }}">
+              {% for proficiency in  engl_proficiency %}
+                <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
       </div>
       <!-- Spoogler's native language -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="native_lang">Spoogler's native language:</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="native_lang" name="native_lang" value="{{ native_lang }}" />
-        </div>
+        <label class="control-label" for="native_lang">Spoogler's native language:</label>
+        <input type="text" class="form-control" id="native_lang" name="native_lang" value="{{ native_lang }}" />
       </div>
     </div>
     <!-- DEMOGRAPHICS -->
     <div id="demographics">
       <!-- Where do you live in the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="address">Where do you live in the Bay Area?</label>
-        <div class="col-sm-4">
-          {% for option in address %}
-          <div class="radio">
-            <label><input type="radio" id="address" name="address" value="{{ option[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ option[1] }}
-              {% if loop.last %}
-                <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
-              {% endif %}
-            </label>
-          </div>
-          {% endfor %}
+        <label class="control-label" for="address">Where do you live in the Bay Area?</label>
+        {% for option in address %}
+        <div class="radio">
+          <label><input type="radio" id="address" name="address" value="{{ option[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ option[1] }}
+            {% if loop.last %}
+              <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}"/>
+            {% endif %}
+          </label>
         </div>
+        {% endfor %}
       </div>
       <!-- How long have you been in the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="time_in_area">How long have you been in the Bay Area?</label>
-        <div class="col-sm-4">
+        <label class="control-label" for="time_in_area">How long have you been in the Bay Area?</label>
+        <select class="form-control" id="time_in_area" name="time">
           {% for t in time %}
-            <div class="radio">
-            <label><input type="radio" id="time_in_area" name="time" value="{{ t[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ t[1] }}</label>
-            </div>
+            <option value="{{ t[0] }}">{{ t[1] }}</option>
           {% endfor %}
-        </div>
+        </select>
       </div>
       <!-- What have you found challenging about your relocation to the Bay Area? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="spoogler_relo">What have you found most challenging about your relocation to the Bay Area?</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" id="spoogler_relo" name="spoogler_relo" value="{{ spoogler_relo }}" />
-        </div>
+        <label class="control-label" for="spoogler_relo">What have you found most challenging about your relocation to the Bay Area?</label>
+        <input type="text" class="form-control" id="spoogler_relo" name="spoogler_relo" value="{{ spoogler_relo }}" />
       </div>
       <!-- Spoogler's main form of transportation -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="transportation">Spoogler's main form of transportation to get around in the Bay Area: </label>
-        <div class="col-sm-4">
-          {% for transport in transportation %}
-          <div class="radio">
-            <label><input type="radio" id="transportation" name="transportation" value="{{ transport[0] }}" {% if loop.index0 == 0%} checked {% endif %}> {{ transport[1] }}</label>
-          </div>
-          {% endfor %}
+        <label class="control-label" for="transportation">Spoogler's main form of transportation to get around in the Bay Area: </label>
+        {% for transport in transportation %}
+        <div class="radio">
+          <label><input type="radio" id="transportation" name="transportation" value="{{ transport[0] }}" {% if loop.index0 == 0%} checked {% endif %}> {{ transport[1] }}</label>
         </div>
+        {% endfor %}
       </div>
       <!-- Side of the road Spoogler is accustomed to driving -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
-        <div class="col-sm-4">
-          {% for side in side_driving %}
-          <div class="radio">
-            <label><input type="radio" id="side_driving" name="side_driving" value="{{ side[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ side[1] }}</label>
-          </div>
-          {% endfor %}
+        <label class="control-label" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
+        {% for side in side_driving %}
+        <div class="radio">
+          <label><input type="radio" id="side_driving" name="side_driving" value="{{ side[0] }}" {% if loop.index0 == 0 %} checked {% endif %}> {{ side[1] }}</label>
         </div>
+        {% endfor %}
       </div>
     </div>
     <!-- EVENTS -->
     <div id="events">
       <!-- What size of events would you be interested in attending? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="event_size">What size of events would you be interested in attending? Select all that apply.</label>
-        <div class="col-sm-4">
-          {% for size in event_size %}
-            <div class="checkbox">
-              <label><input type="checkbox" id="event_size" name="event_size" value="{{ size[0] }}"> {{ size[1] }}</label>
-            </div>
-          {% endfor %}
-        </div>
+        <label class="control-label" for="event_size">What size of events would you be interested in attending? Select all that apply.</label>
+        {% for size in event_size %}
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_size" name="event_size" value="{{ size[0] }}"> {{ size[1] }}</label>
+          </div>
+        {% endfor %}
       </div>
       <!-- What type of events would you be interested in attending? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="event_type">What type of events would you be interested in attending? Select all that apply.</label>
-        <div class="col-sm-4">
-          {% for type in event_type %}
-            <div class="checkbox">
-              <label><input type="checkbox" id="event_type" name="event_type" value="{{ type[0] }}"> {{ type[1] }}
-                {% if loop.last %}
-                  <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}"/>
-                {% endif %}
-              </label>
-            </div>
-          {% endfor %}
-        </div>
+        <label class="control-label" for="event_type">What type of events would you be interested in attending? Select all that apply.</label>
+        {% for type in event_type %}
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_type" name="event_type" value="{{ type[0] }}"> {{ type[1] }}
+              {% if loop.last %}
+                <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}"/>
+              {% endif %}
+            </label>
+          </div>
+        {% endfor %}
       </div>
     </div>
     <!-- CHILDREN AND SUPPORT SERVICES -->
     <div id="children_support">
       <!-- What type of support services would you find useful from this group? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="support_type">What type of support services would you find useful from this group? Select all that apply.</label>
-        <div class="col-sm-4">
-          {% for support in support_type %}
-           <div class="checkbox">
-              <label><input type="checkbox" id="support_type" name="support_type" value="{{ support[0] }}"> {{ support[1] }}
-                {% if loop.last %}
-                  <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/>
-                {% endif %}
-              </label>
-           </div>
-          {% endfor %}
-        </div>
+        <label class="control-label" for="support_type">What type of support services would you find useful from this group? Select all that apply.</label>
+        {% for support in support_type %}
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_type" name="support_type" value="{{ support[0] }}"> {{ support[1] }}
+              {% if loop.last %}
+                <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}"/>
+              {% endif %}
+            </label>
+         </div>
+        {% endfor %}
       </div>
       <!-- What other forms of support do you have or will you access? -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="support_other">What other forms of support do you have or will you access? Select all that apply.</label>
-        <div class="col-sm-4">
-          {% for other in support_other %}
+        <label class="control-label" for="support_other">What other forms of support do you have or will you access? Select all that apply.</label>
+        {% for other in support_other %}
         <div class="checkbox">
             <label><input type="checkbox" id="support_other" name="support_other" value="{{ other[0] }}"> {{ other[1] }}
               {% if loop.last %}
@@ -303,19 +280,16 @@
               {% endif %}
             </label>
          </div>
-          {% endfor %}
-        </div>
+        {% endfor %}
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">
-        <label class="control-label col-sm-5" for="children_ages">If you have any children, please select their age group:</label>
-        <div class="col-sm-4">
-          {% for age in children_ages %}
-          <div class="checkbox">
-          <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}"> {{ age[1] }}</label>
-          </div>
-          {% endfor %}
+        <label class="control-label" for="children_ages">If you have any children, please select their age group:</label>
+        {% for age in children_ages %}
+        <div class="checkbox">
+        <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}"> {{ age[1] }}</label>
         </div>
+        {% endfor %}
       </div>
     </div>
       <div class="col-md-12 text-center">
