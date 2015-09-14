@@ -26,7 +26,7 @@ from google.appengine.ext import ndb
 from models import Spoogler
 from models import work_status_list
 from models import languages_list
-from models import english_proficiency
+from models import proficiency_list
 from models import address_options_list
 from models import times_list
 from models import transportation_list
@@ -63,26 +63,7 @@ class FormHandler(webapp2.RequestHandler):
         fields of the form (success or failure)"""
         
         token_value = 0
-        template_context = {
-            # Basic information
-            'full_name': self.request.get('full_name').strip(),
-            'spoogler_email': self.request.get('spoogler_email').strip(),
-            'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
-            'googler_ldap': self.request.get('googler_ldap').strip(),
-            'spoogler_country': self.request.get('spoogler_country').strip(),
-            'work_status': int(self.request.get('work_status').strip()),
-            'native_lang': self.request.get('native_lang').strip(),
-            'address': int(self.request.get('address').strip()),
-            'time_in_area': int(self.request.get('time_in_area').strip()),
-            'spoogler_relo': self.request.get('spoogler_relo').strip(),
-            'transportation': int(self.request.get('transportation').strip()),
-            'side_driving': int(self.request.get('side_driving').strip()),
-            'events_size': int(self.request.get_all('events_size')),
-            'event_types': int(self.request.get_all('event_types')),
-            'support_types': int(self.request.get_all('support_types')),
-            'support_others': int(self.request.get_all('support_others')),
-            'children_ages': int(self.request.get_all('children_ages')),
-        }
+        template_context = self._get_context()
 
         logging.info(self.request.get('work_status'))
         logging.info(">>>>>" + str(self.request.get_all('event_size')))
@@ -105,6 +86,43 @@ class FormHandler(webapp2.RequestHandler):
     
         self.response.out.write(FormHandler._render_template('main.html', 
                             template_context))
+
+    def _get_context(self):
+        """ Read the information from the form to build the context.
+        :param template_context
+        :return:
+        """
+        template_context = {
+            # Basic information
+            'full_name': self.request.get('full_name').strip(),
+            'spoogler_email': self.request.get('spoogler_email').strip(),
+            'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
+            'googler_ldap': self.request.get('googler_ldap').strip(),
+            'spoogler_country': self.request.get('spoogler_country').strip(),
+            'work_status': int(self.request.get('work_status').strip()),
+            'languages': [self.request.get('spoogler_lang'+str(i)) for i in range(0, 5)],
+            'lang_proficiencies': [int(self.request.get('spoogler_lang_prof'+str(i))) for i in range(0, 5)],
+            'address': int(self.request.get('address').strip()),
+            'other_address': self.request.get('other_address').strip(),
+            'time_in_area': int(self.request.get('time_in_area').strip()),
+            'spoogler_relo': self.request.get('spoogler_relo').strip(),
+            'transportation': int(self.request.get('transportation').strip()),
+            'side_driving': int(self.request.get('side_driving').strip()),
+            'events_size': [int(e) for e in self.request.get_all('events_size')],
+            'event_types': [int(e) for e in self.request.get_all('event_types')],
+            'event_types_other': self.request.get('event_types_other').strip(),
+            'support_types': [int(s) for s in self.request.get_all('support_types')],
+            'support_types_other': self.request.get('support_types_other').strip(),
+            'support_others': [int(o) for o in self.request.get_all('support_others')],
+            'support_others_other': self.request.get('support_others_other').strip(),
+            'children_ages': [int(a) for a in self.request.get_all('children_ages')],
+        }
+
+        # Forcing the first language to be English (since the "disabled" property does not allow to get the
+        # value of the spoogler_lang0 field from the html form)
+        template_context['languages'][0] = 'English'
+
+        return template_context
 
     @classmethod
     def _render_template(cls, template_name, context=None):
@@ -170,7 +188,7 @@ class FormHandler(webapp2.RequestHandler):
         sender_address = "Spooglers Webmaster \
                          <bayareaspooglers.webmaster@gmail.com>"
         email_domain_name = "@gmail.com"
-        googler_email = googler_ldap + email_domain_name
+        googler_email = "mlopezj14@gmail.com"  # googler_ldap + email_domain_name
         subject = "Spooglers Welcome form test"
         body = "Test with googler email."
         body += "<a href=\"https://" + self.request.host + \
@@ -185,22 +203,28 @@ class FormHandler(webapp2.RequestHandler):
         
         write_success = False
         # Instantiation of the Spoogler class:
-        spoogler = Spoogler(full_name = template_context['full_name'],
+        spoogler = Spoogler(
+                    full_name = template_context['full_name'],
                     spoogler_email = template_context['spoogler_email'],
                     spoogler_fb_email = template_context['spoogler_fb_email'],
                     googler_ldap = template_context['googler_ldap'],
                     spoogler_country = template_context['spoogler_country'],
                     work_status = template_context['work_status'],
-                    native_lang = template_context['native_lang'],
+                    languages = template_context['languages'],
+                    lang_proficiencies = template_context['lang_proficiencies'],
                     address = template_context['address'],
+                    other_address = template_context['other_address'],
                     time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
                     transportation = template_context['transportation'],
                     side_driving = template_context['side_driving'],
                     events_size = template_context['events_size'],
                     event_types = template_context['event_types'],
+                    event_types_other = template_context['event_types_other'],
                     support_types = template_context['support_types'],
+                    support_types_other = template_context['support_types_other'],
                     support_others = template_context['support_others'],
+                    support_others_other = template_context['support_others_other'],
                     children_ages = template_context['children_ages'],
                     status = 'inactive',
                     token = token_value)
@@ -219,7 +243,7 @@ class FormHandler(webapp2.RequestHandler):
 
         template_context['work_status_list'] = work_status_list
         template_context['languages_list'] = languages_list
-        template_context['engl_proficiency'] = english_proficiency
+        template_context['proficiency_list'] = proficiency_list
         template_context['address_list'] = address_options_list
         template_context['times_list'] = times_list
         template_context['transportation_list'] = transportation_list

@@ -9,7 +9,7 @@ work_status_list = [
     (4, "Not able to work")]
 
 # Spoogler's English language proficiency
-english_proficiency = [
+proficiency_list = [
     (0, "Please select"),
     (1, "Fully fluent/native speaker"),
     (2, "Almost fluent"),
@@ -19,14 +19,14 @@ english_proficiency = [
 
 # Spoogler languages
 languages_list = [
-    (0, "Please select"),
-    (1, "English"),
-    (2, "Mandarin"),
-    (3, "Hindi"),
-    (4, "French"),
-    (5, "Russian"),
-    (6, "German"),
-    (7, "Spanish")]
+    ("None", "Please select"),
+    ("English", "English"),
+    ("Mandarin", "Mandarin"),
+    ("Spanish", "Spanish"),
+    ("Hindi", "Hindi"),
+    ("French", "French"),
+    ("Russian", "Russian"),
+    ("German", "German")]
 
 # Spoogler's address in the Bay Area
 address_options_list = [
@@ -116,18 +116,21 @@ class Spoogler(ndb.Model):
     googler_ldap = ndb.StringProperty()
     spoogler_country = ndb.StringProperty()
     work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
-    engl_proficiency = ndb.StringProperty()
-    spoogler_lang2 = ndb.StringProperty()
-    native_lang = ndb.StringProperty()
+    languages = ndb.StringProperty(repeated=True) # See languages_list
+    lang_proficiencies = ndb.IntegerProperty(repeated=True)  # See proficiency_list
     address = ndb.IntegerProperty(repeated=False)  # See address_options_list
+    other_address = ndb.StringProperty(repeated=False)  # Spoogler address if option "Other" is selected
     time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list
     spoogler_relo = ndb.StringProperty()
     transportation = ndb.IntegerProperty(repeated=False)  # See transportation_list
     side_driving = ndb.IntegerProperty(repeated=False)  # See side_driving_list
     events_size = ndb.IntegerProperty(repeated=True)  # See event_size_list
     event_types = ndb.IntegerProperty(repeated=True)  # See event_type_list
+    event_types_other = ndb.StringProperty(repeated=False)  # Other event type suggested by Spoogler in the form
     support_types = ndb.IntegerProperty(repeated=True)  # See support_type_list
+    support_types_other = ndb.StringProperty(repeated=False)  # Other type of support suggested by Spoogler
     support_others = ndb.IntegerProperty(repeated=True)  # See support_other_list
+    support_others_other = ndb.StringProperty(repeated=False) # Other type of support accessed by Spoogler
     children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
     status = ndb.StringProperty() # 'Inactive' or 'Active'
     token = ndb.IntegerProperty()

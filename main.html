@@ -154,24 +154,24 @@
           <div class="form-group">
             <select class="form-control" id="spoogler_lang0" name="spoogler_lang0" disabled>
               {% for language in  languages_list %}
-                <option value="{{ language[0] }}" {% if language[1] == "English" %} selected {% endif %}>{{ language[1] }}</option>
+                <option value="{{ language[0] }}" {% if language[0] == "English" %} selected {% endif %}>{{ language[1] }}</option>
               {% endfor %}
             </select>
             <select class="form-control" id="spoogler_lang_prof0" name="spoogler_lang_prof0">
-              {% for proficiency in  engl_proficiency %}
+              {% for proficiency in  proficiency_list %}
                 <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
           </div>
         {% for i in range(1,3) %}
           <div class="form-group">
-            <select class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}">
+            <select class="form-control" id="spoogler_lang{{ i }}" name="spoogler_lang{{ i }}">
               {% for language in  languages_list %}
                 <option value="{{ language[0] }}">{{ language[1] }}</option>
               {% endfor %}
             </select>
-            <select class="form-control" id="spoogler_lang_prof{{ loop.index0 }}" name="spoogler_lang_prof{{ loop.index0 }}">
-              {% for proficiency in  engl_proficiency %}
+            <select class="form-control" id="spoogler_lang_prof{{ i }}" name="spoogler_lang_prof{{ i }}">
+              {% for proficiency in  proficiency_list %}
                 <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
@@ -179,9 +179,9 @@
         {% endfor %}
         {% for i in range(3,5) %}
           <div class="form-group">
-            <input type="text" class="form-control" id="spoogler_lang{{ loop.index0 }}" name="spoogler_lang{{ loop.index0 }}" value="" placeholder="Other language..." />
-            <select class="form-control" id="spoogler_lang_prof{{ loop.index0 }}" name="spoogler_lang_prof{{ loop.index0 }}">
-              {% for proficiency in  engl_proficiency %}
+            <input type="text" class="form-control" id="spoogler_lang{{ i }}" name="spoogler_lang{{ i }}" value="" placeholder="Other language..." />
+            <select class="form-control" id="spoogler_lang_prof{{ i }}" name="spoogler_lang_prof{{ i }}">
+              {% for proficiency in  proficiency_list %}
                 <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
@@ -204,7 +204,7 @@
       <!-- How long have you been in the Bay Area? -->
       <div class="form-group">
         <label class="control-label" for="time_in_area">How long have you been in the Bay Area?</label>
-        <select class="form-control" id="time_in_area" name="time">
+        <select class="form-control" id="time_in_area" name="time_in_area">
           {% for time in times_list %}
             <option value="{{ time[0] }}">{{ time[1] }}</option>
           {% endfor %}
@@ -253,7 +253,7 @@
             <label><input type="checkbox" id="event_types" name="event_types" value="{{ type[0] }}"> {{ type[1] }}</label>
           </div>
         {% endfor %}
-        <input type = "text" class="form-control" id="event_type_other" name="event_type_other" value="{{ event_type_other }}" placeholder="Other..." />
+        <input type = "text" class="form-control" id="event_types_other" name="event_types_other" value="{{ event_types_other }}" placeholder="Other..." />
       </div>
     </div>
     <!-- CHILDREN AND SUPPORT SERVICES -->
@@ -266,7 +266,7 @@
             <label><input type="checkbox" id="support_types" name="support_types" value="{{ support[0] }}"> {{ support[1] }}</label>
          </div>
         {% endfor %}
-        <input type = "text" class="form-control" id="support_type_other" name="support_type_other" value="{{ support_type_other }}" placeholder="Other..." />
+        <input type = "text" class="form-control" id="support_types_other" name="support_types_other" value="{{ support_types_other }}" placeholder="Other..." />
       </div>
       <!-- What other forms of support do you have or will you access? -->
       <div class="form-group">
@@ -276,7 +276,7 @@
             <label><input type="checkbox" id="support_others" name="support_others" value="{{ other[0] }}"> {{ other[1] }}</label>
          </div>
         {% endfor %}
-        <input type = "text" class="form-control" id="support_other_other" name="support_other_other" value="{{ support_type_other2 }}" placeholder="Other..." />
+        <input type = "text" class="form-control" id="support_others_other" name="support_others_other" value="{{ support_others_other }}" placeholder="Other..." />
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">
