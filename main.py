@@ -377,44 +377,6 @@ class ConfirmHandler(webapp2.RequestHandler):
     def __init__(self, request, response):
         self.initialize(request, response)
 
-
-class EmailHandler(webapp2.RequestHandler):
-    """An experimental class to verify the process of sending email."""
-    
-    def get(self):
-        """This function builds the elements necessary to send an email using 
-        the email api in App Engine."""
-    
-        email = "mlopezj14@gmail.com"
-    
-        sender_address = "Spooglers Webmaster \
-                         <bayareaspooglers.webmaster@gmail.com>"
-        subject = "Test"
-        body = "Test email"
-        mail.send_mail(sender_address, email, subject, body)
-        template_context = {}
-        self.response.out.write(self._render_template('thankyou.html', 
-                            template_context))
-    
-    def post(self):
-        """A dummy method to avoid formatting errors when using pylint."""
-        pass
-    
-    @classmethod                            
-    def _render_template(cls, template_name, context=None):
-        """Displays a webpage according to the information contained in the 
-        dictionary or context."""
-    
-        if context is None:
-            context = {}
-    
-        template = JINJA_ENV.get_template(template_name)
-    
-        return template.render(context)
-
-    def __init__(self):
-        pass
-
 #pylint: disable = C0103
 app = webapp2.WSGIApplication([
     (r'/', FormHandler),
