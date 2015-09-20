@@ -40,8 +40,7 @@ from models import support_other_list
 from models import children_ages_list
 from random import randint
 
-JINJA_ENV = jinja2.Environment(loader=
-jinja2.FileSystemLoader(os.path.dirname(__file__)))
+JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 
 class FormHandler(webapp2.RequestHandler):
@@ -199,7 +198,7 @@ class FormHandler(webapp2.RequestHandler):
         subject = "Spooglers Welcome form test"
         body = "Test with googler email."
         body += "<a href=\"https://" + self.request.host + \
-                "/confirm.html?g=" + \
+                "/confirm?g=" + \
                 googler_ldap + "&t=" + str(token_value) + \
                 "\">click to confirm</a>"
         mail.send_mail(sender_address, googler_email, subject, body)
@@ -404,6 +403,6 @@ class EmailHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     (r'/', FormHandler),
     (r'/signup', FormHandler),
-    (r'/confirm\.html', ConfirmHandler),],
+    (r'/confirm', ConfirmHandler),],
     debug = True)
 
