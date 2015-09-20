@@ -154,12 +154,12 @@
           <div class="form-group">
             <select class="form-control" id="spoogler_lang0" name="spoogler_lang0" disabled>
               {% for language in  languages_list %}
-                <option value="{{ language[0] }}" {% if language[0] == "English" %} selected {% endif %}>{{ language[1] }}</option>
+                <option value="{{ language[0] }}" {% if language[0] =="English" %} selected {% endif %}>{{ language[1] }}</option>
               {% endfor %}
             </select>
             <select class="form-control" id="spoogler_lang_prof0" name="spoogler_lang_prof0">
               {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
+                <option value="{{ proficiency[0] }}" >{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
           </div>

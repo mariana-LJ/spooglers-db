@@ -78,7 +78,7 @@ class FormHandler(webapp2.RequestHandler):
             if self._create_spoogler(template_context, token_value):
                 self._send_confirmation_email(template_context['googler_ldap'],
                                               token_value)
-            self.response.out.write(template_context['work_status'])
+
             FormHandler._clean_context(template_context)
 
         else:
@@ -260,10 +260,26 @@ class FormHandler(webapp2.RequestHandler):
         submission."""
         template_context['full_name'] = ""
         template_context['spoogler_email'] = ""
-        template_context['googler_ldap'] = ""
         template_context['spoogler_fb_email'] = ""
+        template_context['googler_ldap'] = ""
         template_context['spoogler_country'] = ""
-        template_context['native_lang'] = ""
+        template_context['work_status'] = 0
+        template_context['languages'] = []
+        template_context['lang_proficiencies'] = []
+        template_context['address'] = 0
+        template_context['other_address'] = ""
+        template_context['time_in_area'] = 0
+        template_context['spoogler_relo'] = ""
+        template_context['transportation'] = 0
+        template_context['side_driving'] = 0
+        template_context['events_size'] = []
+        template_context['event_types'] = []
+        template_context['event_types_other'] = ""
+        template_context['support_types'] = []
+        template_context['support_types_other'] = ""
+        template_context['support_others'] = []
+        template_context['support_others_other'] = ""
+        template_context['children_ages'] = []
         template_context['successful_submission'] = True
 
         # Clean error flags
