@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html  lang="en">
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>BAS Admin</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+  <!-- JQuery library -->
+  <script type="text/javascript" src="/javascript_files/jquery-1.11.3.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <!-- JQuery form actions -->
+  <script type="text/javascript" src="/javascript_files/jquery.validate.js"></script>
+  <script type="text/javascript" language="javascript">
+    $(document).ready(function() {
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Bay Area Spooglers Group</h1>
+    <p>Welcome, {{ user.email() }}!
+    You can <a href="{{ logout_url }}"> sign out</a>.</p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Ldap</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in query %}
+          <tr>
+            <th>{{entry.full_name}}</th>
+            <th>{{entry.spoogler_email}}</th>
+            <th>{{entry.googler_ldap}}</th>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

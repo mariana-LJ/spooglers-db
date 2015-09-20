@@ -7,9 +7,15 @@ threadsafe: yes
 handlers:
 - url: /javascript_files
   static_dir: javascript_files
+- url: /admin
+  script: admin.app
+  secure: always
+  login: admin
+
 - url: /.*
   script: main.app
   secure: always
+  login: required
 
 libraries:
 - name: webapp2
