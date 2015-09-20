@@ -195,12 +195,17 @@ class FormHandler(webapp2.RequestHandler):
                          <bayareaspooglers.webmaster@gmail.com>"
         email_domain_name = "@gmail.com"
         googler_email = "mlopezj14@gmail.com"  # googler_ldap + email_domain_name
+        confirmation_url = "https://" + self.request.host + "/confirm?g=" + \
+            googler_ldap + "&t=" + str(token_value)
         subject = "Spooglers Welcome form test"
-        body = "Test with googler email."
-        body += "<a href=\"https://" + self.request.host + \
-                "/confirm?g=" + \
-                googler_ldap + "&t=" + str(token_value) + \
-                "\">click to confirm</a>"
+        body = """
+        Your spouse/partner has requested to join the Bay Area Spooglers
+        (spouses of Googlers) Group. Please confirm your spouse/partner's
+        subscription by clicking on the link below:
+
+        %s
+        """ % confirmation_url
+
         mail.send_mail(sender_address, googler_email, subject, body)
         
     @ndb.transactional
