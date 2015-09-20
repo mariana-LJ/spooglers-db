@@ -23,6 +23,8 @@ import logging
 
 from google.appengine.api import mail
 from google.appengine.ext import ndb
+from google.appengine.api import users
+
 from models import Spoogler
 from models import work_status_list
 from models import languages_list
@@ -47,8 +49,12 @@ class FormHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
+        user = users.get_current_user()
+        logout_url = users.create_logout_url(self.request.path)
         template_context = {'valid_form': True,
                             'successful_submission': False,
+                            'user': user,
+                            'logout_url': logout_url,
                             }
 
         # Initialize the template fields that contain multiple options in the form
@@ -64,9 +70,6 @@ class FormHandler(webapp2.RequestHandler):
         
         token_value = 0
         template_context = self._get_context()
-
-        logging.info(self.request.get('work_status'))
-        logging.info(">>>>>" + str(self.request.get_all('event_size')))
 
         # Initialize the template fields that contain multiple options in the form
         self._init_multiple_options(template_context)
@@ -92,6 +95,8 @@ class FormHandler(webapp2.RequestHandler):
         :param template_context
         :return:
         """
+        user = users.get_current_user()
+        logout_url = users.create_logout_url(self.request.path)
         template_context = {
             # Basic information
             'full_name': self.request.get('full_name').strip(),
@@ -116,6 +121,8 @@ class FormHandler(webapp2.RequestHandler):
             'support_others': [int(o) for o in self.request.get_all('support_others')],
             'support_others_other': self.request.get('support_others_other').strip(),
             'children_ages': [int(a) for a in self.request.get_all('children_ages')],
+            'user': user,
+            'logout_url': logout_url,
         }
 
         # Forcing the first language to be English (since the "disabled" property does not allow to get the
@@ -394,8 +401,9 @@ class EmailHandler(webapp2.RequestHandler):
         pass
 
 #pylint: disable = C0103
-app = webapp2.WSGIApplication([(r'/welcome_form\.html', FormHandler),
-                               (r'/confirm\.html', ConfirmHandler),
-                               (r'/thankyou\.html', EmailHandler), 
-                              ], debug = True)
+app = webapp2.WSGIApplication([
+    (r'/', FormHandler),
+    (r'/signup', FormHandler),
+    (r'/confirm\.html', ConfirmHandler),],
+    debug = True)
 

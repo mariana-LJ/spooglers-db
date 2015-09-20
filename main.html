@@ -80,7 +80,8 @@
 <body {% if successful_submission %}onload="showAlert()"{% endif %}>
   <div class="container">  
     <h1>Request to join the Bay Area Spooglers Group</h1>
-    
+    <p>Welcome, {{ user.email() }}!
+    You can <a href="{{ logout_url }}"> sign out</a>.</p>
     <p>This form is for partners/spouses of Googlers who have recently 
     relocated to the Bay Area.</p>
     <p>Please fill in the information below if you are interested in joining 
