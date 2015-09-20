@@ -420,5 +420,5 @@ app = webapp2.WSGIApplication([
     (r'/', FormHandler),
     (r'/signup', FormHandler),
     (r'/confirm', ConfirmHandler),],
-    debug = True)
+    debug=True)
 
