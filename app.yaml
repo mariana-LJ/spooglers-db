@@ -7,7 +7,7 @@ threadsafe: yes
 handlers:
 - url: /javascript_files
   static_dir: javascript_files
-- url: /admin
+- url: /admin.*
   script: admin.app
   secure: always
   login: admin

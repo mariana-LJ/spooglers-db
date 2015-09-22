@@ -50,7 +50,8 @@ class AdminHandler(webapp2.RequestHandler):
                                 template_context))
 
     def post(self):
-        pass
+        logging.info(self.request.get("spoogler_email"))
+        logging.info(self.request.get("action"))
 
     @classmethod
     def _render_template(cls, template_name, context=None):
@@ -63,8 +64,15 @@ class AdminHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
+class FacebookHandler(webapp2.RequestHandler):
+    """This is the handler to display the Spooglers membership form."""
+    def post(self):
+        logging.info(self.request.get("spoogler_email"))
+        logging.info(self.request.get("action"))
+
 #pylint: disable = C0103
 app = webapp2.WSGIApplication([
-    (r'/admin', AdminHandler),],
+    (r'/admin', AdminHandler),
+    (r'/admin/facebook', FacebookHandler),],
     debug = True)
 
