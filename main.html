@@ -145,7 +145,7 @@
         <label class="control-label" for="work_status">Spoogler's current work status:</label>
         <select class="form-control" id="work_status" name="work_status">
           {% for status in work_status_list %}
-          <option value="{{ status[0] }}">{{ status[1] }}</option>
+          <option value="{{ status[0] }}" {% if status[0] == work_status %}selected{% endif %}>{{ status[1] }}</option>
           {% endfor %}
         </select>
       </div>
@@ -160,7 +160,7 @@
             </select>
             <select class="form-control" id="spoogler_lang_prof0" name="spoogler_lang_prof0">
               {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}" >{{ proficiency[1] }}</option>
+                <option value="{{ proficiency[0] }}" {% if proficiency[0] == lang_proficiencies[0] %}selected{% endif %}>{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
           </div>
@@ -168,12 +168,12 @@
           <div class="form-group">
             <select class="form-control" id="spoogler_lang{{ i }}" name="spoogler_lang{{ i }}">
               {% for language in  languages_list %}
-                <option value="{{ language[0] }}">{{ language[1] }}</option>
+                <option value="{{ language[0] }}" {% if language[0] == languages[i] %}selected{% endif %}>{{ language[1] }}</option>
               {% endfor %}
             </select>
             <select class="form-control" id="spoogler_lang_prof{{ i }}" name="spoogler_lang_prof{{ i }}">
               {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
+                <option value="{{ proficiency[0] }}" {% if proficiency[0] == lang_proficiencies[i] %}selected{% endif %}>{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
           </div>
@@ -183,7 +183,7 @@
             <input type="text" class="form-control" id="spoogler_lang{{ i }}" name="spoogler_lang{{ i }}" value="" placeholder="Other language..." />
             <select class="form-control" id="spoogler_lang_prof{{ i }}" name="spoogler_lang_prof{{ i }}">
               {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}">{{ proficiency[1] }}</option>
+                <option value="{{ proficiency[0] }}" {% if proficiency[0] == lang_proficiencies[i] %}selected{% endif %}>{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
           </div>

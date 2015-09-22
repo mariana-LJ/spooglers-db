@@ -48,13 +48,12 @@ class FormHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
-        user = users.get_current_user()
-        logout_url = users.create_logout_url(self.request.path)
         template_context = {'valid_form': True,
                             'successful_submission': False,
-                            'user': user,
-                            'logout_url': logout_url,
                             }
+
+        # Initialize default options
+        template_context.update(self._init_default_options())
 
         # Initialize the template fields that contain multiple options in the form
         self._init_multiple_options(template_context)
@@ -97,7 +96,6 @@ class FormHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         logout_url = users.create_logout_url(self.request.path)
         template_context = {
-            # Basic information
             'full_name': self.request.get('full_name').strip(),
             'spoogler_email': self.request.get('spoogler_email').strip(),
             'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
@@ -264,6 +262,42 @@ class FormHandler(webapp2.RequestHandler):
         template_context['support_type_list'] = support_type_list
         template_context['support_other_list'] = support_other_list
         template_context['children_ages_list'] = children_ages_list
+
+    def _init_default_options(self):
+        """ Initializes the default values for the options on the form
+        :return: template_context with initial values for the options that will be selected by the user
+        """
+        user = users.get_current_user()
+        logout_url = users.create_logout_url(self.request.path)
+        template_context = {
+            'full_name': "",
+            'spoogler_email': "",
+            'spoogler_fb_email': "",
+            'googler_ldap': "",
+            'spoogler_country': "",
+            'work_status': 0,
+            'languages': ["" for i in range(0, 5)],
+            'lang_proficiencies': [0 for i in range(0, 5)],
+            'address': 0,
+            'other_address': "",
+            'time_in_area': 0,
+            'spoogler_relo': "",
+            'transportation': 0,
+            'side_driving': 0,
+            'events_size': [],
+            'event_types': [],
+            'event_types_other': "",
+            'support_types': [],
+            'support_types_other': "",
+            'support_others': [],
+            'support_others_other': "",
+            'children_ages': [],
+            'user': user,
+            'logout_url': logout_url,
+        }
+
+
+        return template_context
 
     @classmethod
     def _clean_context(cls, template_context):
