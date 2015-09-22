@@ -30,10 +30,14 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>F</th>
-          <th>FK</th>
+          <th>Website</th>
+          <th>FB</th>
+          <th>FB Kids</th>
+          <th>Date Subscribed</th>
+          <th>Status</th>
           <th>Name</th>
           <th>Email</th>
+          <th>Facebook email</th>
           <th>Ldap</th>
         </tr>
       </thead>
@@ -41,13 +45,19 @@
         {% for entry in query %}
           <tr>
             <th>
+              <input type="checkbox" class="google_site" id="gs{{loop.index0}}" name="gs{{loop.index0}}" value="{{entry.spoogler_email}}">
+            </th>
+            <th>
               <input type="checkbox" class="facebook" id="f{{loop.index0}}" name="f{{loop.index0}}" value="{{entry.spoogler_email}}">
             </th>
             <th>
               <input type="checkbox" id="fk{{loop.index0}}" name="fk{{loop.index0}}" value="{{entry.spoogler_email}}">
             </th>
+            <th>{{entry.date_created}}</th>
+            <th>{{entry.status}}</th>
             <th>{{entry.full_name}}</th>
             <th>{{entry.spoogler_email}}</th>
+            <th>{{entry.spoogler_fb_email}}</th>
             <th>{{entry.googler_ldap}}</th>
           </tr>
         {% endfor %}

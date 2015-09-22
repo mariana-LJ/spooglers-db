@@ -134,3 +134,4 @@ class Spoogler(ndb.Model):
     children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
     status = ndb.StringProperty() # 'Inactive' or 'Active'
     token = ndb.IntegerProperty()
+    date_created = ndb.DateProperty(auto_now_add=True)

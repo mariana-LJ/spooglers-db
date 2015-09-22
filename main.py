@@ -296,7 +296,6 @@ class FormHandler(webapp2.RequestHandler):
             'logout_url': logout_url,
         }
 
-
         return template_context
 
     @classmethod
