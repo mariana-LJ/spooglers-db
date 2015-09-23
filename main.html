@@ -66,6 +66,19 @@
             other_address.val("");
           }
         });
+
+        var native_lang = $("#native_lang")
+        var other_native_lang = $("#native_lang_other")
+        other_native_lang.hide();
+        native_lang.change(function() {
+          if($("#native_lang option:selected").text() == "Other") {
+            other_native_lang.show();
+          } else {
+            other_native_lang.hide();
+            other_native_lang.val("");
+          }
+        });
+
     });
   </script>
 
@@ -149,45 +162,26 @@
           {% endfor %}
         </select>
       </div>
-      <!-- Languages spoken by Spoogler -->
+      <!-- Spoogler's English language proficiency -->
       <div class="form-group">
-        <label class="control-label">What languages do you (the Spoogler) speak and what is your proficiency?</label>
+        <label class="control-label">Spoogler's English language proficiency: </label>
           <div class="form-group">
-            <select class="form-control" id="spoogler_lang0" name="spoogler_lang0" disabled>
-              {% for language in  languages_list %}
-                <option value="{{ language[0] }}" {% if language[0] =="English" %} selected {% endif %}>{{ language[1] }}</option>
-              {% endfor %}
-            </select>
-            <select class="form-control" id="spoogler_lang_prof0" name="spoogler_lang_prof0">
+            <select class="form-control" id="english_proficiency" name="english_proficiency">
               {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}" {% if proficiency[0] == lang_proficiencies[0] %}selected{% endif %}>{{ proficiency[1] }}</option>
+                <option value="{{ proficiency[0] }}" {% if proficiency[0] == english_proficiency %}selected{% endif %}>{{ proficiency[1] }}</option>
               {% endfor %}
             </select>
           </div>
-        {% for i in range(1,3) %}
-          <div class="form-group">
-            <select class="form-control" id="spoogler_lang{{ i }}" name="spoogler_lang{{ i }}">
-              {% for language in  languages_list %}
-                <option value="{{ language[0] }}" {% if language[0] == languages[i] %}selected{% endif %}>{{ language[1] }}</option>
-              {% endfor %}
-            </select>
-            <select class="form-control" id="spoogler_lang_prof{{ i }}" name="spoogler_lang_prof{{ i }}">
-              {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}" {% if proficiency[0] == lang_proficiencies[i] %}selected{% endif %}>{{ proficiency[1] }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        {% endfor %}
-        {% for i in range(3,5) %}
-          <div class="form-group">
-            <input type="text" class="form-control" id="spoogler_lang{{ i }}" name="spoogler_lang{{ i }}" value="" placeholder="Other language..." />
-            <select class="form-control" id="spoogler_lang_prof{{ i }}" name="spoogler_lang_prof{{ i }}">
-              {% for proficiency in  proficiency_list %}
-                <option value="{{ proficiency[0] }}" {% if proficiency[0] == lang_proficiencies[i] %}selected{% endif %}>{{ proficiency[1] }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        {% endfor %}
+      </div>
+      <!-- Spoogler's preferred or native language -->
+      <div class="form-group">
+        <label class="control-label" for="native_lang">Spoogler's preferred or native language: </label>
+        <select class="form-control" id="native_lang" name="native_lang">
+          {% for language in languages_list %}
+            <option value="{{ language[0] }}" {% if language[0] == native_lang %}selected{% endif %}>{{ language[1] }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" class="form-control" id="native_lang_other" name="native_lang_other" value="{{ native_lang_other }}" placeholder="Please specify..."/>
       </div>
     </div>
     <!-- DEMOGRAPHICS -->

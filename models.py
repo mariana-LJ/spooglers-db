@@ -19,14 +19,15 @@ proficiency_list = [
 
 # Spoogler languages
 languages_list = [
-    ("None", "Please select"),
-    ("English", "English"),
-    ("Mandarin", "Mandarin"),
-    ("Spanish", "Spanish"),
-    ("Hindi", "Hindi"),
-    ("French", "French"),
-    ("Russian", "Russian"),
-    ("German", "German")]
+    (0, "Please select"),
+    (1, "English"),
+    (2, "Mandarin"),
+    (3, "Spanish"),
+    (4, "Hindi"),
+    (5, "French"),
+    (6, "Russian"),
+    (7, "German"),
+    (8, "Other")]
 
 # Spoogler's address in the Bay Area
 address_options_list = [
@@ -116,8 +117,8 @@ class Spoogler(ndb.Model):
     googler_ldap = ndb.StringProperty()
     spoogler_country = ndb.StringProperty()
     work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
-    languages = ndb.StringProperty(repeated=True) # See languages_list
-    lang_proficiencies = ndb.IntegerProperty(repeated=True)  # See proficiency_list
+    english_proficiency = ndb.IntegerProperty(repeated=False) # See proficiency_list
+    native_lang = ndb.IntegerProperty(repeated=False)  # See languages_list
     address = ndb.IntegerProperty(repeated=False)  # See address_options_list
     other_address = ndb.StringProperty(repeated=False)  # Spoogler address if option "Other" is selected
     time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list

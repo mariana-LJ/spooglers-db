@@ -102,8 +102,8 @@ class FormHandler(webapp2.RequestHandler):
             'googler_ldap': self.request.get('googler_ldap').strip(),
             'spoogler_country': self.request.get('spoogler_country').strip(),
             'work_status': int(self.request.get('work_status').strip()),
-            'languages': [self.request.get('spoogler_lang'+str(i)) for i in range(0, 5)],
-            'lang_proficiencies': [int(self.request.get('spoogler_lang_prof'+str(i))) for i in range(0, 5)],
+            'english_proficiency': int(self.request.get('english_proficiency').strip()),
+            'native_lang': int(self.request.get('native_lang').strip()),
             'address': int(self.request.get('address').strip()),
             'other_address': self.request.get('other_address').strip(),
             'time_in_area': int(self.request.get('time_in_area').strip()),
@@ -121,10 +121,6 @@ class FormHandler(webapp2.RequestHandler):
             'user': user,
             'logout_url': logout_url,
         }
-
-        # Forcing the first language to be English (since the "disabled" property does not allow to get the
-        # value of the spoogler_lang0 field from the html form)
-        template_context['languages'][0] = 'English'
 
         return template_context
 
@@ -219,8 +215,8 @@ class FormHandler(webapp2.RequestHandler):
                     googler_ldap = template_context['googler_ldap'],
                     spoogler_country = template_context['spoogler_country'],
                     work_status = template_context['work_status'],
-                    languages = template_context['languages'],
-                    lang_proficiencies = template_context['lang_proficiencies'],
+                    english_proficiency = template_context['english_proficiency'],
+                    native_lang = template_context['native_lang'],
                     address = template_context['address'],
                     other_address = template_context['other_address'],
                     time_in_area = template_context['time_in_area'],
@@ -276,8 +272,8 @@ class FormHandler(webapp2.RequestHandler):
             'googler_ldap': "",
             'spoogler_country': "",
             'work_status': 0,
-            'languages': ["" for i in range(0, 5)],
-            'lang_proficiencies': [0 for i in range(0, 5)],
+            'english_proficiency': 0,
+            'native_lang': 0,
             'address': 0,
             'other_address': "",
             'time_in_area': 0,
@@ -308,8 +304,8 @@ class FormHandler(webapp2.RequestHandler):
         template_context['googler_ldap'] = ""
         template_context['spoogler_country'] = ""
         template_context['work_status'] = 0
-        template_context['languages'] = []
-        template_context['lang_proficiencies'] = []
+        template_context['english_proficiency'] = 0
+        template_context['native_lang'] = 0
         template_context['address'] = 0
         template_context['other_address'] = ""
         template_context['time_in_area'] = 0
