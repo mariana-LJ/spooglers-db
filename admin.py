@@ -44,8 +44,6 @@ class AdminHandler(webapp2.RequestHandler):
                             'query': query
                             }
 
-        # Initialize the template fields that contain multiple options in the form
-
         self.response.out.write(self._render_template('admin.html',
                                 template_context))
 
@@ -64,15 +62,37 @@ class AdminHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
+
 class FacebookHandler(webapp2.RequestHandler):
     """This is the handler to display the Spooglers membership form."""
     def post(self):
         logging.info(self.request.get("spoogler_email"))
         logging.info(self.request.get("action"))
 
-#pylint: disable = C0103
+
+class FacebookKidsHandler(webapp2.RequestHandler):
+    """ Handles the event where the administrator selects a checkbox
+        when the Spoogler has been invited to the Facebook KidsZone group."""
+    def post(self):
+        logging.info(self.request.get("spoogler_email"))
+        logging.info(self.request.get("action"))
+
+
+class WebsiteGroupHandler(webapp2.RequestHandler):
+    """ Handles the event where the administrator selects a checkbox
+        when the Spoogler has been invited to the Google group to see
+        the Spooglers official website."""
+    def post(self):
+        logging.info(self.request.get("spoogler_email"))
+        logging.info(self.request.get("action"))
+
+
+# pylint: disable = C0103
+
 app = webapp2.WSGIApplication([
     (r'/admin', AdminHandler),
-    (r'/admin/facebook', FacebookHandler),],
+    (r'/admin/facebook', FacebookHandler),
+    (r'/admin/facebookKids', FacebookKidsHandler),
+    (r'/admin/website', WebsiteGroupHandler),],
     debug = True)
 
