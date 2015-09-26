@@ -222,7 +222,7 @@ class FormHandler(webapp2.RequestHandler):
                     support_others = template_context['support_others'],
                     support_others_other = template_context['support_others_other'],
                     children_ages = template_context['children_ages'],
-                    status = 'inactive',
+                    status = 0,
                     token = token_value)
                         
         # An entity is persisted in the Datastore:
@@ -252,7 +252,7 @@ class ConfirmHandler(webapp2.RequestHandler):
                    template_context['googler']).fetch()
         if spoogler:
             if template_context['token'] == spoogler[0].token:
-                if spoogler[0].status != 'inactive':
+                if spoogler[0].status != 0:
                     template_context['confirmation_message'] = 'The Spoogler ' \
                     'is already an active member on this group.'
                 else:
@@ -279,7 +279,7 @@ class ConfirmHandler(webapp2.RequestHandler):
     def _activate_spoogler(self, spoogler):
         """It changes the status of the Spoogler from 'inactive' to 'active' 
         using a query."""
-        spoogler.status = 'active'
+        spoogler.status = 1
         activation_success = False
         try:
             spoogler.put()

@@ -110,6 +110,11 @@ children_ages_list = [
     (6, "College/university"),
     (7, "Left home")]
 
+# Spoogler's registration status
+status_list = [
+    (0, "Inactive"),
+    (1, "Active"),]
+
 
 class Spoogler(ndb.Model):
     full_name = ndb.StringProperty()
@@ -132,9 +137,9 @@ class Spoogler(ndb.Model):
     support_types = ndb.IntegerProperty(repeated=True)  # See support_type_list
     support_types_other = ndb.StringProperty(repeated=False)  # Other type of support suggested by Spoogler
     support_others = ndb.IntegerProperty(repeated=True)  # See support_other_list
-    support_others_other = ndb.StringProperty(repeated=False) # Other type of support accessed by Spoogler
+    support_others_other = ndb.StringProperty(repeated=False)  # Other type of support accessed by Spoogler
     children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
-    status = ndb.StringProperty() # 'Inactive' or 'Active'
+    status = ndb.IntegerProperty(repeated=False)  # See status_list
     token = ndb.IntegerProperty()
     date_created = ndb.DateProperty(auto_now_add=True)
     website_status = ndb.BooleanProperty(default=False)
@@ -155,6 +160,7 @@ def init_multiple_options(template_context):
     template_context['support_type_list'] = support_type_list
     template_context['support_other_list'] = support_other_list
     template_context['children_ages_list'] = children_ages_list
+    template_context['status_list'] = status_list
 
 
 def get_spoogler_context(request, template_context):
