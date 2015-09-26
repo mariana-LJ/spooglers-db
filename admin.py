@@ -14,18 +14,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 
 from models import Spoogler
-from models import work_status_list
-from models import languages_list
-from models import proficiency_list
-from models import address_options_list
-from models import times_list
-from models import transportation_list
-from models import side_driving_list
-from models import event_size_list
-from models import event_type_list
-from models import support_type_list
-from models import support_other_list
-from models import children_ages_list
+from models import init_multiple_options
 from random import randint
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -36,20 +25,29 @@ class AdminHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
+        query = Spoogler.query()
+        query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
+        self.update(query)
+
+    def post(self):
+        not_added_website = self.request.get("not_added_website")
+        query = Spoogler.query()
+        if not_added_website:
+            query = query.filter(Spoogler.website_status == False)
+        query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
+        self.update(query)
+
+    def update(self, query):
         user = users.get_current_user()
         logout_url = users.create_logout_url(self.request.path)
-        query = Spoogler.query()
         template_context = {'user': user,
                             'logout_url': logout_url,
                             'query': query
                             }
+        init_multiple_options(template_context)
 
         self.response.out.write(self._render_template('admin.html',
                                 template_context))
-
-    def post(self):
-        logging.info(self.request.get("spoogler_email"))
-        logging.info(self.request.get("action"))
 
     @classmethod
     def _render_template(cls, template_name, context=None):
@@ -62,7 +60,7 @@ class AdminHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
-
+# Handler for AJAX requests
 class FacebookHandler(webapp2.RequestHandler):
     """This is the handler to display the Spooglers membership form."""
     def post(self):

@@ -23,9 +23,31 @@
 </head>
 <body>
   <div class="container">
-    <h1>Bay Area Spooglers Group</h1>
-    <p>Welcome, {{ user.email() }}!
-    Once you are done, remember to <a href="{{ logout_url }}" class="btn btn-info"> Sign out</a></p>
+    <h1>Bay Area Spooglers Admin</h1>
+    <a href="#" id="show" class="btn btn-default">Show Filters</a>
+    <a href="#" id="hide" class="btn btn-default">Hide Filters</a>
+    <a href="{{ logout_url }}" class="btn btn-info">Sign out</a>
+
+    <div style="background-color: #ffffcc; padding:10px" id="filters">
+      <form action="" method="post">
+        <div class="checkbox">
+          <label><input type="checkbox" id="not_added_website" name="not_added_website" value="1"> Not added to website</label>
+        </div>
+        <!-- Spoogler's preferred or native language -->
+        <div class="form-group">
+          <label class="control-label" for="native_lang">Spoogler's preferred or native language: </label>
+          <select class="form-control" id="native_lang" name="native_lang">
+            {% for language in languages_list %}
+              <option value="{{ language[0] }}" {% if language[0] == native_lang %}selected{% endif %}>{{ language[1] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" id="submit">Update</button>
+        </div>
+      </form>
+    </div>
 
     <table class="table table-striped">
       <thead>
@@ -82,6 +104,14 @@
           alert( "Data Saved: " + msg );
         });
       });
+
+      $("#show").click(function(){
+          $("#filters").show();
+      });
+      $("#hide").click(function(){
+        $("#filters").hide();
+      });
+      $("#filters").hide();
     });
   </script>
 </body>

@@ -136,3 +136,21 @@ class Spoogler(ndb.Model):
     status = ndb.StringProperty() # 'Inactive' or 'Active'
     token = ndb.IntegerProperty()
     date_created = ndb.DateProperty(auto_now_add=True)
+    website_status = ndb.BooleanProperty(default=False)
+
+
+def init_multiple_options(template_context):
+    """Initializes the template fields that contains multiple options
+    in the form."""
+    template_context['work_status_list'] = work_status_list
+    template_context['languages_list'] = languages_list
+    template_context['proficiency_list'] = proficiency_list
+    template_context['address_list'] = address_options_list
+    template_context['times_list'] = times_list
+    template_context['transportation_list'] = transportation_list
+    template_context['side_driving_list'] = side_driving_list
+    template_context['event_size_list'] = event_size_list
+    template_context['event_type_list'] = event_type_list
+    template_context['support_type_list'] = support_type_list
+    template_context['support_other_list'] = support_other_list
+    template_context['children_ages_list'] = children_ages_list

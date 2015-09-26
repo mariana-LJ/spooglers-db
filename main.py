@@ -26,18 +26,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 
 from models import Spoogler
-from models import work_status_list
-from models import languages_list
-from models import proficiency_list
-from models import address_options_list
-from models import times_list
-from models import transportation_list
-from models import side_driving_list
-from models import event_size_list
-from models import event_type_list
-from models import support_type_list
-from models import support_other_list
-from models import children_ages_list
+from models import init_multiple_options
 from random import randint
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -56,7 +45,7 @@ class FormHandler(webapp2.RequestHandler):
         template_context.update(self._init_default_options())
 
         # Initialize the template fields that contain multiple options in the form
-        self._init_multiple_options(template_context)
+        init_multiple_options(template_context)
         self.response.out.write(self._render_template('main.html', 
                                 template_context))
 
@@ -70,7 +59,7 @@ class FormHandler(webapp2.RequestHandler):
         template_context = self._get_context()
 
         # Initialize the template fields that contain multiple options in the form
-        self._init_multiple_options(template_context)
+        init_multiple_options(template_context)
 
         if FormHandler._validate_form(template_context):
             template_context['valid_form'] = True
@@ -241,23 +230,6 @@ class FormHandler(webapp2.RequestHandler):
         except datastore_errors.TransactionFailedError:
             self.response.out.write('Something went wrong, please try again')
         return write_success
-
-    def _init_multiple_options(self, template_context):
-        """Initializes the template fields that contains multiple options
-        in the form."""
-
-        template_context['work_status_list'] = work_status_list
-        template_context['languages_list'] = languages_list
-        template_context['proficiency_list'] = proficiency_list
-        template_context['address_list'] = address_options_list
-        template_context['times_list'] = times_list
-        template_context['transportation_list'] = transportation_list
-        template_context['side_driving_list'] = side_driving_list
-        template_context['event_size_list'] = event_size_list
-        template_context['event_type_list'] = event_type_list
-        template_context['support_type_list'] = support_type_list
-        template_context['support_other_list'] = support_other_list
-        template_context['children_ages_list'] = children_ages_list
 
     def _init_default_options(self):
         """ Initializes the default values for the options on the form
