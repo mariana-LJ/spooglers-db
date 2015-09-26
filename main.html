@@ -110,7 +110,7 @@
         {% if spoogler_email_duplicate %}
             <p style="color:red">Spoogler email address already exists.</p>
         {% endif %}
-        {% if googler_ldap_error and not googler_ldap_duplicate %}
+        {% if ldap_at_sign_error %}
             <p style="color:red">Please write the Googler's ldap without the "@google.com".</p>
         {% endif %}
         {% if googler_ldap_error and googler_ldap_duplicate %}

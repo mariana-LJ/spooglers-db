@@ -1,7 +1,7 @@
     <!-- BASIC INFORMATION -->
     <div id="basic_info">
       <!-- Spoogler's Full Name -->
-      <div class="form-group {% if first_name_error %} has-error {% endif %}">
+      <div class="form-group {% if full_name_error %} has-error {% endif %}">
         <label class="control-label" for="full_name">*Spoogler's Full Name: </label>
           <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}" />
       </div>
@@ -16,7 +16,7 @@
         <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
       </div>
       <!-- Googler's ldap -->
-      <div class="form-group {% if googler_ldap_error %} has-error {% endif %}">
+      <div class="form-group {% if googler_ldap_error or ldap_at_sign_error %} has-error {% endif %}">
        <label class="control-label" for="googler_ldap">*Googler's ldap: </label>
         <div class="input-group">
           <input type="text" class="form-control" id="googler_ldap" name="googler_ldap" value="{{ googler_ldap }}" aria-describedby="basic-addon2" />

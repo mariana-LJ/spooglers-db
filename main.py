@@ -146,9 +146,12 @@ class FormHandler(webapp2.RequestHandler):
                 template_context['spoogler_email_error'] = True
                 template_context['spoogler_email_duplicate'] = True
                 result = False
-        if not template_context['googler_ldap'] or \
-           at_sign_re.search(template_context['googler_ldap']):
+        if not template_context['googler_ldap']:
             template_context['googler_ldap_error'] = True
+            result = False
+        # Check that the user entered just the ldap (without the @google.com)
+        if at_sign_re.search(template_context['googler_ldap']):
+            template_context['ldap_at_sign_error'] = True
             result = False
         # Check uniqueness of googler_ldap
         if template_context['googler_ldap']:
