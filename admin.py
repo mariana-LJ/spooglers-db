@@ -15,7 +15,7 @@ from google.appengine.api import users
 
 from models import Spoogler
 from models import init_multiple_options
-from random import randint
+from models import get_spoogler_context
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 PAGE_SIZE = 5
@@ -25,25 +25,31 @@ class AdminHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
+        template_context = {}
+        get_spoogler_context(self.request, template_context)
         query = Spoogler.query()
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
-        self.update(query)
+        template_context['query'] = query
+        self.update(template_context)
 
     def post(self):
+        # get context
+        template_context = {}
+        get_spoogler_context(self.request, template_context)
         not_added_website = self.request.get("not_added_website")
+
+        # build query
         query = Spoogler.query()
         if not_added_website:
             query = query.filter(Spoogler.website_status == False)
+        if template_context['native_lang'] != 0:
+            query = query.filter(Spoogler.native_lang == template_context['native_lang'])
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
-        self.update(query)
+        template_context['query'] = query
 
-    def update(self, query):
-        user = users.get_current_user()
-        logout_url = users.create_logout_url(self.request.path)
-        template_context = {'user': user,
-                            'logout_url': logout_url,
-                            'query': query
-                            }
+        self.update(template_context)
+
+    def update(self, template_context):
         init_multiple_options(template_context)
 
         self.response.out.write(self._render_template('admin.html',

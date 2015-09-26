@@ -27,6 +27,7 @@ from google.appengine.api import users
 
 from models import Spoogler
 from models import init_multiple_options
+from models import get_spoogler_context
 from random import randint
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -37,12 +38,11 @@ class FormHandler(webapp2.RequestHandler):
 
     def get(self):
         """Displays the form for the Spoogler/Googler to fill out."""
-        template_context = {'valid_form': True,
-                            'successful_submission': False,
-                            }
-
         # Initialize default options
-        template_context.update(self._init_default_options())
+        template_context = {}
+        get_spoogler_context(self.request, template_context)
+        template_context['valid_form'] = True
+        template_context['successful_submission'] = False
 
         # Initialize the template fields that contain multiple options in the form
         init_multiple_options(template_context)
@@ -56,7 +56,8 @@ class FormHandler(webapp2.RequestHandler):
         fields of the form (success or failure)"""
         
         token_value = 0
-        template_context = self._get_context()
+        template_context = {}
+        get_spoogler_context(self.request, template_context)
 
         # Initialize the template fields that contain multiple options in the form
         init_multiple_options(template_context)
@@ -77,41 +78,39 @@ class FormHandler(webapp2.RequestHandler):
         self.response.out.write(FormHandler._render_template('main.html', 
                             template_context))
 
-    def _get_context(self):
-        """ Read the information from the form to build the context.
-        :param template_context
-        :return:
-        """
-        user = users.get_current_user()
-        logout_url = users.create_logout_url(self.request.path)
-        template_context = {
-            'full_name': self.request.get('full_name').strip(),
-            'spoogler_email': self.request.get('spoogler_email').strip(),
-            'spoogler_fb_email': self.request.get('spoogler_fb_email').strip(),
-            'googler_ldap': self.request.get('googler_ldap').strip(),
-            'spoogler_country': self.request.get('spoogler_country').strip(),
-            'work_status': int(self.request.get('work_status').strip()),
-            'english_proficiency': int(self.request.get('english_proficiency').strip()),
-            'native_lang': int(self.request.get('native_lang').strip()),
-            'address': int(self.request.get('address').strip()),
-            'other_address': self.request.get('other_address').strip(),
-            'time_in_area': int(self.request.get('time_in_area').strip()),
-            'spoogler_relo': self.request.get('spoogler_relo').strip(),
-            'transportation': int(self.request.get('transportation').strip()),
-            'side_driving': int(self.request.get('side_driving').strip()),
-            'events_size': [int(e) for e in self.request.get_all('events_size')],
-            'event_types': [int(e) for e in self.request.get_all('event_types')],
-            'event_types_other': self.request.get('event_types_other').strip(),
-            'support_types': [int(s) for s in self.request.get_all('support_types')],
-            'support_types_other': self.request.get('support_types_other').strip(),
-            'support_others': [int(o) for o in self.request.get_all('support_others')],
-            'support_others_other': self.request.get('support_others_other').strip(),
-            'children_ages': [int(a) for a in self.request.get_all('children_ages')],
-            'user': user,
-            'logout_url': logout_url,
-        }
+    @classmethod
+    def _clean_context(cls, template_context):
+        """ Resets the fields of the template context after successful
+        submission."""
+        template_context['full_name'] = ""
+        template_context['spoogler_email'] = ""
+        template_context['spoogler_fb_email'] = ""
+        template_context['googler_ldap'] = ""
+        template_context['spoogler_country'] = ""
+        template_context['work_status'] = 0
+        template_context['english_proficiency'] = 0
+        template_context['native_lang'] = 0
+        template_context['address'] = 0
+        template_context['other_address'] = ""
+        template_context['time_in_area'] = 0
+        template_context['spoogler_relo'] = ""
+        template_context['transportation'] = 0
+        template_context['side_driving'] = 0
+        template_context['events_size'] = []
+        template_context['event_types'] = []
+        template_context['event_types_other'] = ""
+        template_context['support_types'] = []
+        template_context['support_types_other'] = ""
+        template_context['support_others'] = []
+        template_context['support_others_other'] = ""
+        template_context['children_ages'] = []
+        template_context['successful_submission'] = True
 
-        return template_context
+        # Clean error flags
+        template_context['full_name_error'] = False
+        template_context['spoogler_email_error'] = False
+        template_context['spoogler_email_duplicate'] = False
+        template_context['googler_ldap_error'] = False
 
     @classmethod
     def _render_template(cls, template_name, context=None):
@@ -230,75 +229,6 @@ class FormHandler(webapp2.RequestHandler):
         except datastore_errors.TransactionFailedError:
             self.response.out.write('Something went wrong, please try again')
         return write_success
-
-    def _init_default_options(self):
-        """ Initializes the default values for the options on the form
-        :return: template_context with initial values for the options that will be selected by the user
-        """
-        user = users.get_current_user()
-        logout_url = users.create_logout_url(self.request.path)
-        template_context = {
-            'full_name': "",
-            'spoogler_email': "",
-            'spoogler_fb_email': "",
-            'googler_ldap': "",
-            'spoogler_country': "",
-            'work_status': 0,
-            'english_proficiency': 0,
-            'native_lang': 0,
-            'address': 0,
-            'other_address': "",
-            'time_in_area': 0,
-            'spoogler_relo': "",
-            'transportation': 0,
-            'side_driving': 0,
-            'events_size': [],
-            'event_types': [],
-            'event_types_other': "",
-            'support_types': [],
-            'support_types_other': "",
-            'support_others': [],
-            'support_others_other': "",
-            'children_ages': [],
-            'user': user,
-            'logout_url': logout_url,
-        }
-
-        return template_context
-
-    @classmethod
-    def _clean_context(cls, template_context):
-        """ Resets the fields of the template context after successful
-        submission."""
-        template_context['full_name'] = ""
-        template_context['spoogler_email'] = ""
-        template_context['spoogler_fb_email'] = ""
-        template_context['googler_ldap'] = ""
-        template_context['spoogler_country'] = ""
-        template_context['work_status'] = 0
-        template_context['english_proficiency'] = 0
-        template_context['native_lang'] = 0
-        template_context['address'] = 0
-        template_context['other_address'] = ""
-        template_context['time_in_area'] = 0
-        template_context['spoogler_relo'] = ""
-        template_context['transportation'] = 0
-        template_context['side_driving'] = 0
-        template_context['events_size'] = []
-        template_context['event_types'] = []
-        template_context['event_types_other'] = ""
-        template_context['support_types'] = []
-        template_context['support_types_other'] = ""
-        template_context['support_others'] = []
-        template_context['support_others_other'] = ""
-        template_context['children_ages'] = []
-        template_context['successful_submission'] = True
-
-        # Clean error flags
-        template_context['full_name_error'] = False
-        template_context['spoogler_email_error'] = False
-        template_context['spoogler_email_duplicate'] = False
-        template_context['googler_ldap_error'] = False
 
     def __init__(self, request, response):
         self.initialize(request, response)

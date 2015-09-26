@@ -1,0 +1,163 @@
+    <!-- BASIC INFORMATION -->
+    <div id="basic_info">
+      <!-- Spoogler's Full Name -->
+      <div class="form-group {% if first_name_error %} has-error {% endif %}">
+        <label class="control-label" for="full_name">*Spoogler's Full Name: </label>
+          <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}" />
+      </div>
+      <!-- Spoogler's email -->
+      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
+        <label class="control-label" for="spoogler_email">*Spoogler's email: </label>
+        <input type="text" class="form-control" id="spoogler_email" name="spoogler_email" value="{{ spoogler_email }}" />
+      </div>
+      <!-- Spoogler's Facebook email -->
+      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
+        <label class="control-label" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account? </label>
+        <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
+      </div>
+      <!-- Googler's ldap -->
+      <div class="form-group {% if googler_ldap_error %} has-error {% endif %}">
+       <label class="control-label" for="googler_ldap">*Googler's ldap: </label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="googler_ldap" name="googler_ldap" value="{{ googler_ldap }}" aria-describedby="basic-addon2" />
+          <span class="input-group-addon" id="basic-addon2">@google.com</span>
+        </div>
+      </div>
+    </div>
+    <!-- LANGUAGE AND WORK STATUS -->
+    <div id="language_work">
+      <!-- From what country did you relocate? -->
+      <div class="form-group">
+        <label class="control-label" for="spoogler_country">From what country did you relocate?</label>
+        <input type="text" class="form-control" id="spoogler_country" name="spoogler_country" value="{{ spoogler_country }}" />
+      </div>
+      <!-- Spoogler's current work status: -->
+      <div class="form-group">
+        <label class="control-label" for="work_status">Spoogler's current work status:</label>
+        <select class="form-control" id="work_status" name="work_status">
+          {% for status in work_status_list %}
+          <option value="{{ status[0] }}" {% if status[0] == work_status %}selected{% endif %}>{{ status[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Spoogler's English language proficiency -->
+      <div class="form-group">
+        <label class="control-label">Spoogler's English language proficiency: </label>
+          <div class="form-group">
+            <select class="form-control" id="english_proficiency" name="english_proficiency">
+              {% for proficiency in  proficiency_list %}
+                <option value="{{ proficiency[0] }}" {% if proficiency[0] == english_proficiency %}selected{% endif %}>{{ proficiency[1] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+      </div>
+      <!-- Spoogler's preferred or native language -->
+      <div class="form-group">
+        <label class="control-label" for="native_lang">Spoogler's preferred or native language: </label>
+        <select class="form-control" id="native_lang" name="native_lang">
+          {% for language in languages_list %}
+            <option value="{{ language[0] }}" {% if language[0] == native_lang %}selected{% endif %}>{{ language[1] }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" class="form-control" id="native_lang_other" name="native_lang_other" value="{{ native_lang_other }}" placeholder="Please specify..."/>
+      </div>
+    </div>
+    <!-- DEMOGRAPHICS -->
+    <div id="demographics">
+      <!-- Where do you live in the Bay Area? -->
+      <div class="form-group">
+        <label class="control-label" for="address">Where do you live in the Bay Area? (See a description of the Bay Area regions <a target="_blank" href="https://en.wikipedia.org/wiki/San_Francisco_Bay_Area#Sub-regions">here</a>)</label>
+        <select class="form-control" id="address" name="address">
+          {% for option in address_list %}
+            <option value="{{ option[0] }}">{{ option[1] }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" class="form-control" id="other_address" name="other_address" value="{{ other_address }}" placeholder="Please specify..."/>
+      </div>
+      <!-- How long have you been in the Bay Area? -->
+      <div class="form-group">
+        <label class="control-label" for="time_in_area">How long have you been in the Bay Area?</label>
+        <select class="form-control" id="time_in_area" name="time_in_area">
+          {% for time in times_list %}
+            <option value="{{ time[0] }}">{{ time[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- What have you found challenging about your relocation to the Bay Area? -->
+      <div class="form-group">
+        <label class="control-label" for="spoogler_relo">What have you found most challenging about your relocation to the Bay Area?</label>
+        <input type="text" class="form-control" id="spoogler_relo" name="spoogler_relo" value="{{ spoogler_relo }}" />
+      </div>
+      <!-- Spoogler's main form of transportation -->
+      <div class="form-group">
+        <label class="control-label" for="transportation">Spoogler's main form of transportation to get around in the Bay Area: </label>
+        <select class="form-control" id="transportation" name="transportation">
+          {% for transport in transportation_list %}
+            <option value="{{ transport[0] }}">{{ transport[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Side of the road Spoogler is accustomed to driving -->
+      <div class="form-group">
+        <label class="control-label" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
+        <select class="form-control" id="side_driving" name="side_driving">
+          {% for side in side_driving_list %}
+            <option value="{{ side[0] }}">{{ side[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <!-- EVENTS -->
+    <div id="events">
+      <!-- What size of events would you be interested in attending? -->
+      <div class="form-group">
+        <label class="control-label" for="events_size">What size of events would you be interested in attending? Select all that apply.</label>
+        {% for size in event_size_list %}
+          <div class="checkbox">
+            <label><input type="checkbox" id="events_size" name="events_size" value="{{ size[0] }}"> {{ size[1] }}</label>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- What type of events would you be interested in attending? -->
+      <div class="form-group">
+        <label class="control-label" for="event_types">What type of events would you be interested in attending? Select all that apply.</label>
+        {% for type in event_type_list %}
+          <div class="checkbox">
+            <label><input type="checkbox" id="event_types" name="event_types" value="{{ type[0] }}"> {{ type[1] }}</label>
+          </div>
+        {% endfor %}
+        <input type = "text" class="form-control" id="event_types_other" name="event_types_other" value="{{ event_types_other }}" placeholder="Other..." />
+      </div>
+    </div>
+    <!-- CHILDREN AND SUPPORT SERVICES -->
+    <div id="children_support">
+      <!-- What type of support services would you find useful from this group? -->
+      <div class="form-group">
+        <label class="control-label" for="support_types">What type of support services would you find useful from this group? Select all that apply.</label>
+        {% for support in support_type_list %}
+         <div class="checkbox">
+            <label><input type="checkbox" id="support_types" name="support_types" value="{{ support[0] }}"> {{ support[1] }}</label>
+         </div>
+        {% endfor %}
+        <input type = "text" class="form-control" id="support_types_other" name="support_types_other" value="{{ support_types_other }}" placeholder="Other..." />
+      </div>
+      <!-- What other forms of support do you have or will you access? -->
+      <div class="form-group">
+        <label class="control-label" for="support_others">What other forms of support do you have or will you access? Select all that apply.</label>
+        {% for other in support_other_list %}
+        <div class="checkbox">
+            <label><input type="checkbox" id="support_others" name="support_others" value="{{ other[0] }}"> {{ other[1] }}</label>
+         </div>
+        {% endfor %}
+        <input type = "text" class="form-control" id="support_others_other" name="support_others_other" value="{{ support_others_other }}" placeholder="Other..." />
+      </div>
+      <!-- If you have any children, please select their age group: -->
+      <div class="form-group">
+        <label class="control-label" for="children_ages">If you have any children, please select their age group:</label>
+        {% for age in children_ages_list %}
+        <div class="checkbox">
+        <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}"> {{ age[1] }}</label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>

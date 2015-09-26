@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+from google.appengine.api import users
 
 # Spoogler's current work status
 work_status_list = [
@@ -154,3 +155,39 @@ def init_multiple_options(template_context):
     template_context['support_type_list'] = support_type_list
     template_context['support_other_list'] = support_other_list
     template_context['children_ages_list'] = children_ages_list
+
+
+def get_spoogler_context(request, template_context):
+    """ Read the information from the form to build the context.
+    :param template_context
+    :return:
+    """
+    user = users.get_current_user()
+    logout_url = users.create_logout_url(request.path)
+    template_context.update({
+        'full_name': request.get('full_name').strip(),
+        'spoogler_email': request.get('spoogler_email').strip(),
+        'spoogler_fb_email': request.get('spoogler_fb_email').strip(),
+        'googler_ldap': request.get('googler_ldap').strip(),
+        'spoogler_country': request.get('spoogler_country').strip(),
+        'work_status': int(request.get('work_status', '0').strip()),
+        'english_proficiency': int(request.get('english_proficiency', '0').strip()),
+        'native_lang': int(request.get('native_lang', '0').strip()),
+        'address': int(request.get('address', '0').strip()),
+        'other_address': request.get('other_address').strip(),
+        'time_in_area': int(request.get('time_in_area', '0').strip()),
+        'spoogler_relo': request.get('spoogler_relo').strip(),
+        'transportation': int(request.get('transportation', '0').strip()),
+        'side_driving': int(request.get('side_driving', '0').strip()),
+        'events_size': [int(e) for e in request.get_all('events_size')],
+        'event_types': [int(e) for e in request.get_all('event_types')],
+        'event_types_other': request.get('event_types_other').strip(),
+        'support_types': [int(s) for s in request.get_all('support_types')],
+        'support_types_other': request.get('support_types_other').strip(),
+        'support_others': [int(o) for o in request.get_all('support_others')],
+        'support_others_other': request.get('support_others_other').strip(),
+        'children_ages': [int(a) for a in request.get_all('children_ages')],
+        'user': user,
+        'logout_url': logout_url,
+    })
+
