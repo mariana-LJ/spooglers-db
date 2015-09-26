@@ -45,13 +45,19 @@
         {% for entry in query %}
           <tr>
             <th>
-              <input type="checkbox" class="google_site" id="gs{{loop.index0}}" name="gs{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% if entry.status != 'inactive' %}
+                <input type="checkbox" class="google_site" id="gs{{loop.index0}}" name="gs{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% endif %}
             </th>
             <th>
-              <input type="checkbox" class="facebook" id="f{{loop.index0}}" name="f{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% if entry.status != 'inactive' %}
+                <input type="checkbox" class="facebook" id="f{{loop.index0}}" name="f{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% endif %}
             </th>
             <th>
-              <input type="checkbox" class="facebookKids" id="fk{{loop.index0}}" name="fk{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% if entry.status != 'inactive' %}
+                <input type="checkbox" class="facebookKids" id="fk{{loop.index0}}" name="fk{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% endif %}
             </th>
             <th>{{entry.date_created}}</th>
             <th>{{entry.status}}</th>
