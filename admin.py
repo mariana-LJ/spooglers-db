@@ -20,6 +20,7 @@ from models import get_spoogler_context
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 PAGE_SIZE = 5
 
+
 class AdminHandler(webapp2.RequestHandler):
     """This is the handler to display the Spooglers membership form."""
 
