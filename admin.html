@@ -32,7 +32,7 @@
     <div style="background-color: #ffffcc; margin-top: 10px; margin-bottom:10px padding:10px; border-width: 1px; border-style: solid; border-color: #cc6600; height: 300px; overflow: auto;" id="filters">
       <form action="" method="post" id="filters_form">
         <div class="checkbox">
-          <label><input type="checkbox" id="not_added_website" name="not_added_website" value="1"> Not added to website</label>
+          <label><input type="checkbox" id="not_added_website" name="not_added_website" value="1" {% if not_added_website %}checked{% endif %}> Not added to website</label>
         </div>
         {% include 'form.html' %}
       </form>
@@ -49,6 +49,12 @@
           <th>Name</th>
           <th>Email</th>
           <th>Facebook email</th>
+          {% if native_lang != 0 %}
+            <th>Native language</th>
+          {% endif %}
+          {% if address != 0 %}
+            <th>Address</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -74,6 +80,12 @@
             <th>{{entry.full_name}}</th>
             <th>{{entry.spoogler_email}}</th>
             <th>{{entry.spoogler_fb_email}}</th>
+            {% if native_lang != 0 %}
+              <th>{{languages_list[entry.native_lang][1]}}</th>
+            {% endif %}
+            {% if address != 0 %}
+              <th>{{address_list[entry.address][1]}}</th>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>
@@ -103,6 +115,11 @@
       $("#apply").click(function(){
         $("#filters_form").submit();
       });
+
+        var other_native_lang = $("#native_lang_other")
+        other_native_lang.hide();
+        var other_address = $("#other_address")
+        other_address.hide();
     });
   </script>
 </body>

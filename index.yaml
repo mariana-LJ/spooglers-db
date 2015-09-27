@@ -12,6 +12,29 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: address
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: address
+  - name: native_lang
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: address
+  - name: website_status
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
   - name: date_created
     direction: desc
   - name: full_name
@@ -25,6 +48,14 @@ indexes:
 - kind: Spoogler
   properties:
   - name: native_lang
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: native_lang
+  - name: website_status
   - name: date_created
     direction: desc
   - name: full_name

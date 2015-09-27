@@ -195,5 +195,6 @@ def get_spoogler_context(request, template_context):
         'children_ages': [int(a) for a in request.get_all('children_ages')],
         'user': user,
         'logout_url': logout_url,
+        'not_added_website': int(request.get("not_added_website", '0')),
     })
 

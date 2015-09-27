@@ -37,14 +37,15 @@ class AdminHandler(webapp2.RequestHandler):
         # get context
         template_context = {}
         get_spoogler_context(self.request, template_context)
-        not_added_website = self.request.get("not_added_website")
 
         # build query
         query = Spoogler.query()
-        if not_added_website:
+        if template_context['not_added_website']:
             query = query.filter(Spoogler.website_status == False)
         if template_context['native_lang'] != 0:
             query = query.filter(Spoogler.native_lang == template_context['native_lang'])
+        if template_context['address'] != 0:
+            query = query.filter(Spoogler.address == template_context['address'])
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
         template_context['query'] = query
 
