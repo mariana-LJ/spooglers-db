@@ -25,3 +25,6 @@ libraries:
   
 inbound_services:
 - mail
+
+builtins:
+- remote_api: on
