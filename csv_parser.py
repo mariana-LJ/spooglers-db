@@ -1,6 +1,6 @@
 import sys
 import csv
-import  re
+import re
 import getpass
 
 sys.path.append('/home/acp/google_appengine')

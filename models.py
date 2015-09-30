@@ -22,13 +22,16 @@ proficiency_list = [
 languages_list = [
     (0, "Please select"),
     (1, "English"),
-    (2, "Mandarin"),
-    (3, "Spanish"),
+    (2, "Spanish"),
+    (3, "French"),
     (4, "Hindi"),
-    (5, "French"),
-    (6, "Russian"),
-    (7, "German"),
-    (8, "Other")]
+    (5, "German"),
+    (6, "Mandarin"),
+    (7, "Russian"),
+    (8, "Italian"),
+    (9, "Japanese"),
+    (10, "Korean"),
+    (11, "Other")]
 
 # Spoogler's address in the Bay Area
 address_options_list = [
