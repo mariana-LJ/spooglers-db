@@ -108,7 +108,10 @@
     {% if not valid_form %}
         <p style="color:red"><b>There are errors in the form.</b></p>
         {% if spoogler_email_duplicate %}
-            <p style="color:red">Spoogler email address already exists.</p>
+          <p style="color:red">Spoogler email address already exists.</p>
+        {% endif %}
+        {% if fb_email_duplicate %}
+          <p style="color:red">Facebook email address already exists.</p>
         {% endif %}
         {% if ldap_at_sign_error %}
             <p style="color:red">Please write the Googler's ldap without the "@google.com".</p>

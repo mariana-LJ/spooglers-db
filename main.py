@@ -113,6 +113,8 @@ class FormHandler(webapp2.RequestHandler):
         template_context['full_name_error'] = False
         template_context['spoogler_email_error'] = False
         template_context['spoogler_email_duplicate'] = False
+        template_context['fb_email_error'] = False
+        template_context['fb_email_duplicate'] = False
         template_context['googler_ldap_error'] = False
 
     @classmethod
@@ -143,11 +145,22 @@ class FormHandler(webapp2.RequestHandler):
             result = False
         # Check uniqueness of spoogler_email
         if template_context['spoogler_email']:
-            spoogler_email_qry = Spoogler.query(Spoogler.spoogler_email == \
+            spoogler_email_qry = Spoogler.query(Spoogler.spoogler_email ==
                                  template_context['spoogler_email']).fetch()
             if spoogler_email_qry:
                 template_context['spoogler_email_error'] = True
                 template_context['spoogler_email_duplicate'] = True
+                result = False
+        # Check uniqueness of spoogler_fb_email
+        if template_context['spoogler_fb_email']:
+            if not mail_re.search(template_context['spoogler_fb_email']):
+                template_context['fb_email_error'] = True
+                result = False
+            fb_email_qry = Spoogler.query(Spoogler.spoogler_fb_email ==
+                           template_context['spoogler_fb_email']).fetch()
+            if fb_email_qry:
+                template_context['fb_email_error'] = True
+                template_context['fb_email_duplicate'] = True
                 result = False
         if not template_context['googler_ldap']:
             template_context['googler_ldap_error'] = True
