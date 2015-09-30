@@ -41,14 +41,16 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Website</th>
-          <th>FB</th>
-          <th>FB Kids</th>
-          <th>Date Subscribed</th>
+          <th>Google<br>Group</th>
+          <th>Facebook<br>invited</th>
+          <th>Facebook<br>added</th>
+          <th>FB KidZone<br>invited</th>
+          <th>FB KidZone<br>added</th>
+          <th>Date<br>Subscribed</th>
           <th>Status</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Facebook email</th>
+          <th>Facebook<br>email</th>
           {% if native_lang != 0 %}
             <th>Native language</th>
           {% endif %}
@@ -67,12 +69,22 @@
             </th>
             <th>
               {% if entry.status != 0 %}
-                <input type="checkbox" class="facebook" id="f{{loop.index0}}" name="f{{loop.index0}}" value="{{entry.spoogler_email}}">
+                <input type="checkbox" class="fb_invited" id="fb_invited{{loop.index0}}" name="fb_invited{{loop.index0}}" value="{{entry.spoogler_email}}">
               {% endif %}
             </th>
             <th>
               {% if entry.status != 0 %}
-                <input type="checkbox" class="facebookKids" id="fk{{loop.index0}}" name="fk{{loop.index0}}" value="{{entry.spoogler_email}}">
+                <input type="checkbox" class="fb_added" id="fb_added{{loop.index0}}" name="fb_added{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% endif %}
+            </th>
+            <th>
+              {% if entry.status != 0 %}
+                <input type="checkbox" class="fb_KidZone_invited" id="fb_KidZone_invited{{loop.index0}}" name="fb_KidZone_invited{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% endif %}
+            </th>
+            <th>
+              {% if entry.status != 0 %}
+                <input type="checkbox" class="fb_KidZone_added" id="fb_KidZone_added{{loop.index0}}" name="fb_KidZone_added{{loop.index0}}" value="{{entry.spoogler_email}}">
               {% endif %}
             </th>
             <th>{{entry.date_created}}</th>
@@ -93,10 +105,10 @@
   </div>
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-      $(".facebook").click(function(){
+      $(".fb_invited").click(function(){
         $.ajax({
           method: "POST",
-          url: "admin/facebook",
+          url: "admin/fb_invited",
           data: { spoogler_email: $(this).val(), action: this.checked }
         })
         .done(function( msg ) {

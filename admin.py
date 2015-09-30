@@ -97,7 +97,7 @@ class WebsiteGroupHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     (r'/admin', AdminHandler),
-    (r'/admin/facebook', FacebookHandler),
+    (r'/admin/fb_invited', FacebookHandler),
     (r'/admin/facebookKids', FacebookKidsHandler),
     (r'/admin/website', WebsiteGroupHandler),],
     debug = True)

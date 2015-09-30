@@ -120,6 +120,7 @@ class Spoogler(ndb.Model):
     full_name = ndb.StringProperty()
     spoogler_email = ndb.StringProperty()
     spoogler_fb_email = ndb.StringProperty()
+    googler_full_name = ndb.StringProperty(repeated=False)
     googler_ldap = ndb.StringProperty()
     spoogler_country = ndb.StringProperty()
     work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
@@ -143,6 +144,7 @@ class Spoogler(ndb.Model):
     token = ndb.IntegerProperty()
     date_created = ndb.DateProperty(auto_now_add=True)
     website_status = ndb.BooleanProperty(default=False)
+    migrated = ndb.BooleanProperty(default=False)
 
 
 def init_multiple_options(template_context):
@@ -174,6 +176,7 @@ def get_spoogler_context(request, template_context):
         'full_name': request.get('full_name').strip(),
         'spoogler_email': request.get('spoogler_email').strip(),
         'spoogler_fb_email': request.get('spoogler_fb_email').strip(),
+        'googler_full_name': request.get('googler_full_name').strip(),
         'googler_ldap': request.get('googler_ldap').strip(),
         'spoogler_country': request.get('spoogler_country').strip(),
         'work_status': int(request.get('work_status', '0').strip()),

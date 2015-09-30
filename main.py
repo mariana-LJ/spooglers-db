@@ -43,6 +43,7 @@ class FormHandler(webapp2.RequestHandler):
         get_spoogler_context(self.request, template_context)
         template_context['valid_form'] = True
         template_context['successful_submission'] = False
+        template_context['confirmation_ldap'] = ""
 
         # Initialize the template fields that contain multiple options in the form
         init_multiple_options(template_context)
@@ -58,6 +59,7 @@ class FormHandler(webapp2.RequestHandler):
         token_value = 0
         template_context = {}
         get_spoogler_context(self.request, template_context)
+        template_context['confirmation_ldap'] = template_context['googler_ldap']
 
         # Initialize the template fields that contain multiple options in the form
         init_multiple_options(template_context)
@@ -86,6 +88,7 @@ class FormHandler(webapp2.RequestHandler):
         template_context['spoogler_email'] = ""
         template_context['spoogler_fb_email'] = ""
         template_context['googler_ldap'] = ""
+        template_context['googler_full_name'] = ""
         template_context['spoogler_country'] = ""
         template_context['work_status'] = 0
         template_context['english_proficiency'] = 0
@@ -203,6 +206,7 @@ class FormHandler(webapp2.RequestHandler):
                     full_name = template_context['full_name'],
                     spoogler_email = template_context['spoogler_email'],
                     spoogler_fb_email = template_context['spoogler_fb_email'],
+                    googler_full_name = template_context['googler_full_name'],
                     googler_ldap = template_context['googler_ldap'],
                     spoogler_country = template_context['spoogler_country'],
                     work_status = template_context['work_status'],
