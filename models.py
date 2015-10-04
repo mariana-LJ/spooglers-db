@@ -148,6 +148,7 @@ class Spoogler(ndb.Model):
     date_created = ndb.DateProperty(auto_now_add=True)
     website_status = ndb.BooleanProperty(default=False)
     migrated = ndb.BooleanProperty(default=False)
+    test = ndb.BooleanProperty(default=False)
 
 
 def init_multiple_options(template_context):
@@ -199,6 +200,7 @@ def get_spoogler_context(request, template_context):
         'support_others': [int(o) for o in request.get_all('support_others')],
         'support_others_other': request.get('support_others_other').strip(),
         'children_ages': [int(a) for a in request.get_all('children_ages')],
+        'test' : bool(request.get('test', '').strip()),
         'user': user,
         'logout_url': logout_url,
         'not_added_website': int(request.get("not_added_website", '0')),

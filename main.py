@@ -24,6 +24,7 @@ import logging
 from google.appengine.api import mail
 from google.appengine.ext import ndb
 from google.appengine.api import users
+from google.appengine.api import datastore_errors
 
 from models import Spoogler
 from models import init_multiple_options
@@ -239,6 +240,7 @@ class FormHandler(webapp2.RequestHandler):
                     support_others = template_context['support_others'],
                     support_others_other = template_context['support_others_other'],
                     children_ages = template_context['children_ages'],
+                    test = template_context['test'],
                     status = 0,
                     token = token_value)
                         
