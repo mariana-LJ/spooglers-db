@@ -71,6 +71,7 @@ class FormHandler(webapp2.RequestHandler):
             
             if self._create_spoogler(template_context, token_value):
                 self._send_confirmation_email(template_context['googler_ldap'],
+                                              template_context['test'],
                                               token_value)
 
             FormHandler._clean_context(template_context)
@@ -187,7 +188,7 @@ class FormHandler(webapp2.RequestHandler):
         
         return randint(111111, 999999)
         
-    def _send_confirmation_email(self, googler_ldap, token_value):
+    def _send_confirmation_email(self, googler_ldap, test, token_value):
         """After the form was filled out successfully, a confirmation email 
         is sent to the Googler's email (@google.com) that contains a customized 
         confirmation url. When the Googler clicks on this url, the Spoogler is 
@@ -195,8 +196,10 @@ class FormHandler(webapp2.RequestHandler):
         
         sender_address = "Spooglers Webmaster \
                          <bayareaspooglers.webmaster@gmail.com>"
-        email_domain_name = "@gmail.com"
-        googler_email = "mlopezj14@gmail.com"  # googler_ldap + email_domain_name
+        email_domain_name = "@google.com"
+        googler_email = googler_ldap + email_domain_name
+        if test:
+            googler_email = "mlopezj14@gmail.com"
         confirmation_url = "https://" + self.request.host + "/confirm?g=" + \
             googler_ldap + "&t=" + str(token_value)
         subject = "Spooglers Welcome form test"
@@ -316,8 +319,10 @@ class ConfirmHandler(webapp2.RequestHandler):
         sender_email = "Spooglers Webmaster \
                        <bayareaspooglers.webmaster@gmail.com>"
         recipient_email = spoogler_qry[0].spoogler_email
+        if spoogler_qry[0].test:
+            recipient_email = "mlopezj14@gmail.com"
         subject = "Welcome to the Bay Area Spooglers group"
-        body = "Welcome to the Bay Area Spooglers group."
+        body = "Welcome to the Bay Area Spooglers group: " + spoogler_qry[0].full_name
         mail.send_mail(sender_email, recipient_email, subject, body)
     
     @classmethod

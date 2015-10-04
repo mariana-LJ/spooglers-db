@@ -200,7 +200,7 @@ def get_spoogler_context(request, template_context):
         'support_others': [int(o) for o in request.get_all('support_others')],
         'support_others_other': request.get('support_others_other').strip(),
         'children_ages': [int(a) for a in request.get_all('children_ages')],
-        'test' : bool(request.get('test', '').strip()),
+        'test' : request.get('test', 'False').strip() == 'True',
         'user': user,
         'logout_url': logout_url,
         'not_added_website': int(request.get("not_added_website", '0')),
