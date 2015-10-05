@@ -3,9 +3,9 @@ import csv
 import re
 import getpass
 
-sys.path.append('/home/acp/google_appengine')
-sys.path.append('/home/acp/google_appengine/lib/yaml/lib')
-sys.path.append('/home/acp/google_appengine/lib/fancy_urllib')
+sys.path.append('/home/mlj/09_Python_Spooglers_DB/google_appengine')
+sys.path.append('/home/mlj/09_Python_Spooglers_DB/google_appengine/lib/yaml/lib')
+sys.path.append('/home/mlj/09_Python_Spooglers_DB/google_appengine/lib/fancy_urllib')
 
 from google.appengine.ext.remote_api import remote_api_stub
 from google.appengine.api import datastore_errors
