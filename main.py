@@ -193,25 +193,38 @@ class FormHandler(webapp2.RequestHandler):
         is sent to the Googler's email (@google.com) that contains a customized 
         confirmation url. When the Googler clicks on this url, the Spoogler is 
         verified and marked as 'Active'/'Verified' in the database"""
-        
-        sender_address = "Spooglers Webmaster \
-                         <bayareaspooglers.webmaster@gmail.com>"
+        sender_address = """Bay Area Spooglers Webmaster
+                         <bayareaspooglers.webmaster@gmail.com>"""
+        message = mail.EmailMessage(sender=sender_address)
+        message.subject = "Bay Area Spooglers Subscription Confirmation"
         email_domain_name = "@google.com"
         googler_email = googler_ldap + email_domain_name
+        message.to = googler_email
         if test:
-            googler_email = "mlopezj14@gmail.com"
+            message.to = "mlopezj14@gmail.com"
         confirmation_url = "https://" + self.request.host + "/confirm?g=" + \
             googler_ldap + "&t=" + str(token_value)
-        subject = "Spooglers Welcome form test"
-        body = """
-        Your spouse/partner %s has requested to join the Bay Area Spooglers
-        (spouses of Googlers) Group. Please confirm your spouse/partner's
-        subscription by clicking on the link below:
+        message.html = """
+        <html>
+          <head>
+            <!-- Bootstrap latest compiled and minified CSS -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-        %s
+            <!-- Optional theme -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+          </head>
+          <body>
+            <p>Dear Googler, </p>
+
+            <p>Your spouse/partner %s has requested to join the Bay Area Spooglers
+            (spouses of Googlers) Group. Please confirm your spouse/partner's
+            subscription by clicking on the link below:</p>
+            <p><a href=%s>Bay Area Spooglers Group Confirmation link </a></p>
+          </body>
+        </html>
         """ % (spoogler_name, confirmation_url)
 
-        mail.send_mail(sender_address, googler_email, subject, body)
+        message.send()
         
     @ndb.transactional
     def _create_spoogler(self, template_context, token_value):
@@ -316,17 +329,54 @@ class ConfirmHandler(webapp2.RequestHandler):
     def _send_welcome_email(self, template_context):
         """It sends a Welcome email once the new spoogler has been successfully
         activated by the Googler."""
-        spoogler_qry = Spoogler.query(Spoogler.googler_ldap == \
-                       template_context['googler']).fetch()
-        sender_email = "Spooglers Webmaster \
-                       <bayareaspooglers.webmaster@gmail.com>"
-        recipient_email = spoogler_qry[0].spoogler_email
+        message = mail.EmailMessage(sender="""Bay Area Spooglers Webmaster
+                                    <bayareaspooglers.webmaster@gmail.com>""")
+        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
+                                      template_context['googler']).fetch()
+        message.to = spoogler_qry[0].spoogler_email
         if spoogler_qry[0].test:
-            recipient_email = "mlopezj14@gmail.com"
-        subject = "Welcome to the Bay Area Spooglers group"
-        body = "Welcome to the Bay Area Spooglers group: " + spoogler_qry[0].full_name
-        mail.send_mail(sender_email, recipient_email, subject, body)
-    
+            message.to = "mlopezj14@gmail.com"
+        message.subject = "Welcome to the Bay Area Spooglers Group!"
+        message.html = """
+        <html><head></head>
+          <body>
+            <p>Hello %s,</p>
+
+            <p>Welcome to the Bay Area Spooglers Group!</p>
+
+            <p>The Bay Area Spooglers group was established in December 2013
+            and our google group site was released in August 2014.  We’re
+            planning to expand and develop this site, so this is currently
+            a beta version:</p>
+
+            <p><a href="https://sites.google.com/site/bayareagsites/">Bay Area Spooglers website</a></p>
+
+            <p>If you are on Facebook and provided the email you use for your
+            Facebook account, you will soon receive an invitation to join
+            our official
+            <a href="https://www.facebook.com/groups/228606877313132/">Facebook Group.</a></p>
+
+            <p>If you are a parent and provided the email you use for your
+            Facebook account, you will also receive an invitation to join our
+            <a href="https://www.facebook.com/groups/BASKidZone/">Facebook Kid Zone Group.</a></p>
+
+            <p>Please feel free to reach out to us with any questions or ideas at:
+            <a href="mailto:bayareaspooglers@gmail.com">bayareaspooglers@gmail.com</a></p>
+
+            <p>We are the group ambassadors and are here to help make your
+            transition to the bay area with your Google spouse/partner easier.<br>
+            Once you receive your invitation to our Facebook groups, dive right in
+            and join us at any of the events we have planned. Don’t be shy - you are not alone!<br>
+            So come along and meet other people who have recently arrived and also
+            people who have been here a bit longer. We’re a friendly bunch and<br>
+            we know just how you feel.</p>
+
+            <p>We look forward to meeting you!</p>
+          </body>
+        </html>
+        """ % str(spoogler_qry[0].full_name)
+        message.send()
+
     @classmethod
     def _render_template(cls, template_name, context=None):
         """It displays the webpage according to the information inside the 

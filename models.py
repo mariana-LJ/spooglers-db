@@ -147,8 +147,11 @@ class Spoogler(ndb.Model):
     token = ndb.IntegerProperty()
     date_created = ndb.DateProperty(auto_now_add=True)
     website_added = ndb.BooleanProperty(default=False)
+    website_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     fb_added = ndb.BooleanProperty(default=False)
+    fb_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     fb_kids_added = ndb.BooleanProperty(default=False)
+    fb_kids_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     ambassador = ndb.StringProperty(repeated=False)
     migrated = ndb.BooleanProperty(default=False)
     test = ndb.BooleanProperty(default=False)
