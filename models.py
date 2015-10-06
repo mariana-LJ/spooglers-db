@@ -146,7 +146,10 @@ class Spoogler(ndb.Model):
     status = ndb.IntegerProperty(repeated=False)  # See status_list
     token = ndb.IntegerProperty()
     date_created = ndb.DateProperty(auto_now_add=True)
-    website_status = ndb.BooleanProperty(default=False)
+    website_added = ndb.BooleanProperty(default=False)
+    fb_added = ndb.BooleanProperty(default=False)
+    fb_kids_added = ndb.BooleanProperty(default=False)
+    ambassador = ndb.StringProperty(repeated=False)
     migrated = ndb.BooleanProperty(default=False)
     test = ndb.BooleanProperty(default=False)
 

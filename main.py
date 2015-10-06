@@ -72,7 +72,7 @@ class FormHandler(webapp2.RequestHandler):
             if self._create_spoogler(template_context, token_value):
                 self._send_confirmation_email(template_context['googler_ldap'],
                                               template_context['test'],
-                                              token_value)
+                                              token_value, template_context['full_name'])
 
             FormHandler._clean_context(template_context)
 
@@ -188,7 +188,7 @@ class FormHandler(webapp2.RequestHandler):
         
         return randint(111111, 999999)
         
-    def _send_confirmation_email(self, googler_ldap, test, token_value):
+    def _send_confirmation_email(self, googler_ldap, test, token_value, spoogler_name):
         """After the form was filled out successfully, a confirmation email 
         is sent to the Googler's email (@google.com) that contains a customized 
         confirmation url. When the Googler clicks on this url, the Spoogler is 
@@ -204,12 +204,12 @@ class FormHandler(webapp2.RequestHandler):
             googler_ldap + "&t=" + str(token_value)
         subject = "Spooglers Welcome form test"
         body = """
-        Your spouse/partner has requested to join the Bay Area Spooglers
+        Your spouse/partner %s has requested to join the Bay Area Spooglers
         (spouses of Googlers) Group. Please confirm your spouse/partner's
         subscription by clicking on the link below:
 
         %s
-        """ % confirmation_url
+        """ % (spoogler_name, confirmation_url)
 
         mail.send_mail(sender_address, googler_email, subject, body)
         
@@ -275,23 +275,24 @@ class ConfirmHandler(webapp2.RequestHandler):
         if spoogler:
             if template_context['token'] == spoogler[0].token:
                 if spoogler[0].status != 0:
-                    template_context['confirmation_message'] = 'The Spoogler ' \
-                    'is already an active member on this group.'
+                    template_context['confirmation_message'] = spoogler[0].full_name\
+                        + ' is already an active member on this group.'
                 else:
                     if self._activate_spoogler(spoogler[0]):
                         template_context['confirmation_message'] = \
-                        'Congratulations! The Spoogler is now an active ' \
-                        'member of this group and has received a Welcome email.'
+                            'Congratulations! ' + spoogler[0].full_name + \
+                            ' is now an active member of this group and'\
+                            ' has received a Welcome email.'
                         self._send_welcome_email(template_context)
             else:
                 template_context['confirmation_message'] = 'Wrong information.'\
-                ' Please contact us: bayareaspooglers.webmaster@gmail.com'
+                    ' Please contact us: bayareaspooglers.webmaster@gmail.com'
         else:
             template_context['confirmation_message'] = 'Wrong information.'\
                 ' Please contact us: bayareaspooglers.webmaster@gmail.com'
         
         self.response.out.write(self._render_template('confirmation.html', 
-                            template_context))        
+                                template_context))
 
     def post(self):
         """A dummy method to avoid formatting errors when using pylint."""
@@ -302,6 +303,7 @@ class ConfirmHandler(webapp2.RequestHandler):
         """It changes the status of the Spoogler from 'inactive' to 'active' 
         using a query."""
         spoogler.status = 1
+        spoogler.token = 0
         activation_success = False
         try:
             spoogler.put()
