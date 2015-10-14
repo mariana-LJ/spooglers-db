@@ -1,6 +1,12 @@
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
+# List of ambassadors
+ambassadors_list = [
+    (0, "Webmaster", "bayareaspooglers.webmaster@gmail.com"),
+    (1, "Puja Sharma", "puja.sharma159@gmail.com"),
+    (2, "Sarah Ison", "ison.sarahj@gmail.com")]
+
 # Spoogler's current work status
 work_status_list = [
     (0, "Please select"),
@@ -152,7 +158,7 @@ class Spoogler(ndb.Model):
     fb_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     fb_kids_added = ndb.BooleanProperty(default=False)
     fb_kids_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
-    ambassador = ndb.StringProperty(repeated=False)
+    ambassador = ndb.StringProperty(repeated=False)  # See ambasadors_list
     migrated = ndb.BooleanProperty(default=False)
     test = ndb.BooleanProperty(default=False)
 

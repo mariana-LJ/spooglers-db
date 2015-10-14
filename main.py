@@ -1,4 +1,5 @@
-"""This program contains the class that handles the logic to display and 
+# coding=utf-8
+"""This program contains the class that handles the logic to display and
 update the welcome membership form for the Spooglers group.
 
 To avoid pylint errors, the following messages in pylint were disabled: 
@@ -26,6 +27,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api import datastore_errors
 
+from models import ambassadors_list
 from models import Spoogler
 from models import init_multiple_options
 from models import get_spoogler_context
@@ -206,13 +208,7 @@ class FormHandler(webapp2.RequestHandler):
             googler_ldap + "&t=" + str(token_value)
         message.html = """
         <html>
-          <head>
-            <!-- Bootstrap latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-            <!-- Optional theme -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-          </head>
+          <head></head>
           <body>
             <p>Dear Googler, </p>
 
@@ -296,7 +292,9 @@ class ConfirmHandler(webapp2.RequestHandler):
                             'Congratulations! ' + spoogler[0].full_name + \
                             ' is now an active member of this group and'\
                             ' has received a Welcome email.'
-                        self._send_welcome_email(template_context)
+                        ConfirmHandler._send_welcome_email(template_context)
+                        # Send a notification to ambassadors:
+                        ConfirmHandler._send_notification_email(template_context)
             else:
                 template_context['confirmation_message'] = 'Wrong information.'\
                     ' Please contact us: bayareaspooglers.webmaster@gmail.com'
@@ -325,8 +323,9 @@ class ConfirmHandler(webapp2.RequestHandler):
             self.response.out.write('Something went wrong, please try again')
         
         return activation_success
-        
-    def _send_welcome_email(self, template_context):
+
+    @classmethod
+    def _send_welcome_email(cls, template_context):
         """It sends a Welcome email once the new spoogler has been successfully
         activated by the Googler."""
         message = mail.EmailMessage(sender="""Bay Area Spooglers Webmaster
@@ -344,38 +343,77 @@ class ConfirmHandler(webapp2.RequestHandler):
 
             <p>Welcome to the Bay Area Spooglers Group!</p>
 
-            <p>The Bay Area Spooglers group was established in December 2013
-            and our google group site was released in August 2014.  We’re
-            planning to expand and develop this site, so this is currently
-            a beta version:</p>
-
-            <p><a href="https://sites.google.com/site/bayareagsites/">Bay Area Spooglers website</a></p>
-
-            <p>If you are on Facebook and provided the email you use for your
-            Facebook account, you will soon receive an invitation to join
-            our official
-            <a href="https://www.facebook.com/groups/228606877313132/">Facebook Group.</a></p>
-
-            <p>If you are a parent and provided the email you use for your
-            Facebook account, you will also receive an invitation to join our
-            <a href="https://www.facebook.com/groups/BASKidZone/">Facebook Kid Zone Group.</a></p>
-
-            <p>Please feel free to reach out to us with any questions or ideas at:
-            <a href="mailto:bayareaspooglers@gmail.com">bayareaspooglers@gmail.com</a></p>
-
             <p>We are the group ambassadors and are here to help make your
-            transition to the bay area with your Google spouse/partner easier.<br>
-            Once you receive your invitation to our Facebook groups, dive right in
-            and join us at any of the events we have planned. Don’t be shy - you are not alone!<br>
-            So come along and meet other people who have recently arrived and also
-            people who have been here a bit longer. We’re a friendly bunch and<br>
+            transition to the Bay Area with your Google spouse/partner easier.
+            Please check our Facebook page (you will be sent an invitation
+            separately) and dive right in and join us at any of the events
+            we have planned. Don’t be shy - you are not alone! So come along
+            and meet other people who have recently arrived and also people
+            who have been here a bit longer. We’re a friendly bunch and
             we know just how you feel.</p>
 
-            <p>We look forward to meeting you!</p>
+            <p>By receiving this invitation to our Google Group, you will also
+            gain access to our website and google calendar. Please check them
+            out:
+            <a href="https://sites.google.com/site/bayareagsites/">Bay Area
+            Spooglers website</a> and
+            <a href="https://sites.google.com/site/bayareagsites/home/events-schedule">
+            Calendar</a></p>
+
+            <p>We are always looking for new volunteers, so if you are
+            interested in assisting the group please get in touch.</p>
+
+            <p>We look forward to meeting you! <br>
+            Puja and Sarah.<br>
+            <a href="mailto:bayareaspooglers@gmail.com">bayareaspooglers@gmail.com
+            </a></p>
           </body>
         </html>
         """ % str(spoogler_qry[0].full_name)
         message.send()
+
+    @classmethod
+    def _send_notification_email(cls, template_context):
+        """
+        Sends a notification email to the ambassador(s) when a new member has
+        been confirmed.
+        """
+        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
+                                      template_context['googler']).fetch()
+        admin_url = "https://baspooglers.appspot.com/admin"
+        sender_address = """Bay Area Spooglers Webmaster
+                         <bayareaspooglers.webmaster@gmail.com>"""
+        message = mail.EmailMessage(sender=sender_address)
+        message.subject = "A new BASpooglers member has been confirmed"
+
+        message.to = [ambassadors_list[1][2], ambassadors_list[2][2]]
+
+        if spoogler_qry[0].test:
+            message.to = "mlopezj14@gmail.com"
+        message.html = """
+        <html>
+          <head></head>
+          <body>
+            <p>Dear Ambassadors, </p>
+
+            <p>%s has been confirmed and added as a new member of our Bay Area
+            Spooglers group. Please go the Admin page to invite this new member
+            to our Google group and Facebook pages:</p>
+            <p><a href=%s>Bay Area Spooglers Group Admin page</a></p>
+
+            <p>If you have any questions or concerns, please don't hesitate to
+            reach out at:<br>
+            <a href="mailto:bayareaspooglers.webmaster@gmail.com">
+            bayareaspooglers.webmaster@gmail.com</a></p>
+
+            <p>Warmest regards, <br>
+            The Bay Area Spooglers Webmaster.</p>
+          </body>
+        </html>
+        """ % (str(spoogler_qry[0].full_name), admin_url)
+
+        message.send()
+
 
     @classmethod
     def _render_template(cls, template_name, context=None):

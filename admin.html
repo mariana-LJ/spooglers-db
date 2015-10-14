@@ -114,6 +114,7 @@
         .done(function( msg ) {
           alert( "Data Saved: " + msg );
         });
+        $(this).attr("disabled", true);
       });
 
       $("#show").click(function(){
@@ -132,6 +133,8 @@
         other_native_lang.hide();
         var other_address = $("#other_address")
         other_address.hide();
+        var moving_challenge = $("#spoogler_relo")
+        moving_challenge.hide();
     });
   </script>
 </body>
