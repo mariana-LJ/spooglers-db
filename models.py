@@ -152,12 +152,12 @@ class Spoogler(ndb.Model):
     status = ndb.IntegerProperty(repeated=False)  # See status_list
     token = ndb.IntegerProperty()
     date_created = ndb.DateProperty(auto_now_add=True)
-    website_added = ndb.BooleanProperty(default=False)
-    website_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
-    fb_added = ndb.BooleanProperty(default=False)
-    fb_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
-    fb_kids_added = ndb.BooleanProperty(default=False)
-    fb_kids_added_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
+    on_google_group = ndb.BooleanProperty(default=False)
+    on_google_group_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
+    on_facebook = ndb.BooleanProperty(default=False)
+    on_facebook_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
+    on_fb_kids = ndb.BooleanProperty(default=False)
+    on_fb_kids_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     ambassador = ndb.StringProperty(repeated=False)  # See ambasadors_list
     migrated = ndb.BooleanProperty(default=False)
     test = ndb.BooleanProperty(default=False)
@@ -212,9 +212,11 @@ def get_spoogler_context(request, template_context):
         'support_others': [int(o) for o in request.get_all('support_others')],
         'support_others_other': request.get('support_others_other').strip(),
         'children_ages': [int(a) for a in request.get_all('children_ages')],
-        'test' : request.get('test', 'False').strip() == 'True',
+        'test': request.get('test', 'False').strip() == 'True',
         'user': user,
         'logout_url': logout_url,
-        'not_added_website': int(request.get("not_added_website", '0')),
+        'not_on_google_group': int(request.get("not_on_google_group", '0')),
+        'not_on_facebook': int(request.get("not_on_facebook", '0')),
+        'not_on_fb_kidsZone': int(request.get("not_on_fb_kidsZone", '0')),
     })
 

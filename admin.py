@@ -12,6 +12,7 @@ import logging
 from google.appengine.api import mail
 from google.appengine.ext import ndb
 from google.appengine.api import users
+from google.appengine.api import datastore_errors
 
 from models import Spoogler
 from models import init_multiple_options
@@ -40,8 +41,12 @@ class AdminHandler(webapp2.RequestHandler):
 
         # build query
         query = Spoogler.query()
-        if template_context['not_added_website']:
-            query = query.filter(Spoogler.website_status == False)
+        if template_context['not_on_google_group']:
+            query = query.filter(Spoogler.on_google_group == False)
+        if template_context['not_on_facebook']:
+            query = query.filter(Spoogler.on_facebook == False)
+        if template_context['not_on_fb_kidsZone']:
+            query = query.filter(Spoogler.on_fb_kids == False)
         if template_context['native_lang'] != 0:
             query = query.filter(Spoogler.native_lang == template_context['native_lang'])
         if template_context['address'] != 0:
@@ -68,37 +73,89 @@ class AdminHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
-# Handler for AJAX requests
-class FacebookHandler(webapp2.RequestHandler):
-    """This is the handler to display the Spooglers membership form."""
+# Handlers for AJAX requests
+
+
+class GoogleGroupHandler(webapp2.RequestHandler):
+    """ Handles the event where the administrator selects a checkbox
+        when the Spoogler has been invited to the Google group to see
+        the Spooglers official website."""
     def post(self):
-        logging.info(self.request.get("spoogler_email"))
-        logging.info(self.request.get("action"))
+        logging.info(self.request.get("googler_ldap"))
+        logging.info(self.request.get("status"))
+        ambassador = users.get_current_user()
+        googler_ldap = self.request.get("googler_ldap")
+        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
+                                      googler_ldap).fetch()
+        spoogler = spoogler_qry[0]
+
+        if self.request.get("status") == "true":
+            spoogler.on_google_group = True
+            spoogler.ambassador = str(ambassador.nickname())
+
+        try:
+            spoogler.put()
+            self.response.out.write(spoogler.full_name + 'was registered as part of the Google group.')
+        except datastore_errors.TransactionFailedError:
+            self.response.out.write('Error: please try again')
+
+
+class FacebookHandler(webapp2.RequestHandler):
+    """Handles the event where the administrator selects a checkbox
+       when the Spoogler has been invited/added to the Facebook group.
+    """
+
+    def post(self):
+        logging.info(self.request.get("googler_ldap"))
+        logging.info(self.request.get("status"))
+        ambassador = users.get_current_user()
+        googler_ldap = self.request.get("googler_ldap")
+        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
+                                      googler_ldap).fetch()
+        spoogler = spoogler_qry[0]
+
+        if self.request.get("status") == "true":
+            spoogler.on_facebook = True
+            spoogler.ambassador = str(ambassador.nickname())
+
+        try:
+            spoogler.put()
+            self.response.out.write(spoogler.full_name + ' was registered as part of the Facebook group.')
+        except datastore_errors.TransactionFailedError:
+            self.response.out.write('Error: please try again')
 
 
 class FacebookKidsHandler(webapp2.RequestHandler):
     """ Handles the event where the administrator selects a checkbox
         when the Spoogler has been invited to the Facebook KidsZone group."""
-    def post(self):
-        logging.info(self.request.get("spoogler_email"))
-        logging.info(self.request.get("action"))
 
-
-class WebsiteGroupHandler(webapp2.RequestHandler):
-    """ Handles the event where the administrator selects a checkbox
-        when the Spoogler has been invited to the Google group to see
-        the Spooglers official website."""
     def post(self):
-        logging.info(self.request.get("spoogler_email"))
-        logging.info(self.request.get("action"))
+        logging.info(self.request.get("googler_ldap"))
+        logging.info(self.request.get("status"))
+        googler_ldap = self.request.get("googler_ldap")
+        ambassador = users.get_current_user()
+        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
+                                      googler_ldap).fetch()
+        spoogler = spoogler_qry[0]
+
+        if self.request.get("status") == "true":
+            spoogler.on_fb_kids = True
+            spoogler.ambassador = str(ambassador.nickname())
+
+        try:
+            spoogler.put()
+            self.response.out.write(spoogler.full_name + ' was registered as part of the Facebook KidsZone group.')
+        except datastore_errors.TransactionFailedError:
+            self.response.out.write('Error: please try again')
+
 
 
 # pylint: disable = C0103
 
 app = webapp2.WSGIApplication([
     (r'/admin', AdminHandler),
-    (r'/admin/fb_invited', FacebookHandler),
-    (r'/admin/facebookKids', FacebookKidsHandler),
-    (r'/admin/website', WebsiteGroupHandler),],
+    (r'/admin/facebook', FacebookHandler),
+    (r'/admin/fb_kids', FacebookKidsHandler),
+    (r'/admin/google_group', GoogleGroupHandler),],
     debug = True)
 

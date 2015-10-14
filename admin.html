@@ -32,7 +32,13 @@
     <div style="background-color: #ffffcc; margin-top: 10px; margin-bottom:10px padding:10px; border-width: 1px; border-style: solid; border-color: #cc6600; height: 300px; overflow: auto;" id="filters">
       <form action="" method="post" id="filters_form">
         <div class="checkbox">
-          <label><input type="checkbox" id="not_added_website" name="not_added_website" value="1" {% if not_added_website %}checked{% endif %}> Not added to website</label>
+          <label><input type="checkbox" id="not_on_google_group" name="not_on_google_group" value="1" {% if not_on_google_group %}checked{% endif %}> Not added to Google group</label>
+        </div>
+        <div class="checkbox">
+          <label><input type="checkbox" id="not_on_facebook" name="not_on_facebook" value="1" {% if not_on_facebook %}checked{% endif %}> Not added to Facebook</label>
+        </div>
+        <div class="checkbox">
+          <label><input type="checkbox" id="not_on_fb_kidsZone" name="not_on_fb_kidsZone" value="1" {% if not_on_fb_kidsZone %}checked{% endif %}> Not added to Facebook KidsZone</label>
         </div>
         {% include 'form.html' %}
       </form>
@@ -41,21 +47,23 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th style="vertical-align:top">Last Modified by</th>
           <th>Google<br>Group</th>
-          <th>Facebook<br>invited</th>
-          <th>Facebook<br>added</th>
-          <th>FB KidZone<br>invited</th>
-          <th>FB KidZone<br>added</th>
-          <th>Date<br>Subscribed</th>
-          <th>Status</th>
-          <th>Name</th>
-          <th>Email</th>
+          <th>Member<br>since</th>
+          <th style="vertical-align:top">Facebook</th>
+          <th>Member<br>since</th>
+          <th>Facebook <br>KidsZone</th>
+          <th>Member<br>since</th>
+          <th>Signup<br>Date</th>
+          <th style="vertical-align:top">Status</th>
+          <th style="vertical-align:top">Name</th>
+          <th style="vertical-align:top">Email</th>
           <th>Facebook<br>email</th>
           {% if native_lang != 0 %}
-            <th>Native language</th>
+            <th>Native<br>language</th>
           {% endif %}
           {% if address != 0 %}
-            <th>Address</th>
+            <th style="vertical-align:top">Address</th>
           {% endif %}
         </tr>
       </thead>
@@ -63,28 +71,38 @@
         {% for entry in query %}
           <tr>
             <th>
-              {% if entry.status != 0 %}
-                <input type="checkbox" class="google_site" id="gs{{loop.index0}}" name="gs{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% if entry.status != 0 and entry.ambassador != "" %}
+                {{entry.ambassador}}
               {% endif %}
             </th>
             <th>
               {% if entry.status != 0 %}
-                <input type="checkbox" class="fb_invited" id="fb_invited{{loop.index0}}" name="fb_invited{{loop.index0}}" value="{{entry.spoogler_email}}">
+                <input type="checkbox" class="on_google_group" id="on_gg{{loop.index0}}" name="on_gg{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_google_group %}checked disabled{% endif %}>
               {% endif %}
             </th>
             <th>
               {% if entry.status != 0 %}
-                <input type="checkbox" class="fb_added" id="fb_added{{loop.index0}}" name="fb_added{{loop.index0}}" value="{{entry.spoogler_email}}">
+                {{entry.on_google_group_date}}
               {% endif %}
             </th>
             <th>
-              {% if entry.status != 0 %}
-                <input type="checkbox" class="fb_KidZone_invited" id="fb_KidZone_invited{{loop.index0}}" name="fb_KidZone_invited{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% if entry.status != 0 and entry.spoogler_fb_email != "" %}
+                <input type="checkbox" class="on_facebook" id="on_facebook{{loop.index0}}" name="on_facebook{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_facebook %}checked disabled{% endif %}>
               {% endif %}
             </th>
             <th>
-              {% if entry.status != 0 %}
-                <input type="checkbox" class="fb_KidZone_added" id="fb_KidZone_added{{loop.index0}}" name="fb_KidZone_added{{loop.index0}}" value="{{entry.spoogler_email}}">
+              {% if entry.status != 0 and entry.spoogler_fb_email != "" %}
+                {{entry.on_facebook_date}}
+              {% endif %}
+            </th>
+            <th>
+              {% if entry.status != 0 and entry.spoogler_fb_email != "" and entry.children_ages %}
+                <input type="checkbox" class="on_fb_kidsZone" id="on_fb_kidsZone{{loop.index0}}" name="on_fb_kidsZone{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_fb_kids %}checked disabled{% endif %}>
+              {% endif %}
+            </th>
+            <th>
+              {% if entry.status != 0 and entry.spoogler_fb_email != "" and entry.children_ages %}
+                {{entry.on_fb_kids_date}}
               {% endif %}
             </th>
             <th>{{entry.date_created}}</th>
@@ -105,16 +123,55 @@
   </div>
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-      $(".fb_invited").click(function(){
+      $(".on_google_group").click(function(){
+        var on_gg = $(this)
         $.ajax({
           method: "POST",
-          url: "admin/fb_invited",
-          data: { spoogler_email: $(this).val(), action: this.checked }
+          url: "admin/google_group",
+          data: { googler_ldap: on_gg.val(), status: this.checked }
         })
         .done(function( msg ) {
           alert( "Data Saved: " + msg );
+          if(msg.indexOf("Error") == 0) {
+            on_gg.attr("checked", false);
+          } else {
+            on_gg.attr("disabled", true);
+          }
         });
-        $(this).attr("disabled", true);
+      });
+
+      $(".on_facebook").click(function(){
+        var on_fb = $(this)
+        $.ajax({
+          method: "POST",
+          url: "admin/facebook",
+          data: { googler_ldap: on_fb.val(), status: this.checked }
+        })
+        .done(function( msg ) {
+          alert( "Data Saved: " + msg );
+          if(msg.indexOf("Error") == 0) {
+            on_fb.attr("checked", false);
+          } else {
+            on_fb.attr("disabled", true);
+          }
+        });
+      });
+
+      $(".on_fb_kidsZone").click(function(){
+        var on_fb_kids = $(this)
+        $.ajax({
+          method: "POST",
+          url: "admin/fb_kids",
+          data: { googler_ldap: on_fb_kids.val(), status: this.checked }
+        })
+        .done(function( msg ) {
+          alert( "Data Saved: " + msg );
+          if(msg.indexOf("Error") == 0) {
+            on_fb_kids.attr("checked", false);
+          } else {
+            on_fb_kids.attr("disabled", true);
+          }
+        });
       });
 
       $("#show").click(function(){
@@ -135,6 +192,12 @@
         other_address.hide();
         var moving_challenge = $("#spoogler_relo")
         moving_challenge.hide();
+        var other_type_events = $("#event_types_other")
+        other_type_events.hide();
+        var support_other = $("#support_types_other")
+        support_other.hide();
+        var support_others_other = $("#support_others_other")
+        support_others_other.hide();
     });
   </script>
 </body>
