@@ -82,28 +82,29 @@
     });
   </script>
 
-  <!-- Text color for the errors detected through the JQuery validation plugin -->
-  <style>
-  .error {
-      color:red;
-  }
-  </style>
+  <!-- CSS style file for the form -->
+  <meta>
+    <link rel="stylesheet" type="text/css" href="javascript_files/css/form.css">
+  </meta>
 
 </head>
 <body {% if successful_submission %}onload="showAlert()"{% endif %}>
   <div class="container">  
     <h1>Request to join the Bay Area Spooglers Group</h1>
-    <p>Welcome, {{ user.email() }}!
-    You can <a href="{{ logout_url }}"> sign out</a>.</p>
+    <p>Welcome {{ user.nickname() }}<br>
+    You can <a href="{{ logout_url }}"> sign out here.</a></p>
     <p>This form is for partners/spouses of Googlers who have recently 
     relocated to the Bay Area.</p>
     <p>Please fill in the information below if you are interested in joining 
     the Bay Area Spooglers Group to connect with other Spooglers. You will be 
     added to the group once your information is verified.</p>
+    <p class="important">You will be added to the group once your information is verified by
+      your Googler. After you fill out this form, your Googler will receive an email with a request to
+      confirm that you are a Spoogler.</p>
     <p>Many of the group's activities are planned based on your response to 
     this form.</p>
     
-    <p><b>* Required</b></p>
+    <p class="required">* Required</p>
     
     {% if not valid_form %}
         <p style="color:red"><b>There are errors in the form.</b></p>
