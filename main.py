@@ -292,6 +292,7 @@ class ConfirmHandler(webapp2.RequestHandler):
                             'Congratulations! ' + spoogler[0].full_name + \
                             ' is now an active member of this group and'\
                             ' has received a Welcome email.'
+                        template_context['spoogler_email'] = spoogler[0].spoogler_email
                         ConfirmHandler._send_welcome_email(template_context)
                         # Send a notification to ambassadors:
                         ConfirmHandler._send_notification_email(template_context)
@@ -315,6 +316,7 @@ class ConfirmHandler(webapp2.RequestHandler):
         using a query."""
         spoogler.status = 1
         spoogler.token = 0
+        spoogler.googler_ldap = ""
         activation_success = False
         try:
             spoogler.put()
@@ -330,8 +332,8 @@ class ConfirmHandler(webapp2.RequestHandler):
         activated by the Googler."""
         message = mail.EmailMessage(sender="""Bay Area Spooglers Webmaster
                                     <bayareaspooglers.webmaster@gmail.com>""")
-        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
-                                      template_context['googler']).fetch()
+        spoogler_qry = Spoogler.query(Spoogler.spoogler_email ==
+                                      template_context['spoogler_email']).fetch()
         message.to = spoogler_qry[0].spoogler_email
         if spoogler_qry[0].test:
             message.to = "mlopezj14@gmail.com"
@@ -378,15 +380,15 @@ class ConfirmHandler(webapp2.RequestHandler):
         Sends a notification email to the ambassador(s) when a new member has
         been confirmed.
         """
-        spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
-                                      template_context['googler']).fetch()
+        spoogler_qry = Spoogler.query(Spoogler.spoogler_email ==
+                                      template_context['spoogler_email']).fetch()
         admin_url = "https://baspooglers.appspot.com/admin"
         sender_address = """Bay Area Spooglers Webmaster
                          <bayareaspooglers.webmaster@gmail.com>"""
         message = mail.EmailMessage(sender=sender_address)
         message.subject = "A new BASpooglers member has been confirmed"
 
-        message.to = [ambassadors_list[1][2], ambassadors_list[2][2]]
+        message.to = ambassadors_list[1][2]
 
         if spoogler_qry[0].test:
             message.to = "mlopezj14@gmail.com"

@@ -4,8 +4,9 @@ from google.appengine.api import users
 # List of ambassadors
 ambassadors_list = [
     (0, "Webmaster", "bayareaspooglers.webmaster@gmail.com"),
-    (1, "Puja Sharma", "puja.sharma159@gmail.com"),
-    (2, "Sarah Ison", "ison.sarahj@gmail.com")]
+    (1, "Bay Area Spooglers", "bayareaspooglers@gmail.com"),
+    (2, "Puja Sharma", "puja.sharma159@gmail.com"),
+    (3, "Sarah Ison", "ison.sarahj@gmail.com")]
 
 # Spoogler's current work status
 work_status_list = [
