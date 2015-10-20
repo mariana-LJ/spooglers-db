@@ -1,0 +1,12 @@
+  .error {
+      color:rgba(219, 50, 54, 1);
+  }
+  .important {
+      color:rgba(219, 50, 54, 1);
+      font-style:italic;
+
+  }
+  .required {
+      color:rgba(72, 133, 237, 1);
+      font-weight:bold;
+  }
