@@ -101,6 +101,8 @@
     <p class="important">You will be added to the group once your information is verified by
       your Googler. After you fill out this form, your Googler will receive an email with a request to
       confirm that you are a Spoogler.</p>
+    <p class="important">Don't forget to ask your Googler to also check his Spam folder in case
+      the confirmation email doesn't appear on his/her inbox.</p>
     <p>Many of the group's activities are planned based on your response to 
     this form.</p>
     
@@ -134,7 +136,11 @@
   
   <script type="text/javascript" language="javascript">
     function showAlert() {
-        alert("Thank you for filling out the membership form. A confirmation email has been sent to {{confirmation_ldap}}@google.com");
+        var string = "Thank you for filling out the membership form. A confirmation email" +
+        "has been sent to {{confirmation_ldap}}@google.com\n\n" +
+        "Please remind your Googler to check his Spam folder if " +
+        "this email doesn't appear on his/her Inbox."
+        alert(string);
     }
   </script>
   
