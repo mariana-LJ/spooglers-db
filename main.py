@@ -102,7 +102,6 @@ class FormHandler(webapp2.RequestHandler):
         template_context['time_in_area'] = 0
         template_context['spoogler_relo'] = ""
         template_context['transportation'] = 0
-        template_context['side_driving'] = 0
         template_context['events_size'] = []
         template_context['event_types'] = []
         template_context['event_types_other'] = ""
@@ -243,7 +242,6 @@ class FormHandler(webapp2.RequestHandler):
                     time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
                     transportation = template_context['transportation'],
-                    side_driving = template_context['side_driving'],
                     events_size = template_context['events_size'],
                     event_types = template_context['event_types'],
                     event_types_other = template_context['event_types_other'],
@@ -266,6 +264,7 @@ class FormHandler(webapp2.RequestHandler):
 
     def __init__(self, request, response):
         self.initialize(request, response)
+
 
 class ConfirmHandler(webapp2.RequestHandler):
     """A class to start building a confirmation for the Googler's ldap."""
@@ -316,7 +315,6 @@ class ConfirmHandler(webapp2.RequestHandler):
         using a query."""
         spoogler.status = 1
         spoogler.token = 0
-        spoogler.googler_ldap = ""
         activation_success = False
         try:
             spoogler.put()

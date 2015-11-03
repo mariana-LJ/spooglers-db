@@ -91,22 +91,22 @@
               {% endif %}
             </th>
             <th>
-              {% if entry.status != 0 and entry.spoogler_fb_email != "" %}
+              {% if entry.status != 0 %}
                 <input type="checkbox" class="on_facebook" id="on_facebook{{loop.index0}}" name="on_facebook{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_facebook %}checked disabled{% endif %}>
               {% endif %}
             </th>
             <th>
-              {% if entry.status != 0 and entry.spoogler_fb_email != "" %}
+              {% if entry.status != 0 %}
                 {{entry.on_facebook_date}}
               {% endif %}
             </th>
             <th>
-              {% if entry.status != 0 and entry.spoogler_fb_email != "" and entry.children_ages %}
+              {% if entry.status != 0 %}
                 <input type="checkbox" class="on_fb_kidsZone" id="on_fb_kidsZone{{loop.index0}}" name="on_fb_kidsZone{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_fb_kids %}checked disabled{% endif %}>
               {% endif %}
             </th>
             <th>
-              {% if entry.status != 0 and entry.spoogler_fb_email != "" and entry.children_ages %}
+              {% if entry.status != 0 %}
                 {{entry.on_fb_kids_date}}
               {% endif %}
             </th>

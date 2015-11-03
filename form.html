@@ -102,15 +102,6 @@
           {% endfor %}
         </select>
       </div>
-      <!-- Side of the road Spoogler is accustomed to driving -->
-      <div class="form-group">
-        <label class="control-label" for="side_driving">On what side of the road are you (the Spoogler) accustomed to driving?: </label>
-        <select class="form-control" id="side_driving" name="side_driving">
-          {% for side in side_driving_list %}
-          <option value="{{ side[0] }}" {% if side[0] == side_driving %}selected{% endif %}>{{ side[1] }}</option>
-          {% endfor %}
-        </select>
-      </div>
     </div>
     <!-- EVENTS -->
     <div id="events">

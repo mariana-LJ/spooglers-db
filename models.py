@@ -66,12 +66,6 @@ transportation_list = [
     (4, "Bicycle"),
     (5, "Walking")]
 
-# Side of the road to drive
-side_driving_list = [
-    (0, "Please select"),
-    (1, "left"),
-    (2, "right")]
-
 # Size of events to attend
 event_size_list = [
     (0, "Small, informal local groups (i.e. coffee at local cafe)"),
@@ -141,7 +135,6 @@ class Spoogler(ndb.Model):
     time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list
     spoogler_relo = ndb.StringProperty()
     transportation = ndb.IntegerProperty(repeated=False)  # See transportation_list
-    side_driving = ndb.IntegerProperty(repeated=False)  # See side_driving_list
     events_size = ndb.IntegerProperty(repeated=True)  # See event_size_list
     event_types = ndb.IntegerProperty(repeated=True)  # See event_type_list
     event_types_other = ndb.StringProperty(repeated=False)  # Other event type suggested by Spoogler in the form
@@ -173,7 +166,6 @@ def init_multiple_options(template_context):
     template_context['address_list'] = address_options_list
     template_context['times_list'] = times_list
     template_context['transportation_list'] = transportation_list
-    template_context['side_driving_list'] = side_driving_list
     template_context['event_size_list'] = event_size_list
     template_context['event_type_list'] = event_type_list
     template_context['support_type_list'] = support_type_list
