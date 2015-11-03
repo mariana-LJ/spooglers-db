@@ -101,9 +101,9 @@ class FormHandler(webapp2.RequestHandler):
         template_context['other_address'] = ""
         template_context['time_in_area'] = 0
         template_context['spoogler_relo'] = ""
-        template_context['transportation'] = 0
         template_context['support_others'] = []
         template_context['support_others_other'] = ""
+        template_context['kidszone_invite'] = 0
         template_context['children_ages'] = []
         template_context['successful_submission'] = True
 
@@ -236,8 +236,8 @@ class FormHandler(webapp2.RequestHandler):
                     other_address = template_context['other_address'],
                     time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
-                    transportation = template_context['transportation'],
                     support_others = template_context['support_others'],
+                    kidszone_invite = template_context['kidszone_invite'],
                     support_others_other = template_context['support_others_other'],
                     children_ages = template_context['children_ages'],
                     test = template_context['test'],

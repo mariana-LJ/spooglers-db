@@ -57,15 +57,6 @@ times_list = [
     (2, "Less than 1 year"),
     (3, "More than 1 year")]
 
-# Mode of transportation
-transportation_list = [
-    (0, "Please select"),
-    (1, "Driving personal/family car"),
-    (2, "Carpooling"),
-    (3, "Public transit"),
-    (4, "Bicycle"),
-    (5, "Walking")]
-
 # Other types of support used by Spoogler
 support_other_list = [
     (0, "Family/friends here"),
@@ -103,9 +94,9 @@ class Spoogler(ndb.Model):
     other_address = ndb.StringProperty(repeated=False)  # Spoogler address if option "Other" is selected
     time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list
     spoogler_relo = ndb.StringProperty()
-    transportation = ndb.IntegerProperty(repeated=False)  # See transportation_list
     support_others = ndb.IntegerProperty(repeated=True)  # See support_other_list
     support_others_other = ndb.StringProperty(repeated=False)  # Other type of support accessed by Spoogler
+    kidszone_invite = ndb.BooleanProperty(default=True)  # Option to be invited to KidsZone Facebook group
     children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
     status = ndb.IntegerProperty(repeated=False)  # See status_list
     token = ndb.IntegerProperty()
@@ -129,7 +120,6 @@ def init_multiple_options(template_context):
     template_context['proficiency_list'] = proficiency_list
     template_context['address_list'] = address_options_list
     template_context['times_list'] = times_list
-    template_context['transportation_list'] = transportation_list
     template_context['support_other_list'] = support_other_list
     template_context['children_ages_list'] = children_ages_list
     template_context['status_list'] = status_list
@@ -156,9 +146,9 @@ def get_spoogler_context(request, template_context):
         'other_address': request.get('other_address').strip(),
         'time_in_area': int(request.get('time_in_area', '0').strip()),
         'spoogler_relo': request.get('spoogler_relo').strip(),
-        'transportation': int(request.get('transportation', '0').strip()),
         'support_others': [int(o) for o in request.get_all('support_others')],
         'support_others_other': request.get('support_others_other').strip(),
+        'kidszone_invite': request.get('kidszone_invite', '0') == '1',
         'children_ages': [int(a) for a in request.get_all('children_ages')],
         'test': request.get('test', 'False').strip() == 'True',
         'user': user,

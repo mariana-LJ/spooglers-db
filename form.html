@@ -93,15 +93,6 @@
         <label class="control-label" for="spoogler_relo">What have you found most challenging about your relocation to the Bay Area?</label>
         <input type="text" class="form-control" id="spoogler_relo" name="spoogler_relo" value="{{ spoogler_relo }}" />
       </div>
-      <!-- Spoogler's main form of transportation -->
-      <div class="form-group">
-        <label class="control-label" for="transportation">Spoogler's main form of transportation to get around in the Bay Area: </label>
-        <select class="form-control" id="transportation" name="transportation">
-          {% for transport in transportation_list %}
-          <option value="{{ transport[0] }}" {%if transport[0] == transportation %}selected{% endif %}>{{ transport[1] }}</option>
-          {% endfor %}
-        </select>
-      </div>
     </div>
     <!-- CHILDREN AND SUPPORT SERVICES -->
     <div id="children_support">
@@ -114,6 +105,14 @@
         </div>
         {% endfor %}
         <input type = "text" class="form-control" id="support_others_other" name="support_others_other" value="{{ support_others_other }}" placeholder="Other..." />
+      </div>
+      <!-- If you have any children or are planning to have children, would you like to join our Facebook KidsZone group? -->
+      <div class="form-group">
+        <label class="control-label required" for="kidszone_invite">If you have children or are expecting, would you like to join our Facebook KidsZone group?</label>
+        <div class="checkbox">
+          <label><input type="radio" id="kidszone_invite" name="kidszone_invite" value="1" checked> Yes</label>
+          <label><input type="radio" name="kidszone_invite" value="0"> No</label>
+        </div>
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">
