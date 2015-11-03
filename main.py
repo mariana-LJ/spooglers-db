@@ -27,10 +27,10 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api import datastore_errors
 
-from models import ambassadors_list
 from models import Spoogler
 from models import init_multiple_options
 from models import get_spoogler_context
+from models import ambassadors_list
 from random import randint
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -102,11 +102,6 @@ class FormHandler(webapp2.RequestHandler):
         template_context['time_in_area'] = 0
         template_context['spoogler_relo'] = ""
         template_context['transportation'] = 0
-        template_context['events_size'] = []
-        template_context['event_types'] = []
-        template_context['event_types_other'] = ""
-        template_context['support_types'] = []
-        template_context['support_types_other'] = ""
         template_context['support_others'] = []
         template_context['support_others_other'] = ""
         template_context['children_ages'] = []
@@ -242,11 +237,6 @@ class FormHandler(webapp2.RequestHandler):
                     time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
                     transportation = template_context['transportation'],
-                    events_size = template_context['events_size'],
-                    event_types = template_context['event_types'],
-                    event_types_other = template_context['event_types_other'],
-                    support_types = template_context['support_types'],
-                    support_types_other = template_context['support_types_other'],
                     support_others = template_context['support_others'],
                     support_others_other = template_context['support_others_other'],
                     children_ages = template_context['children_ages'],
@@ -344,32 +334,31 @@ class ConfirmHandler(webapp2.RequestHandler):
             <p>Welcome to the Bay Area Spooglers Group!</p>
 
             <p>We are the group ambassadors and are here to help make your
-            transition to the Bay Area with your Google spouse/partner easier.
-            Please check our Facebook page (you will be sent an invitation
-            separately) and dive right in and join us at any of the events
+            transition to the Bay Area with your Google spouse/partner easier.</p>
+
+            <p>You will be sent an invitation to our Facebook page
+            separately. Please dive right in and join us at any of the events
             we have planned. Don’t be shy - you are not alone! So come along
             and meet other people who have recently arrived and also people
             who have been here a bit longer. We’re a friendly bunch and
             we know just how you feel.</p>
 
-            <p>By receiving this invitation to our Google Group, you will also
-            gain access to our website and google calendar. Please check them
-            out:
-            <a href="https://sites.google.com/site/bayareagsites/">Bay Area
-            Spooglers website</a> and
+            <p>In the following days, you will receive an invitation to our Google
+            group to gain access to our
+            <a href="https://sites.google.com/site/bayareagsites/">website</a> and
             <a href="https://sites.google.com/site/bayareagsites/home/events-schedule">
-            Calendar</a></p>
+            google calendar</a>.</p>
 
             <p>We are always looking for new volunteers, so if you are
             interested in assisting the group please get in touch.</p>
 
             <p>We look forward to meeting you! <br>
-            Puja and Sarah.<br>
+            %s and %s.<br>
             <a href="mailto:bayareaspooglers@gmail.com">bayareaspooglers@gmail.com
             </a></p>
           </body>
         </html>
-        """ % str(spoogler_qry[0].full_name)
+        """ % (str(spoogler_qry[0].full_name), ambassadors_list[2][1], ambassadors_list[3][1])
         message.send()
 
     @classmethod
@@ -386,7 +375,7 @@ class ConfirmHandler(webapp2.RequestHandler):
         message = mail.EmailMessage(sender=sender_address)
         message.subject = "A new BASpooglers member has been confirmed"
 
-        message.to = ambassadors_list[1][2]
+        message.to = ambassadors_list[1][3]
 
         if spoogler_qry[0].test:
             message.to = "mlopezj14@gmail.com"

@@ -3,10 +3,10 @@ from google.appengine.api import users
 
 # List of ambassadors
 ambassadors_list = [
-    (0, "Webmaster", "bayareaspooglers.webmaster@gmail.com"),
-    (1, "Bay Area Spooglers", "bayareaspooglers@gmail.com"),
-    (2, "Puja Sharma", "puja.sharma159@gmail.com"),
-    (3, "Sarah Ison", "ison.sarahj@gmail.com")]
+    (0, "Spooglers Webmaster", "", "bayareaspooglers.webmaster@gmail.com"),
+    (1, "Bay Area Spooglers", "", "bayareaspooglers@gmail.com"),
+    (2, "Puja", "Sharma", "puja.sharma159@gmail.com"),
+    (3, "Sarah", "Ison", "ison.sarahj@gmail.com")]
 
 # Spoogler's current work status
 work_status_list = [
@@ -66,37 +66,6 @@ transportation_list = [
     (4, "Bicycle"),
     (5, "Walking")]
 
-# Size of events to attend
-event_size_list = [
-    (0, "Small, informal local groups (i.e. coffee at local cafe)"),
-    (1, "Large groups (i.e. family picnics)"),
-    (2, "Large regional get-togethers and parties for special occasions")]
-
-# Type of events to attend
-event_type_list = [
-    (0, "Arts and crafts"),
-    (1, "Beauty/personal grooming"),
-    (2, "Book club"),
-    (3, "Career counseling (for those who cannot work)"),
-    (4, "Casual mid-morning coffee"),
-    (5, "Concerts, theater"),
-    (6, "Cooking"),
-    (7, "Date nights, movies"),
-    (8, "Dinner, drinks"),
-    (9, "Education/skills sharing"),
-    (10, "Family picnics"),
-    (11, "Games, board games"),
-    (12, "Playdates"),
-    (13, "Sightseeing"),
-    (14, "Sports"),
-    (15, "Volunteering")]
-
-# Type of support services Spoogler is looking for
-support_type_list = [
-    (0, "Local recommendations (i.e. for housing, health specialists, schools, etc.)"),
-    (1, "Information (i.e. on US taxes, healthcare system, building credit, visas, etc.)"),
-    (2, "Networking (based on home country, interests, current residence, etc.)")]
-
 # Other types of support used by Spoogler
 support_other_list = [
     (0, "Family/friends here"),
@@ -135,11 +104,6 @@ class Spoogler(ndb.Model):
     time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list
     spoogler_relo = ndb.StringProperty()
     transportation = ndb.IntegerProperty(repeated=False)  # See transportation_list
-    events_size = ndb.IntegerProperty(repeated=True)  # See event_size_list
-    event_types = ndb.IntegerProperty(repeated=True)  # See event_type_list
-    event_types_other = ndb.StringProperty(repeated=False)  # Other event type suggested by Spoogler in the form
-    support_types = ndb.IntegerProperty(repeated=True)  # See support_type_list
-    support_types_other = ndb.StringProperty(repeated=False)  # Other type of support suggested by Spoogler
     support_others = ndb.IntegerProperty(repeated=True)  # See support_other_list
     support_others_other = ndb.StringProperty(repeated=False)  # Other type of support accessed by Spoogler
     children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
@@ -166,9 +130,6 @@ def init_multiple_options(template_context):
     template_context['address_list'] = address_options_list
     template_context['times_list'] = times_list
     template_context['transportation_list'] = transportation_list
-    template_context['event_size_list'] = event_size_list
-    template_context['event_type_list'] = event_type_list
-    template_context['support_type_list'] = support_type_list
     template_context['support_other_list'] = support_other_list
     template_context['children_ages_list'] = children_ages_list
     template_context['status_list'] = status_list
@@ -196,12 +157,6 @@ def get_spoogler_context(request, template_context):
         'time_in_area': int(request.get('time_in_area', '0').strip()),
         'spoogler_relo': request.get('spoogler_relo').strip(),
         'transportation': int(request.get('transportation', '0').strip()),
-        'side_driving': int(request.get('side_driving', '0').strip()),
-        'events_size': [int(e) for e in request.get_all('events_size')],
-        'event_types': [int(e) for e in request.get_all('event_types')],
-        'event_types_other': request.get('event_types_other').strip(),
-        'support_types': [int(s) for s in request.get_all('support_types')],
-        'support_types_other': request.get('support_types_other').strip(),
         'support_others': [int(o) for o in request.get_all('support_others')],
         'support_others_other': request.get('support_others_other').strip(),
         'children_ages': [int(a) for a in request.get_all('children_ages')],

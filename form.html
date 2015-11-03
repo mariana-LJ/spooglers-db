@@ -103,40 +103,8 @@
         </select>
       </div>
     </div>
-    <!-- EVENTS -->
-    <div id="events">
-      <!-- What size of events would you be interested in attending? -->
-      <div class="form-group">
-        <label class="control-label" for="events_size">What size of events would you be interested in attending? Select all that apply.</label>
-        {% for size in event_size_list %}
-        <div class="checkbox">
-          <label><input type="checkbox" id="events_size" name="events_size" value="{{ size[0] }}" {% if size[0] in events_size %}checked{% endif %}> {{ size[1] }}</label>
-        </div>
-        {% endfor %}
-      </div>
-      <!-- What type of events would you be interested in attending? -->
-      <div class="form-group">
-        <label class="control-label" for="event_types">What type of events would you be interested in attending? Select all that apply.</label>
-        {% for type in event_type_list %}
-        <div class="checkbox">
-          <label><input type="checkbox" id="event_types" name="event_types" value="{{ type[0] }}" {% if type[0] in event_types %}checked{% endif %}> {{ type[1] }}</label>
-        </div>
-        {% endfor %}
-        <input type = "text" class="form-control" id="event_types_other" name="event_types_other" value="{{ event_types_other }}" placeholder="Other..." />
-      </div>
-    </div>
     <!-- CHILDREN AND SUPPORT SERVICES -->
     <div id="children_support">
-      <!-- What type of support services would you find useful from this group? -->
-      <div class="form-group">
-        <label class="control-label" for="support_types">What type of support services would you find useful from this group? Select all that apply.</label>
-        {% for support in support_type_list %}
-        <div class="checkbox">
-          <label><input type="checkbox" id="support_types" name="support_types" value="{{ support[0] }}" {% if support[0] in support_types %}checked{% endif %}> {{ support[1] }}</label>
-        </div>
-        {% endfor %}
-        <input type = "text" class="form-control" id="support_types_other" name="support_types_other" value="{{ support_types_other }}" placeholder="Other..." />
-      </div>
       <!-- What other forms of support do you have or will you access? -->
       <div class="form-group">
         <label class="control-label" for="support_others">What other forms of support do you have or will you access? Select all that apply.</label>
