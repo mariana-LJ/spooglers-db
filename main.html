@@ -41,7 +41,7 @@
                 required: "Please enter the Spoogler's email",
                 email: "Please enter a valid email"
               },
-              googler_ldap: "Please enter the Googler's ldap"
+              googler_ldap: "Please enter the Googler's ldap",
             },
           });
 
@@ -89,7 +89,7 @@
 
 </head>
 <body {% if successful_submission %}onload="showAlert()"{% endif %}>
-  <div class="container">  
+  <div class="container">
     <h1>Request to join the Bay Area Spooglers Group</h1>
     <p>Welcome {{ user.nickname() }}<br>
     You can <a href="{{ logout_url }}"> sign out here.</a></p>
@@ -119,10 +119,13 @@
           <p style="color:red">Facebook email address already exists.</p>
         {% endif %}
         {% if ldap_at_sign_error %}
-            <p style="color:red">Please write the Googler's ldap without the "@google.com".</p>
+          <p style="color:red">Please write the Googler's ldap without the "@google.com".</p>
         {% endif %}
         {% if googler_ldap_error and googler_ldap_duplicate %}
-            <p style="color:red">Googler's ldap already exists. If you are trying with the correct Googler's ldap and still receive this message, contact us: bayareaspooglers.webmaster@gmail.com</p>
+          <p style="color:red">Googler's ldap already exists. If you are trying with the correct Googler's ldap and still receive this message, contact us: bayareaspooglers.webmaster@gmail.com</p>
+        {% endif %}
+        {% if kidszone_invite_error %}
+          <p style="color:red">Please indicate if you want to join our Facebook KidsZone group.</p>
         {% endif %}
     {% endif %}
     

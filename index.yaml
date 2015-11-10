@@ -86,6 +86,15 @@ indexes:
 - kind: Spoogler
   properties:
   - name: on_facebook
+  - name: on_fb_kids
+  - name: on_google_group
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: on_facebook
   - name: on_google_group
   - name: date_created
     direction: desc

@@ -114,6 +114,7 @@ class FormHandler(webapp2.RequestHandler):
         template_context['fb_email_error'] = False
         template_context['fb_email_duplicate'] = False
         template_context['googler_ldap_error'] = False
+        template_context['kidszone_invite_error'] = False
 
     @classmethod
     def _render_template(cls, template_name, context=None):
@@ -175,6 +176,15 @@ class FormHandler(webapp2.RequestHandler):
                 template_context['googler_ldap_error'] = True
                 template_context['googler_ldap_duplicate'] = True
                 result = False
+        # Check that an option to get in the Facebook KidsZone group is selected
+        logging.info(template_context['kidszone_invite'])
+        if template_context['kidszone_invite'] == 0:
+            template_context['kidszone_invite_error'] = True
+            result = False
+        if template_context['kidszone_invite'] == 1 and \
+                not template_context['spoogler_fb_email']:
+            template_context['kidszone_invite_error'] = True
+            result = False
         
         return result
     
@@ -237,7 +247,7 @@ class FormHandler(webapp2.RequestHandler):
                     time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
                     support_others = template_context['support_others'],
-                    kidszone_invite = template_context['kidszone_invite'],
+                    kidszone_invite = template_context['kidszone_invite'] == 1,
                     support_others_other = template_context['support_others_other'],
                     children_ages = template_context['children_ages'],
                     test = template_context['test'],

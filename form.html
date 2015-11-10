@@ -1,12 +1,13 @@
     <!-- BASIC INFORMATION -->
     <div id="basic_info">
       <!-- Spoogler's Full Name -->
-      <div class="form-group {% if full_name_error %} has-error {% endif %}">
+      <div class="form-group {% if full_name_error %} has-error{% endif %}">
         <label class="control-label required" for="full_name">*Spoogler's Full Name: </label>
           <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}" />
       </div>
+        <div class="errorTxt"></div>
       <!-- Spoogler's email -->
-      <div class="form-group {% if spoogler_email_error %} has-error {% endif %}">
+      <div class="form-group {% if spoogler_email_error %} has-error{% endif %}">
         <label class="control-label required" for="spoogler_email">*Spoogler's primary email: </label>
         <input type="text" class="form-control" id="spoogler_email" name="spoogler_email" value="{{ spoogler_email }}" />
       </div>
@@ -21,7 +22,7 @@
         <input type="text" class="form-control" id="googler_full_name" name="googler_full_name" value="{{ googler_full_name }}" />
       </div>
       <!-- Googler's ldap -->
-      <div class="form-group {% if googler_ldap_error or ldap_at_sign_error %} has-error {% endif %}">
+      <div class="form-group {% if googler_ldap_error or ldap_at_sign_error %} has-error has-feedback{% endif %}">
         <label class="control-label required" for="googler_ldap">*Googler's ldap: </label>
         <div class="input-group">
           <input type="text" class="form-control" id="googler_ldap" name="googler_ldap" value="{{ googler_ldap }}" aria-describedby="basic-addon2" />
@@ -31,10 +32,14 @@
     </div>
     <!-- LANGUAGE AND WORK STATUS -->
     <div id="language_work">
-      <!-- From what country did you relocate? -->
+      <!-- Spoogler's country of origin: -->
       <div class="form-group">
-        <label class="control-label" for="spoogler_country">From what country did you relocate?</label>
-        <input type="text" class="form-control" id="spoogler_country" name="spoogler_country" value="{{ spoogler_country }}" />
+        <label class="control-label" for="spoogler_country">Spoogler's country of origin:</label>
+       <select class="form-control" id="spoogler_country" name="work_status">
+          {% for country in countries_list %}
+          <option value="{{ country[0] }}" {% if country[0] == spoogler_country %}selected{% endif %}>{{ country[1] }}</option>
+          {% endfor %}
+        </select>
       </div>
       <!-- Spoogler's current work status: -->
       <div class="form-group">
@@ -107,12 +112,13 @@
         <input type = "text" class="form-control" id="support_others_other" name="support_others_other" value="{{ support_others_other }}" placeholder="Other..." />
       </div>
       <!-- If you have any children or are planning to have children, would you like to join our Facebook KidsZone group? -->
-      <div class="form-group">
+      <div class="form-group {% if kidszone_invite_error %} has-error {% endif %}">
         <label class="control-label required" for="kidszone_invite">If you have children or are expecting, would you like to join our Facebook KidsZone group?</label>
-        <div class="checkbox">
-          <label><input type="radio" id="kidszone_invite" name="kidszone_invite" value="1" checked> Yes</label>
-          <label><input type="radio" name="kidszone_invite" value="0"> No</label>
-        </div>
+        <select class="form-control" id="kidszone_invite" name="kidszone_invite">
+          {% for option in kidszone_options_list %}
+          <option value="{{ option[0] }}" {% if option[0] == kidszone_invite %}selected{% endif %}>{{ option[1] }}</option>
+          {% endfor %}
+        </select>
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">

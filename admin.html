@@ -45,86 +45,105 @@
         <div class="checkbox">
           <label><input type="checkbox" id="not_on_fb_kidsZone" name="not_on_fb_kidsZone" value="1" {% if not_on_fb_kidsZone %}checked{% endif %}> Not added to Facebook KidsZone</label>
         </div>
+        <div class="checkbox">
+          <label><input type="checkbox" id="show_only_email" name="show_only_email" value="1" {% if show_only_email %}checked{% endif %}> Show only Email column</label>
+        </div>
         {% include 'form.html' %}
       </form>
     </div>
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th style="vertical-align:top">Last Modified by</th>
-          <th>Google<br>Group</th>
-          <th>Member<br>since</th>
-          <th style="vertical-align:top">Facebook</th>
-          <th>Member<br>since</th>
-          <th>Facebook <br>KidsZone</th>
-          <th>Member<br>since</th>
-          <th>Signup<br>Date</th>
-          <th style="vertical-align:top">Status</th>
-          <th style="vertical-align:top">Name</th>
-          <th style="vertical-align:top">Email</th>
-          <th>Facebook<br>email</th>
-          {% if native_lang != 0 %}
-            <th>Native<br>language</th>
-          {% endif %}
-          {% if address != 0 %}
-            <th style="vertical-align:top">Address</th>
-          {% endif %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for entry in query %}
+    {% if show_only_email %}
+      <table class="table table-striped" style="float:left">
+        <thead>
           <tr>
-            <th>
-              {% if entry.status != 0 and entry.ambassador != "" %}
-                {{entry.ambassador}}
-              {% endif %}
-            </th>
-            <th>
-              {% if entry.status != 0 %}
-                <input type="checkbox" class="on_google_group" id="on_gg{{loop.index0}}" name="on_gg{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_google_group %}checked disabled{% endif %}>
-              {% endif %}
-            </th>
-            <th>
-              {% if entry.status != 0 %}
-                {{entry.on_google_group_date}}
-              {% endif %}
-            </th>
-            <th>
-              {% if entry.status != 0 %}
-                <input type="checkbox" class="on_facebook" id="on_facebook{{loop.index0}}" name="on_facebook{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_facebook %}checked disabled{% endif %}>
-              {% endif %}
-            </th>
-            <th>
-              {% if entry.status != 0 %}
-                {{entry.on_facebook_date}}
-              {% endif %}
-            </th>
-            <th>
-              {% if entry.status != 0 %}
-                <input type="checkbox" class="on_fb_kidsZone" id="on_fb_kidsZone{{loop.index0}}" name="on_fb_kidsZone{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_fb_kids %}checked disabled{% endif %}>
-              {% endif %}
-            </th>
-            <th>
-              {% if entry.status != 0 %}
-                {{entry.on_fb_kids_date}}
-              {% endif %}
-            </th>
-            <th>{{entry.date_created}}</th>
-            <th>{{status_list[entry.status][1]}}</th>
-            <th>{{entry.full_name}}</th>
-            <th>{{entry.spoogler_email}}</th>
-            <th>{{entry.spoogler_fb_email}}</th>
+            <th style="vertical-align:top">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in query %}
+            <tr {% if entry.status == 0 %}class="danger"{% endif %}>
+              <td>{{entry.spoogler_email}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th style="vertical-align:top">Last Modified by</th>
+            <th>Google<br>Group</th>
+            <th>Member<br>since</th>
+            <th style="vertical-align:top">Facebook</th>
+            <th>Member<br>since</th>
+            <th>Facebook <br>KidsZone</th>
+            <th>Member<br>since</th>
+            <th>Signup<br>Date</th>
+            <th style="vertical-align:top">Status</th>
+            <th style="vertical-align:top">Name</th>
+            <th style="vertical-align:top">Email</th>
+            <th>Facebook<br>email</th>
             {% if native_lang != 0 %}
-              <th>{{languages_list[entry.native_lang][1]}}</th>
+              <th>Native<br>language</th>
             {% endif %}
             {% if address != 0 %}
-              <th>{{address_list[entry.address][1]}}</th>
+              <th style="vertical-align:top">Address</th>
             {% endif %}
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for entry in query %}
+            <tr {% if entry.status == 0 %}class="danger"{% endif %}>
+              <td>
+                {% if entry.status != 0 and entry.ambassador != "" %}
+                  {{entry.ambassador}}
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 %}
+                  <input type="checkbox" class="on_google_group" id="on_gg{{loop.index0}}" name="on_gg{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_google_group %}checked disabled{% endif %}>
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 %}
+                  {{entry.on_google_group_date}}
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 %}
+                  <input type="checkbox" class="on_facebook" id="on_facebook{{loop.index0}}" name="on_facebook{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_facebook %}checked disabled{% endif %}>
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 %}
+                  {{entry.on_facebook_date}}
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 %}
+                  <input type="checkbox" class="on_fb_kidsZone" id="on_fb_kidsZone{{loop.index0}}" name="on_fb_kidsZone{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_fb_kids %}checked disabled{% endif %}>
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 %}
+                  {{entry.on_fb_kids_date}}
+                {% endif %}
+              </td>
+              <td>{{entry.date_created}}</td>
+              <td>{{status_list[entry.status][1]}}</td>
+              <td>{{entry.full_name}}</td>
+              <td>{{entry.spoogler_email}}</td>
+              <td>{{entry.spoogler_fb_email}}</td>
+              {% if native_lang != 0 %}
+                <td>{{languages_list[entry.native_lang][1]}}</td>
+              {% endif %}
+              {% if address != 0 %}
+                <td>{{address_list[entry.address][1]}}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
   </div>
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
