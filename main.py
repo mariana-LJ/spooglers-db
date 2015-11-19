@@ -134,6 +134,8 @@ class FormHandler(webapp2.RequestHandler):
         result = True
         mail_re = re.compile(r'^.+@.+$')
         at_sign_re = re.compile(r'@')
+        fb_email_qry = Spoogler.query(Spoogler.spoogler_fb_email ==
+                                template_context['spoogler_fb_email']).fetch()
         # Verify that the user entered information in the fields:
         if not template_context['full_name']:
             template_context['full_name_error'] = True
@@ -155,8 +157,6 @@ class FormHandler(webapp2.RequestHandler):
             if not mail_re.search(template_context['spoogler_fb_email']):
                 template_context['fb_email_error'] = True
                 result = False
-            fb_email_qry = Spoogler.query(Spoogler.spoogler_fb_email ==
-                           template_context['spoogler_fb_email']).fetch()
             if fb_email_qry:
                 template_context['fb_email_error'] = True
                 template_context['fb_email_duplicate'] = True
@@ -177,13 +177,13 @@ class FormHandler(webapp2.RequestHandler):
                 template_context['googler_ldap_duplicate'] = True
                 result = False
         # Check that an option to get in the Facebook KidsZone group is selected
-        logging.info(template_context['kidszone_invite'])
         if template_context['kidszone_invite'] == 0:
             template_context['kidszone_invite_error'] = True
             result = False
         if template_context['kidszone_invite'] == 1 and \
                 not template_context['spoogler_fb_email']:
             template_context['kidszone_invite_error'] = True
+            template_context['fb_email_error'] = True
             result = False
         
         return result

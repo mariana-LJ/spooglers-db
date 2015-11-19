@@ -411,9 +411,8 @@ def get_spoogler_context(request, template_context):
         'test': request.get('test', 'False').strip() == 'True',
         'user': user,
         'logout_url': logout_url,
-        'not_on_google_group': int(request.get("not_on_google_group", '0')),
-        'not_on_facebook': int(request.get("not_on_facebook", '0')),
-        'not_on_fb_kidsZone': int(request.get("not_on_fb_kidsZone", '0')),
+        'not_on_groups': int(request.get("not_on_groups", '0')),
         'show_only_email': int(request.get("show_only_email", '0')),
+        'show_only_active': int(request.get("show_only_active", '0')),
     })
 

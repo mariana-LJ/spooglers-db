@@ -116,6 +116,21 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: on_google_group
+  - name: status
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: status
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
   - name: website_status
   - name: date_created
     direction: desc

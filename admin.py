@@ -33,6 +33,7 @@ class AdminHandler(webapp2.RequestHandler):
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
         template_context['query'] = query
         self.update(template_context)
+        logging.info(self.request.get('not_on_groups'))
 
     def post(self):
         # get context
@@ -41,11 +42,15 @@ class AdminHandler(webapp2.RequestHandler):
 
         # build query
         query = Spoogler.query()
-        if template_context['not_on_google_group']:
+        if template_context['show_only_active']:
+            query = query.filter(Spoogler.status == 1)
+        if template_context['not_on_groups'] == 0:  # Clear social media options
+            pass
+        if template_context['not_on_groups'] == 1:  # Not added to Google groups
             query = query.filter(Spoogler.on_google_group == False)
-        if template_context['not_on_facebook']:
+        if template_context['not_on_groups'] == 2:  # Not added to Facebook
             query = query.filter(Spoogler.on_facebook == False)
-        if template_context['not_on_fb_kidsZone']:
+        if template_context['not_on_groups'] == 3:  # Not added to Facebook KidsZone
             query = query.filter(Spoogler.on_fb_kids == False)
         if template_context['native_lang'] != 0:
             query = query.filter(Spoogler.native_lang == template_context['native_lang'])

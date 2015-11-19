@@ -37,13 +37,14 @@
     <div style="background-color: #ffffcc; margin-top: 10px; margin-bottom:10px padding:10px; border-width: 1px; border-style: solid; border-color: #cc6600; height: 300px; overflow: auto;" id="filters">
       <form action="" method="post" id="filters_form">
         <div class="checkbox">
-          <label><input type="checkbox" id="not_on_google_group" name="not_on_google_group" value="1" {% if not_on_google_group %}checked{% endif %}> Not added to Google group</label>
+          <label><input type="checkbox" id="show_only_active" name="show_only_active" value="1" {% if show_only_active %}checked{% endif %}> Show only active members</label><br>
         </div>
-        <div class="checkbox">
-          <label><input type="checkbox" id="not_on_facebook" name="not_on_facebook" value="1" {% if not_on_facebook %}checked{% endif %}> Not added to Facebook</label>
-        </div>
-        <div class="checkbox">
-          <label><input type="checkbox" id="not_on_fb_kidsZone" name="not_on_fb_kidsZone" value="1" {% if not_on_fb_kidsZone %}checked{% endif %}> Not added to Facebook KidsZone</label>
+        <label class="control-label" for="not_on_google_group">Social media options:</label>
+        <div class="radio">
+          <label><input type="radio" id="not_on_google_group" name="not_on_groups" value="1" {% if not_on_groups == 1 %}checked{% endif %}> Not added to Google group</label><br>
+          <label><input type="radio" id="not_on_facebook" name="not_on_groups" value="2" {% if not_on_groups == 2 %}checked{% endif %}> Not added to Facebook<br></label><br>
+          <label><input type="radio" id="not_on_fb_kidsZone" name="not_on_groups" value="3" {% if not_on_groups == 3 %}checked{% endif %}> Not added to Facebook KidsZone</label><br>
+          <label><input type="radio" id="clear_social_media_options" name="not_on_groups" value="0" {% if not_on_groups == 0 %}checked{% endif %}> Clear social media options</label><br>
         </div>
         <div class="checkbox">
           <label><input type="checkbox" id="show_only_email" name="show_only_email" value="1" {% if show_only_email %}checked{% endif %}> Show only Email column</label>
