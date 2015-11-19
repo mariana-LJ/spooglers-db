@@ -47,7 +47,7 @@
           <label><input type="radio" id="clear_social_media_options" name="not_on_groups" value="0" {% if not_on_groups == 0 %}checked{% endif %}> Clear social media options</label><br>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox" id="show_only_email" name="show_only_email" value="1" {% if show_only_email %}checked{% endif %}> Show only Email column</label>
+          <label><input type="checkbox" id="show_only_email" name="show_only_email" value="1" {% if show_only_email %}checked{% endif %}> Show primary email list</label>
         </div>
         {% include 'form.html' %}
       </form>
@@ -56,15 +56,17 @@
       <table class="table table-striped" style="float:left">
         <thead>
           <tr>
-            <th style="vertical-align:top">Email</th>
+            <th style="vertical-align:top">Primary Email List</th>
           </tr>
         </thead>
         <tbody>
-          {% for entry in query %}
-            <tr {% if entry.status == 0 %}class="danger"{% endif %}>
-              <td>{{entry.spoogler_email}}</td>
-            </tr>
-          {% endfor %}
+          <tr>
+            <td>
+              {% for email in emails_list %}
+                {{email}},
+              {% endfor %}
+            </td>
+          </tr>
         </tbody>
       </table>
     {% else %}

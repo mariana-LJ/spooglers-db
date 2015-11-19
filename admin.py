@@ -38,12 +38,19 @@ class AdminHandler(webapp2.RequestHandler):
     def post(self):
         # get context
         template_context = {}
+        spoogler_emails = []
         get_spoogler_context(self.request, template_context)
 
         # build query
         query = Spoogler.query()
-        if template_context['show_only_active']:
+        query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
+
+        if template_context['show_only_active']:  # Show active members only
             query = query.filter(Spoogler.status == 1)
+        if template_context['show_only_email']:
+            for q in query:
+                spoogler_emails.append(q.spoogler_email)
+            template_context['emails_list'] = spoogler_emails
         if template_context['not_on_groups'] == 0:  # Clear social media options
             pass
         if template_context['not_on_groups'] == 1:  # Not added to Google groups
@@ -56,7 +63,7 @@ class AdminHandler(webapp2.RequestHandler):
             query = query.filter(Spoogler.native_lang == template_context['native_lang'])
         if template_context['address'] != 0:
             query = query.filter(Spoogler.address == template_context['address'])
-        query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
+
         template_context['query'] = query
 
         self.update(template_context)
