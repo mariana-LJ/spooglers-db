@@ -412,7 +412,7 @@ def get_spoogler_context(request, template_context):
         'user': user,
         'logout_url': logout_url,
         'not_on_groups': int(request.get("not_on_groups", '0')),
-        'show_only_email': int(request.get("show_only_email", '0')),
+        'email_lists': int(request.get("email_lists", '0')),
         'show_only_active': int(request.get("show_only_active", '0')),
     })
 

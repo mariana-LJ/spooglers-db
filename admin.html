@@ -44,15 +44,18 @@
           <label><input type="radio" id="not_on_google_group" name="not_on_groups" value="1" {% if not_on_groups == 1 %}checked{% endif %}> Not added to Google group</label><br>
           <label><input type="radio" id="not_on_facebook" name="not_on_groups" value="2" {% if not_on_groups == 2 %}checked{% endif %}> Not added to Facebook<br></label><br>
           <label><input type="radio" id="not_on_fb_kidsZone" name="not_on_groups" value="3" {% if not_on_groups == 3 %}checked{% endif %}> Not added to Facebook KidsZone</label><br>
-          <label><input type="radio" id="clear_social_media_options" name="not_on_groups" value="0" {% if not_on_groups == 0 %}checked{% endif %}> Clear social media options</label><br>
+          <label><input type="radio" id="clear_social_media_options" name="not_on_groups" value="0" {% if not_on_groups == 0 %}checked{% endif %}> Clear social media options</label>
         </div>
-        <div class="checkbox">
-          <label><input type="checkbox" id="show_only_email" name="show_only_email" value="1" {% if show_only_email %}checked{% endif %}> Show primary email list</label>
+        <label class="control-label" for="show_only_email">Show email list:</label>
+        <div class="radio">
+          <label><input type="radio" id="show_only_email" name="email_lists" value="1" {% if email_lists == 1 %}checked{% endif %}> Primary email</label><br>
+          <label><input type="radio" id="show_only_fb_email" name="email_lists" value="2" {% if email_lists == 2 %}checked{% endif %}> Facebook account email</label><br>
+          <label><input type="radio" id="show_only_fb_email" name="email_lists" value="0" {% if email_lists == 0 %}checked{% endif %}> Clear list options</label>
         </div>
         {% include 'form.html' %}
       </form>
     </div>
-    {% if show_only_email %}
+    {% if email_lists == 1 %}
       <table class="table table-striped" style="float:left">
         <thead>
           <tr>
@@ -64,6 +67,23 @@
             <td>
               {% for email in emails_list %}
                 {{email}},
+              {% endfor %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    {% elif email_lists == 2 %}
+      <table class="table table-striped" style="float:left">
+        <thead>
+          <tr>
+            <th style="vertical-align:top">Facebook Account Email List</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {% for fb_email in fb_emails_list %}
+                {{fb_email}},
               {% endfor %}
             </td>
           </tr>

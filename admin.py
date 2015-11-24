@@ -39,18 +39,24 @@ class AdminHandler(webapp2.RequestHandler):
         # get context
         template_context = {}
         spoogler_emails = []
+        spoogler_fb_emails = []
         get_spoogler_context(self.request, template_context)
 
         # build query
         query = Spoogler.query()
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
+        logging.info(self.request.get('email_lists'))
 
         if template_context['show_only_active']:  # Show active members only
             query = query.filter(Spoogler.status == 1)
-        if template_context['show_only_email']:
+        if template_context['email_lists'] == 1:
             for q in query:
                 spoogler_emails.append(q.spoogler_email)
             template_context['emails_list'] = spoogler_emails
+        if template_context['email_lists'] == 2:
+            for q in query:
+                spoogler_fb_emails.append(q.spoogler_fb_email)
+            template_context['fb_emails_list'] = spoogler_fb_emails
         if template_context['not_on_groups'] == 0:  # Clear social media options
             pass
         if template_context['not_on_groups'] == 1:  # Not added to Google groups
