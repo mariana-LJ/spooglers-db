@@ -105,6 +105,11 @@ class FormHandler(webapp2.RequestHandler):
         template_context['support_others_other'] = ""
         template_context['kidszone_invite'] = 0
         template_context['children_ages'] = []
+        template_context['not_on_groups'] = 0
+        template_context['email_lists'] = []
+        template_context['show_only_active'] = 0
+        template_context['show_all_cols'] = 0
+
         template_context['successful_submission'] = True
 
         # Clean error flags

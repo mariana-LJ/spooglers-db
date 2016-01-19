@@ -113,7 +113,7 @@
       </div>
       <!-- If you have any children or are planning to have children, would you like to join our Facebook KidsZone group? -->
       <div class="form-group {% if kidszone_invite_error %} has-error {% endif %}">
-        <label class="control-label required" for="kidszone_invite">If you have children or are expecting, would you like to join our Facebook KidsZone group?</label>
+        <label class="control-label required" for="kidszone_invite">*If you have children or are expecting, would you like to join our Facebook KidsZone group?</label>
         <select class="form-control" id="kidszone_invite" name="kidszone_invite">
           {% for option in kidszone_options_list %}
           <option value="{{ option[0] }}" {% if option[0] == kidszone_invite %}selected{% endif %}>{{ option[1] }}</option>
@@ -122,7 +122,7 @@
       </div>
       <!-- If you have any children, please select their age group: -->
       <div class="form-group">
-        <label class="control-label" for="children_ages">*If you have any children, please select their age group:</label>
+        <label class="control-label" for="children_ages">If you have any children, please select their age group:</label>
         {% for age in children_ages_list %}
         <div class="checkbox">
           <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}" {% if age[0] in children_ages %}checked{% endif %}> {{ age[1] }}</label>

@@ -37,6 +37,9 @@
     <div style="background-color: #ffffcc; margin-top: 10px; margin-bottom:10px padding:10px; border-width: 1px; border-style: solid; border-color: #cc6600; height: 300px; overflow: auto;" id="filters">
       <form action="" method="post" id="filters_form">
         <div class="checkbox">
+          <label><input type="checkbox" id="show_all_cols" name="show_all_cols" value="1" {% if show_all_cols %}checked{% endif %}> Show all columns</label><br>
+        </div>
+        <div class="checkbox">
           <label><input type="checkbox" id="show_only_active" name="show_only_active" value="1" {% if show_only_active %}checked{% endif %}> Show only active members</label><br>
         </div>
         <label class="control-label" for="not_on_google_group">Social media options:</label>
@@ -50,11 +53,12 @@
         <div class="radio">
           <label><input type="radio" id="show_only_email" name="email_lists" value="1" {% if email_lists == 1 %}checked{% endif %}> Primary email</label><br>
           <label><input type="radio" id="show_only_fb_email" name="email_lists" value="2" {% if email_lists == 2 %}checked{% endif %}> Facebook account email</label><br>
-          <label><input type="radio" id="show_only_fb_email" name="email_lists" value="0" {% if email_lists == 0 %}checked{% endif %}> Clear list options</label>
+          <label><input type="radio" id="clear_list_options" name="email_lists" value="0" {% if email_lists == 0 %}checked{% endif %}> Clear list options</label>
         </div>
         {% include 'form.html' %}
       </form>
     </div>
+    <div class="table-responsive">
     {% if email_lists == 1 %}
       <table class="table table-striped" style="float:left">
         <thead>
@@ -90,26 +94,41 @@
         </tbody>
       </table>
     {% else %}
-      <table class="table table-striped">
+      <table class="table table-striped table-hover">
         <thead>
           <tr>
             <th style="vertical-align:top">Last Modified by</th>
-            <th>Google<br>Group</th>
-            <th>Member<br>since</th>
+            <th style="vertical-align:top">Google<br>Group</th>
+            <th style="vertical-align:top">Member<br>since</th>
             <th style="vertical-align:top">Facebook</th>
-            <th>Member<br>since</th>
-            <th>Facebook <br>KidsZone</th>
-            <th>Member<br>since</th>
-            <th>Signup<br>Date</th>
+            <th style="vertical-align:top">Member<br>since</th>
+            <th style="vertical-align:top">Facebook <br>KidsZone</th>
+            <th style="vertical-align:top">Member<br>since</th>
+            <th style="vertical-align:top">Signup<br>Date</th>
             <th style="vertical-align:top">Status</th>
             <th style="vertical-align:top">Name</th>
             <th style="vertical-align:top">Email</th>
-            <th>Facebook<br>email</th>
-            {% if native_lang != 0 %}
-              <th>Native<br>language</th>
-            {% endif %}
-            {% if address != 0 %}
-              <th style="vertical-align:top">Address</th>
+            <th style="vertical-align:top">Facebook<br>email</th>
+            {% if show_all_cols %}
+              <th style="vertical-align:top">Googler</th>
+              <th style="vertical-align:top">Googler's Ldap</th>
+              <th style="vertical-align:top">Country <br>of origin</th>
+              <th style="vertical-align:top">Work <br>status</th>
+              <th style="vertical-align:top">English proficiency</th>
+              <th style="vertical-align:top">Preferred Language</th>
+              <th style="vertical-align:top">Region</th>
+              <th style="vertical-align:top">Time living in<br>the Bay Area</th>
+              <th style="vertical-align:top">Challenges during<br>relocation</th>
+              <th style="vertical-align:top">Support groups</th>
+              <th style="vertical-align:top">Facebook KidsZone<br>signup</th>
+              <th style="vertical-align:top">Children age group</th>
+            {% else %}
+              {% if native_lang != 0 %}
+                <th style="vertical-align:top">Preferred Language</th>
+              {% endif %}
+              {% if address != 0 %}
+                <th style="vertical-align:top">Region</th>
+              {% endif %}
             {% endif %}
           </tr>
         </thead>
@@ -156,16 +175,66 @@
               <td>{{entry.full_name}}</td>
               <td>{{entry.spoogler_email}}</td>
               <td>{{entry.spoogler_fb_email}}</td>
-              {% if native_lang != 0 %}
-                <td>{{languages_list[entry.native_lang][1]}}</td>
-              {% endif %}
-              {% if address != 0 %}
-                <td>{{address_list[entry.address][1]}}</td>
+              {% if show_all_cols %}
+                <td>{{entry.googler_full_name}}</td>
+                <td>{{entry.googler_ldap}}</td>
+                {% if entry.spoogler_country != 0 %}
+                  <td>{{countries_list[entry.spoogler_country][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                {%if entry.work_status != 0 %}
+                  <td>{{work_status_list[entry.work_status][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                {%if entry.english_proficiency != 0 %}
+                  <td>{{proficiency_list[entry.english_proficiency][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                {%if entry.native_lang != 0 %}
+                  <td>{{languages_list[entry.native_lang][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                {%if entry.address != 0 %}
+                  <td>{{address_list[entry.address][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                {%if entry.time_in_area != 0 %}
+                  <td>{{times_list[entry.time_in_area][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                <td>{{entry.spoogler_relo}}</td>
+                {% if entry.support_others %}
+                  <td>
+                  {% for support_group in entry.support_others %}
+                    support_group<br>
+                  {% endfor %}
+                  </td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+              {% else %}
+                {% if native_lang != 0 %}
+                  <td>{{languages_list[entry.native_lang][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
+                {% if address != 0 %}
+                  <td>{{address_list[entry.address][1]}}</td>
+                {% else %}
+                  <td>Not specified</td>
+                {% endif %}
               {% endif %}
             </tr>
           {% endfor %}
         </tbody>
       </table>
+      </div>
     {% endif %}
   </div>
   <script type="text/javascript" language="javascript">

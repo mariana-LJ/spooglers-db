@@ -342,7 +342,7 @@ class Spoogler(ndb.Model):
     spoogler_fb_email = ndb.StringProperty()
     googler_full_name = ndb.StringProperty(repeated=False)
     googler_ldap = ndb.StringProperty()
-    spoogler_country = ndb.StringProperty()
+    spoogler_country = ndb.IntegerProperty(repeated=False)
     work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
     english_proficiency = ndb.IntegerProperty(repeated=False) # See proficiency_list
     native_lang = ndb.IntegerProperty(repeated=False)  # See languages_list
@@ -396,7 +396,7 @@ def get_spoogler_context(request, template_context):
         'spoogler_fb_email': request.get('spoogler_fb_email').strip(),
         'googler_full_name': request.get('googler_full_name').strip(),
         'googler_ldap': request.get('googler_ldap').strip(),
-        'spoogler_country': request.get('spoogler_country').strip(),
+        'spoogler_country': int(request.get('spoogler_country', '0').strip()),
         'work_status': int(request.get('work_status', '0').strip()),
         'english_proficiency': int(request.get('english_proficiency', '0').strip()),
         'native_lang': int(request.get('native_lang', '0').strip()),
@@ -414,5 +414,6 @@ def get_spoogler_context(request, template_context):
         'not_on_groups': int(request.get("not_on_groups", '0')),
         'email_lists': int(request.get("email_lists", '0')),
         'show_only_active': int(request.get("show_only_active", '0')),
+        'show_all_cols': int(request.get("show_all_cols", '0')),
     })
 
