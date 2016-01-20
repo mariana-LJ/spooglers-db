@@ -1,6 +1,8 @@
 # coding=utf-8
+import logging
 from google.appengine.ext import ndb
 from google.appengine.api import users
+
 
 # List of ambassadors
 ambassadors_list = [
@@ -416,4 +418,4 @@ def get_spoogler_context(request, template_context):
         'show_only_active': int(request.get("show_only_active", '0')),
         'show_all_cols': int(request.get("show_all_cols", '0')),
     })
-
+    logging.info(int(request.get('work_status', '0').strip()))

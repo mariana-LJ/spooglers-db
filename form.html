@@ -35,7 +35,7 @@
       <!-- Spoogler's country of origin: -->
       <div class="form-group">
         <label class="control-label" for="spoogler_country">Spoogler's country of origin:</label>
-       <select class="form-control" id="spoogler_country" name="work_status">
+       <select class="form-control" id="spoogler_country" name="spoogler_country">
           {% for country in countries_list %}
           <option value="{{ country[0] }}" {% if country[0] == spoogler_country %}selected{% endif %}>{{ country[1] }}</option>
           {% endfor %}

@@ -33,7 +33,7 @@ class AdminHandler(webapp2.RequestHandler):
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
         template_context['query'] = query
         self.update(template_context)
-        logging.info(self.request.get('not_on_groups'))
+        #logging.info(self.request.get('not_on_groups'))
 
     def post(self):
         # get context
@@ -45,7 +45,7 @@ class AdminHandler(webapp2.RequestHandler):
         # build query
         query = Spoogler.query()
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
-        logging.info(self.request.get('email_lists'))
+        #logging.info(template_context['work_status'])
 
         if template_context['show_only_active']:  # Show active members only
             query = query.filter(Spoogler.status == 1)

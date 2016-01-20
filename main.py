@@ -258,6 +258,7 @@ class FormHandler(webapp2.RequestHandler):
                     test = template_context['test'],
                     status = 0,
                     token = token_value)
+        logging.info(spoogler.work_status)
                         
         # An entity is persisted in the Datastore:
         try:

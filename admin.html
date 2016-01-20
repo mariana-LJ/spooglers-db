@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- CSS style file for the form -->
   <meta>
-    <link rel="stylesheet" type="text/css" href="javascript_files/css/form.css">
+    <link rel="stylesheet" type="text/css" href="javascript_files/css/admin.css">
   </meta>
 
   <title>BAS Admin</title>
@@ -97,30 +97,30 @@
       <table class="table table-striped table-hover">
         <thead>
           <tr>
-            <th style="vertical-align:top">Last Modified by</th>
-            <th style="vertical-align:top">Google<br>Group</th>
-            <th style="vertical-align:top">Member<br>since</th>
+            <th style="vertical-align:top; width:100%">Last Modified by</th>
+            <th style="vertical-align:top">Google Group</th>
+            <th style="vertical-align:top">Member since</th>
             <th style="vertical-align:top">Facebook</th>
-            <th style="vertical-align:top">Member<br>since</th>
-            <th style="vertical-align:top">Facebook <br>KidsZone</th>
-            <th style="vertical-align:top">Member<br>since</th>
-            <th style="vertical-align:top">Signup<br>Date</th>
+            <th style="vertical-align:top">Member since</th>
+            <th style="vertical-align:top">Facebook KidsZone</th>
+            <th style="vertical-align:top">Member since</th>
+            <th style="vertical-align:top; width:100%">Signup Date</th>
             <th style="vertical-align:top">Status</th>
             <th style="vertical-align:top">Name</th>
             <th style="vertical-align:top">Email</th>
-            <th style="vertical-align:top">Facebook<br>email</th>
+            <th style="vertical-align:top">Facebook email</th>
             {% if show_all_cols %}
               <th style="vertical-align:top">Googler</th>
               <th style="vertical-align:top">Googler's Ldap</th>
-              <th style="vertical-align:top">Country <br>of origin</th>
-              <th style="vertical-align:top">Work <br>status</th>
+              <th style="vertical-align:top">Country of origin</th>
+              <th style="vertical-align:top">Work status</th>
               <th style="vertical-align:top">English proficiency</th>
               <th style="vertical-align:top">Preferred Language</th>
               <th style="vertical-align:top">Region</th>
-              <th style="vertical-align:top">Time living in<br>the Bay Area</th>
-              <th style="vertical-align:top">Challenges during<br>relocation</th>
+              <th style="vertical-align:top">Time in the Bay Area</th>
+              <th style="vertical-align:top">Challenges during relocation</th>
               <th style="vertical-align:top">Support groups</th>
-              <th style="vertical-align:top">Facebook KidsZone<br>signup</th>
+              <th style="vertical-align:top">Facebook KidsZone signup</th>
               <th style="vertical-align:top">Children age group</th>
             {% else %}
               {% if native_lang != 0 %}
@@ -181,53 +181,70 @@
                 {% if entry.spoogler_country != 0 %}
                   <td>{{countries_list[entry.spoogler_country][1]}}</td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
                 {% endif %}
                 {%if entry.work_status != 0 %}
                   <td>{{work_status_list[entry.work_status][1]}}</td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
                 {% endif %}
                 {%if entry.english_proficiency != 0 %}
                   <td>{{proficiency_list[entry.english_proficiency][1]}}</td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
                 {% endif %}
                 {%if entry.native_lang != 0 %}
                   <td>{{languages_list[entry.native_lang][1]}}</td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
                 {% endif %}
                 {%if entry.address != 0 %}
                   <td>{{address_list[entry.address][1]}}</td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
                 {% endif %}
                 {%if entry.time_in_area != 0 %}
                   <td>{{times_list[entry.time_in_area][1]}}</td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
                 {% endif %}
                 <td>{{entry.spoogler_relo}}</td>
                 {% if entry.support_others %}
                   <td>
-                  {% for support_group in entry.support_others %}
-                    support_group<br>
-                  {% endfor %}
+                    <ul style="padding-left:10px">
+                    {% for support_group in entry.support_others %}
+                      <li>{{ support_other_list[support_group][1] }}</li>
+                    {% endfor %}
+                    {% if entry.support_others_other %}
+                      <li>{{ entry.support_others_other }}</li>
+                    {% endif %}
+                    </ul>
                   </td>
                 {% else %}
-                  <td>Not specified</td>
+                  <td></td>
+                {% endif %}
+                {% if entry.kidszone_invite %}
+                  <td>Yes</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                {% if entry.children_ages %}
+                  <td>
+                    <ul style="padding-left:10px">
+                    {% for age in entry.children_ages %}
+                      <li>{{ children_ages_list[age][1] }}</li>
+                    {% endfor %}
+                    </ul>
+                  </td>
+                {% else %}
+                  <td></td>
                 {% endif %}
               {% else %}
                 {% if native_lang != 0 %}
                   <td>{{languages_list[entry.native_lang][1]}}</td>
-                {% else %}
-                  <td>Not specified</td>
                 {% endif %}
                 {% if address != 0 %}
                   <td>{{address_list[entry.address][1]}}</td>
-                {% else %}
-                  <td>Not specified</td>
                 {% endif %}
               {% endif %}
             </tr>
