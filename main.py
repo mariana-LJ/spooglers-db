@@ -91,9 +91,11 @@ class FormHandler(webapp2.RequestHandler):
         template_context['full_name'] = ""
         template_context['spoogler_email'] = ""
         template_context['spoogler_fb_email'] = ""
+        template_context['same_as_spoogler_email'] = 0
         template_context['googler_ldap'] = ""
         template_context['googler_full_name'] = ""
-        template_context['spoogler_country'] = ""
+        template_context['spoogler_country'] = 0
+        template_context['spoogler_us_state'] = 0
         template_context['work_status'] = 0
         template_context['english_proficiency'] = 0
         template_context['native_lang'] = 0
@@ -241,9 +243,11 @@ class FormHandler(webapp2.RequestHandler):
                     full_name = template_context['full_name'],
                     spoogler_email = template_context['spoogler_email'],
                     spoogler_fb_email = template_context['spoogler_fb_email'],
+                    same_as_spoogler_email = template_context['same_as_spoogler_email'],
                     googler_full_name = template_context['googler_full_name'],
                     googler_ldap = template_context['googler_ldap'],
                     spoogler_country = template_context['spoogler_country'],
+                    spoogler_us_state = template_context['spoogler_us_state'],
                     work_status = template_context['work_status'],
                     english_proficiency = template_context['english_proficiency'],
                     native_lang = template_context['native_lang'],

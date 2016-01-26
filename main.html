@@ -41,6 +41,7 @@
                 required: "Please enter the Spoogler's email",
                 email: "Please enter a valid email"
               },
+              spoogler_fb_email: "Please enter a valid email",
               googler_ldap: "Please enter the Googler's ldap",
             },
           });
@@ -53,6 +54,34 @@
           $("html, body").animate({ scrollTop: 0}, 500);
           event.preventDefault();
           return false;
+        });
+
+        var fb_is_primary_email = $("#same_as_spoogler_email")
+        var spoogler_fb_email = $("#spoogler_fb_email")
+        var spoogler_email = $("#spoogler_email")
+        fb_is_primary_email.click(function(){
+          if (this.checked) {
+            document.getElementById("spoogler_fb_email").disabled = true;
+            spoogler_fb_email.val(spoogler_email.val());
+          } else {
+            document.getElementById("spoogler_fb_email").disabled = false;
+          }
+        });
+
+        var country = $("#spoogler_country")
+        var us_state = $("#spoogler_us_state")
+        var us_state_label = $("#spoogler_us_state_label")
+        us_state.hide();
+        us_state_label.hide();
+        country.change(function(){
+          if($("#spoogler_country option:selected").text() == "United States of America"){
+            us_state_label.show();
+            us_state.show();
+          } else {
+            us_state.hide();
+            us_state_label.hide();
+            us_state.val(0);
+          }
         });
 
         var address = $("#address")

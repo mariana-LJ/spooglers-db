@@ -292,6 +292,61 @@ countries_list = [
     (244, "Zimbabwe"),
 ]
 
+# States for US Spooglers
+us_states_list = [
+    (0, "Please select", "select"),
+    (1, "Alabama", "AL"),
+    (2, "Alaska", "AK"),
+    (3, "Arizona", "AZ"),
+    (4, "Arkansas", "AR"),
+    (5, "California", "CA"),
+    (6, "Colorado", "CO"),
+    (7, "Connecticut", "CT"),
+    (8, "Delaware", "DE"),
+    (9, "Florida", "FL"),
+    (10, "Georgia", "GA"),
+    (11, "Hawaii", "HI"),
+    (12, "Idaho", "ID"),
+    (13, "Illinois", "IL"),
+    (14, "Indiana", "IN"),
+    (15, "Iowa", "IA"),
+    (16, "Kansas", "KS"),
+    (17, "Kentucky", "KY"),
+    (18, "Louisiana", "LA"),
+    (19, "Maine", "ME"),
+    (20, "Maryland", "MD"),
+    (21, "Massachusetts", "MA"),
+    (22, "Michigan", "MI"),
+    (23, "Minnesota", "MN"),
+    (24, "Mississippi", "MS"),
+    (25, "Missouri", "MO"),
+    (26, "Montana", "MT"),
+    (27, "Nebraska", "NE"),
+    (28, "Nevada", "NV"),
+    (29, "New Hampshire", "NH"),
+    (30, "New Jersey", "NJ"),
+    (31, "New Mexico", "NM"),
+    (32, "New York", "NY"),
+    (33, "North Carolina", "NC"),
+    (34, "North Dakota", "ND"),
+    (35, "Ohio", "OH"),
+    (36, "Oklahoma", "OK"),
+    (37, "Oregon", "OR"),
+    (38, "Pennsylvania", "PA"),
+    (39, "Rhode Island", "RI"),
+    (40, "South Carolina", "SC"),
+    (41, "South Dakota", "SD"),
+    (42, "Tennessee", "TN"),
+    (43, "Texas", "TX"),
+    (44, "Utah", "UT"),
+    (45, "Vermont", "VT"),
+    (46, "Virginia", "VA"),
+    (47, "Washington", "WA"),
+    (48, "West Virginia", "WV"),
+    (49, "Wisconsin", "WI"),
+    (50, "Wyoming", "WY"),
+]
+
 # Spoogler's address in the Bay Area
 address_options_list = [
     (0, "Please select"),
@@ -342,11 +397,13 @@ class Spoogler(ndb.Model):
     full_name = ndb.StringProperty()
     spoogler_email = ndb.StringProperty()
     spoogler_fb_email = ndb.StringProperty()
+    same_as_spoogler_email = ndb.IntegerProperty(repeated=False)
     googler_full_name = ndb.StringProperty(repeated=False)
     googler_ldap = ndb.StringProperty()
     spoogler_country = ndb.IntegerProperty(repeated=False)
+    spoogler_us_state = ndb.IntegerProperty(repeated=False)  # See us_states_list
     work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
-    english_proficiency = ndb.IntegerProperty(repeated=False) # See proficiency_list
+    english_proficiency = ndb.IntegerProperty(repeated=False)  # See proficiency_list
     native_lang = ndb.IntegerProperty(repeated=False)  # See languages_list
     address = ndb.IntegerProperty(repeated=False)  # See address_options_list
     other_address = ndb.StringProperty(repeated=False)  # Spoogler address if option "Other" is selected
@@ -376,6 +433,7 @@ def init_multiple_options(template_context):
     template_context['countries_list'] = countries_list
     template_context['work_status_list'] = work_status_list
     template_context['languages_list'] = languages_list
+    template_context['us_states_list'] = us_states_list
     template_context['proficiency_list'] = proficiency_list
     template_context['address_list'] = address_options_list
     template_context['times_list'] = times_list
@@ -395,10 +453,12 @@ def get_spoogler_context(request, template_context):
     template_context.update({
         'full_name': request.get('full_name').strip(),
         'spoogler_email': request.get('spoogler_email').strip(),
-        'spoogler_fb_email': request.get('spoogler_fb_email').strip(),
+        'same_as_spoogler_email': int(request.get('same_as_spoogler_email', '0').strip()),
+        #'spoogler_fb_email': request.get('spoogler_fb_email').strip(),
         'googler_full_name': request.get('googler_full_name').strip(),
         'googler_ldap': request.get('googler_ldap').strip(),
         'spoogler_country': int(request.get('spoogler_country', '0').strip()),
+        'spoogler_us_state': int(request.get('spoogler_us_state', '0').strip()),
         'work_status': int(request.get('work_status', '0').strip()),
         'english_proficiency': int(request.get('english_proficiency', '0').strip()),
         'native_lang': int(request.get('native_lang', '0').strip()),
@@ -418,4 +478,8 @@ def get_spoogler_context(request, template_context):
         'show_only_active': int(request.get("show_only_active", '0')),
         'show_all_cols': int(request.get("show_all_cols", '0')),
     })
-    logging.info(int(request.get('work_status', '0').strip()))
+
+    if template_context['same_as_spoogler_email']:
+        template_context['spoogler_fb_email'] = template_context['spoogler_email']
+    else:
+        template_context['spoogler_fb_email'] = request.get('spoogler_fb_email').strip()

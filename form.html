@@ -13,8 +13,9 @@
       </div>
       <!-- Spoogler's Facebook email -->
       <div class="form-group {% if fb_email_error %} has-error {% endif %}">
-        <label class="control-label" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account? </label>
-        <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{{ spoogler_fb_email }}" />
+        <label class="control-label" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account?</label><br>
+        <label><input type="checkbox" id="same_as_spoogler_email" name="same_as_spoogler_email" value="1" {% if same_as_spoogler_email %}checked{% endif %}> I use my primary email</label><br>
+        <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{% if same_as_spoogler_email %} {{ spoogler_email }} {% else %} {{ spoogler_fb_email }} {% endif %}" {% if same_as_spoogler_email %} disabled {% endif %}/>
       </div>
       <!-- Googler's full name -->
       <div class="form-group">
@@ -35,9 +36,15 @@
       <!-- Spoogler's country of origin: -->
       <div class="form-group">
         <label class="control-label" for="spoogler_country">Spoogler's country of origin:</label>
-       <select class="form-control" id="spoogler_country" name="spoogler_country">
+        <select class="form-control" id="spoogler_country" name="spoogler_country">
           {% for country in countries_list %}
           <option value="{{ country[0] }}" {% if country[0] == spoogler_country %}selected{% endif %}>{{ country[1] }}</option>
+          {% endfor %}
+        </select>
+        <label class="control-label" for="spoogler_us_state" id="spoogler_us_state_label">State:</label>
+        <select class="form-control" id="spoogler_us_state" name="spoogler_us_state">
+          {% for state in us_states_list %}
+          <option value="{{ state[0] }}" {% if state[0] == spoogler_us_state %}selected{% endif %}>{{ state[1] }}</option>
           {% endfor %}
         </select>
       </div>

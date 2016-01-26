@@ -113,6 +113,7 @@
               <th style="vertical-align:top">Googler</th>
               <th style="vertical-align:top">Googler's Ldap</th>
               <th style="vertical-align:top">Country of origin</th>
+              <th style="vertical-align:top">U.S. State</th>
               <th style="vertical-align:top">Work status</th>
               <th style="vertical-align:top">English proficiency</th>
               <th style="vertical-align:top">Preferred Language</th>
@@ -180,6 +181,11 @@
                 <td>{{entry.googler_ldap}}</td>
                 {% if entry.spoogler_country != 0 %}
                   <td>{{countries_list[entry.spoogler_country][1]}}</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                {% if entry.spoogler_us_state != 0%}
+                  <td>{{us_states_list[entry.spoogler_us_state][1]}}</td>
                 {% else %}
                   <td></td>
                 {% endif %}
