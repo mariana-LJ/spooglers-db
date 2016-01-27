@@ -470,7 +470,7 @@ def get_spoogler_context(request, template_context):
         'support_others_other': request.get('support_others_other').strip(),
         'kidszone_invite': int(request.get('kidszone_invite', '0').strip()),
         'children_ages': [int(a) for a in request.get_all('children_ages')],
-        'test': request.get('test', 'False').strip() == 'True',
+        'test': request.get('test', 'False').strip() == 'True',  # to set test flag, append ?test=True to the URL
         'user': user,
         'logout_url': logout_url,
         'not_on_groups': int(request.get("not_on_groups", '0')),

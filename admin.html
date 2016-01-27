@@ -31,6 +31,7 @@
     <p>Welcome {{ user.nickname() }}.</p>
     <a href="#" id="show" class="btn btn-default">Show Filters</a>
     <a href="#" id="apply" class="btn btn-default">Apply Filters</a>
+    <a href="#" id="clear" class="btn btn-default">Clear filters</a>
     <a href="#" id="hide" class="btn btn-default">Hide Filters</a>
     <a href="{{ logout_url }}" class="btn btn-info">Sign out</a>
 
@@ -55,6 +56,7 @@
           <label><input type="radio" id="show_only_fb_email" name="email_lists" value="2" {% if email_lists == 2 %}checked{% endif %}> Facebook account email</label><br>
           <label><input type="radio" id="clear_list_options" name="email_lists" value="0" {% if email_lists == 0 %}checked{% endif %}> Clear list options</label>
         </div>
+        <label class="control-label" for="show_only_email">Filter Spooglers by:</label>
         {% include 'form.html' %}
       </form>
     </div>
@@ -260,84 +262,6 @@
       </div>
     {% endif %}
   </div>
-  <script type="text/javascript" language="javascript">
-    $(document).ready(function() {
-      $(".on_google_group").click(function(){
-        var on_gg = $(this)
-        $.ajax({
-          method: "POST",
-          url: "admin/google_group",
-          data: { googler_ldap: on_gg.val(), status: this.checked }
-        })
-        .done(function( msg ) {
-          alert( "Data Saved: " + msg );
-          if(msg.indexOf("Error") == 0) {
-            on_gg.attr("checked", false);
-          } else {
-            on_gg.attr("disabled", true);
-          }
-        });
-      });
-
-      $(".on_facebook").click(function(){
-        var on_fb = $(this)
-        $.ajax({
-          method: "POST",
-          url: "admin/facebook",
-          data: { googler_ldap: on_fb.val(), status: this.checked }
-        })
-        .done(function( msg ) {
-          alert( "Data Saved: " + msg );
-          if(msg.indexOf("Error") == 0) {
-            on_fb.attr("checked", false);
-          } else {
-            on_fb.attr("disabled", true);
-          }
-        });
-      });
-
-      $(".on_fb_kidsZone").click(function(){
-        var on_fb_kids = $(this)
-        $.ajax({
-          method: "POST",
-          url: "admin/fb_kids",
-          data: { googler_ldap: on_fb_kids.val(), status: this.checked }
-        })
-        .done(function( msg ) {
-          alert( "Data Saved: " + msg );
-          if(msg.indexOf("Error") == 0) {
-            on_fb_kids.attr("checked", false);
-          } else {
-            on_fb_kids.attr("disabled", true);
-          }
-        });
-      });
-
-      $("#show").click(function(){
-          $("#filters").show();
-      });
-      $("#hide").click(function(){
-        $("#filters").hide();
-      });
-      $("#filters").hide();
-
-      $("#apply").click(function(){
-        $("#filters_form").submit();
-      });
-
-        var other_native_lang = $("#native_lang_other")
-        other_native_lang.hide();
-        var other_address = $("#other_address")
-        other_address.hide();
-        var moving_challenge = $("#spoogler_relo")
-        moving_challenge.hide();
-        var other_type_events = $("#event_types_other")
-        other_type_events.hide();
-        var support_other = $("#support_types_other")
-        support_other.hide();
-        var support_others_other = $("#support_others_other")
-        support_others_other.hide();
-    });
-  </script>
+  <script script type="text/javascript" src="/javascript_files/admin.js"></script>
 </body>
 </html>
