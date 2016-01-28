@@ -57,6 +57,14 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: kidszone_invite
+  - name: on_fb_kids
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
   - name: native_lang
   - name: date_created
     direction: desc

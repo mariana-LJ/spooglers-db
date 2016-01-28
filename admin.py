@@ -56,22 +56,25 @@ class AdminHandler(webapp2.RequestHandler):
 
         if template_context['show_only_active']:  # Show active members only
             query = query.filter(Spoogler.status == 1)
-        if template_context['email_lists'] == 1:
+
+        # Filter by email list and social media options
+        if template_context['email_lists'] == 1:  # Show a list of the primary emails
+            # Apply filters if any of the social media options is selected
+            query = AdminHandler._filter_by_social_media(query, template_context)
             for q in query:
                 spoogler_emails.append(q.spoogler_email)
             template_context['emails_list'] = spoogler_emails
-        if template_context['email_lists'] == 2:
+        if template_context['email_lists'] == 2:  # Show a list of the facebook emails
+            # Apply filters if any of the social media options is selected
+            query = AdminHandler._filter_by_social_media(query, template_context)
             for q in query:
                 spoogler_fb_emails.append(q.spoogler_fb_email)
             template_context['fb_emails_list'] = spoogler_fb_emails
-        if template_context['not_on_groups'] == 0:  # Clear social media options
-            pass
-        if template_context['not_on_groups'] == 1:  # Not added to Google groups
-            query = query.filter(Spoogler.on_google_group == False)
-        if template_context['not_on_groups'] == 2:  # Not added to Facebook
-            query = query.filter(Spoogler.on_facebook == False)
-        if template_context['not_on_groups'] == 3:  # Not added to Facebook KidsZone
-            query = query.filter(Spoogler.on_fb_kids == False)
+
+        # Filter only by social media options
+        query = AdminHandler._filter_by_social_media(query, template_context)
+
+        # Filter by native language
         if template_context['native_lang'] != 0:
             query = query.filter(Spoogler.native_lang == template_context['native_lang'])
         if template_context['address'] != 0:
@@ -97,6 +100,28 @@ class AdminHandler(webapp2.RequestHandler):
         template = JINJA_ENV.get_template(template_name)
 
         return template.render(context)
+    
+    @classmethod
+    def _filter_by_social_media(cls, query, template_context):
+        """
+        Applies filters if any of the social media options is selected.
+        :rtype: query object
+        """
+        if template_context['not_on_groups'] == 0:  # Clear social media options
+            pass
+        # Filter if the option "Not added to Google groups" is selected
+        if template_context['not_on_groups'] == 1:
+            query = query.filter(Spoogler.on_google_group == False)
+        # Filter if the option "Not added to Facebook" is selected
+        if template_context['not_on_groups'] == 2:
+            query = query.filter(Spoogler.on_facebook == False)
+        # Filter if the option "Not added to Facebook KidsZone" is selected
+        # Only show emails of those who requested to join Facebook KidsZone
+        if template_context['not_on_groups'] == 3:
+            query = query.filter(Spoogler.kidszone_invite == True)
+            query = query.filter(Spoogler.on_fb_kids == False)
+        return query
+
 
 # Handlers for AJAX requests
 

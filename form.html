@@ -14,8 +14,8 @@
       <!-- Spoogler's Facebook email -->
       <div class="form-group {% if fb_email_error %} has-error {% endif %}">
         <label class="control-label" for="spoogler_fb_email">If you (the Spoogler) have a Facebook account, what is the email you use for that account?</label><br>
-        <label><input type="checkbox" id="same_as_spoogler_email" name="same_as_spoogler_email" value="1" {% if same_as_spoogler_email %}checked{% endif %}> I use my primary email</label><br>
-        <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{% if same_as_spoogler_email %} {{ spoogler_email }} {% else %} {{ spoogler_fb_email }} {% endif %}" {% if same_as_spoogler_email %} disabled {% endif %}/>
+        <label><input type="checkbox" id="same_as_spoogler_email" name="same_as_spoogler_email" value="1" {% if same_as_spoogler_email %}checked{% endif %}>I use my primary email</label><br>
+        <input type="text" class="form-control" id="spoogler_fb_email" name="spoogler_fb_email" value="{% if same_as_spoogler_email %}{{spoogler_email}}{% else %}{{spoogler_fb_email}}{% endif %}" {% if same_as_spoogler_email %}disabled{% endif %}/>
       </div>
       <!-- Googler's full name -->
       <div class="form-group">

@@ -9,7 +9,10 @@ $(document).ready(function() {
             required: true,
             email: true
           },
-          spoogler_fb_email: "email",
+          spoogler_fb_email: {
+            required: false,
+            email: true
+          },
           googler_ldap: "required",
         },
         messages:{

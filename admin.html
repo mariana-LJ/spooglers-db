@@ -89,7 +89,7 @@
           <tr>
             <td>
               {% for fb_email in fb_emails_list %}
-                {{fb_email}},
+                {% if fb_emails_list[loop.index0] %}{{fb_email}},{% endif %}
               {% endfor %}
             </td>
           </tr>
