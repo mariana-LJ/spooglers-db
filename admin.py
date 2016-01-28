@@ -17,18 +17,25 @@ from google.appengine.api import datastore_errors
 from models import Spoogler
 from models import init_multiple_options
 from models import get_spoogler_context
+from models import admins_list
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 PAGE_SIZE = 5
 
 
 class AdminHandler(webapp2.RequestHandler):
-    """This is the handler to display the Spooglers membership form."""
+    """This is the handler to display the Admin membership form."""
 
     def get(self):
-        """Displays the form for the Spoogler/Googler to fill out."""
+        """Displays the admin form for the ambassadors/admins."""
         template_context = {}
         get_spoogler_context(self.request, template_context)
+        # Find the name of the admin that is logged in
+        current_user = template_context['user']
+        for i in range(len(admins_list)):
+            if current_user.email() == admins_list[i][3]:
+                template_context['user_name'] = str(admins_list[i][1]) + " " + str(admins_list[i][2])
+
         query = Spoogler.query()
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
         template_context['query'] = query
@@ -101,7 +108,7 @@ class GoogleGroupHandler(webapp2.RequestHandler):
     def post(self):
         logging.info(self.request.get("googler_ldap"))
         logging.info(self.request.get("status"))
-        ambassador = users.get_current_user()
+        current_user = users.get_current_user()
         googler_ldap = self.request.get("googler_ldap")
         spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
                                       googler_ldap).fetch()
@@ -109,7 +116,11 @@ class GoogleGroupHandler(webapp2.RequestHandler):
 
         if self.request.get("status") == "true":
             spoogler.on_google_group = True
-            spoogler.ambassador = str(ambassador.nickname())
+            # Find the the ambassador number in the admins_list
+            for i in range(len(admins_list)):
+                if current_user.email() == admins_list[i][3]:
+                    spoogler.ambassador_gg = i
+                    spoogler.ambassador_last = i
 
         try:
             spoogler.put()
@@ -126,7 +137,7 @@ class FacebookHandler(webapp2.RequestHandler):
     def post(self):
         logging.info(self.request.get("googler_ldap"))
         logging.info(self.request.get("status"))
-        ambassador = users.get_current_user()
+        current_user = users.get_current_user()
         googler_ldap = self.request.get("googler_ldap")
         spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
                                       googler_ldap).fetch()
@@ -134,7 +145,11 @@ class FacebookHandler(webapp2.RequestHandler):
 
         if self.request.get("status") == "true":
             spoogler.on_facebook = True
-            spoogler.ambassador = str(ambassador.nickname())
+            # Find the the ambassador number in the admins_list
+            for i in range(len(admins_list)):
+                if current_user.email() == admins_list[i][3]:
+                    spoogler.ambassador_fb = i
+                    spoogler.ambassador_last = i
 
         try:
             spoogler.put()
@@ -151,15 +166,18 @@ class FacebookKidsHandler(webapp2.RequestHandler):
         logging.info(self.request.get("googler_ldap"))
         logging.info(self.request.get("status"))
         googler_ldap = self.request.get("googler_ldap")
-        ambassador = users.get_current_user()
+        current_user = users.get_current_user()
         spoogler_qry = Spoogler.query(Spoogler.googler_ldap ==
                                       googler_ldap).fetch()
         spoogler = spoogler_qry[0]
 
         if self.request.get("status") == "true":
             spoogler.on_fb_kids = True
-            spoogler.ambassador = str(ambassador.nickname())
-
+            # Find the the ambassador number in the admins_list
+            for i in range(len(admins_list)):
+                if current_user.email() == admins_list[i][3]:
+                    spoogler.ambassador_fbk = i
+                    spoogler.ambassador_last = i
         try:
             spoogler.put()
             self.response.out.write(spoogler.full_name + ' was registered as part of the Facebook KidsZone group.')

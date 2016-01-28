@@ -30,7 +30,7 @@ from google.appengine.api import datastore_errors
 from models import Spoogler
 from models import init_multiple_options
 from models import get_spoogler_context
-from models import ambassadors_list
+from models import admins_list
 from random import randint
 
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -378,7 +378,7 @@ class ConfirmHandler(webapp2.RequestHandler):
             </a></p>
           </body>
         </html>
-        """ % (str(spoogler_qry[0].full_name), ambassadors_list[2][1], ambassadors_list[3][1])
+        """ % (str(spoogler_qry[0].full_name), admins_list[2][1], admins_list[3][1])
         message.send()
 
     @classmethod
@@ -395,7 +395,7 @@ class ConfirmHandler(webapp2.RequestHandler):
         message = mail.EmailMessage(sender=sender_address)
         message.subject = "A new BASpooglers member has been confirmed"
 
-        message.to = ambassadors_list[1][3]
+        message.to = admins_list[1][3]
 
         if spoogler_qry[0].test:
             message.to = "mlopezj14@gmail.com"

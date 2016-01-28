@@ -28,7 +28,7 @@
 <body>
   <div class="container">
     <h1>Bay Area Spooglers Admin</h1>
-    <p>Welcome {{ user.nickname() }}.</p>
+    <p>Welcome {{ user_name }}.</p>
     <a href="#" id="show" class="btn btn-default">Show Filters</a>
     <a href="#" id="apply" class="btn btn-default">Apply Filters</a>
     <a href="#" id="clear" class="btn btn-default">Clear filters</a>
@@ -102,10 +102,13 @@
             <th style="vertical-align:top; width:100%">Last Modified by</th>
             <th style="vertical-align:top">Google Group</th>
             <th style="vertical-align:top">Member since</th>
+            <th style="vertical-align:top">Added by</th>
             <th style="vertical-align:top">Facebook</th>
             <th style="vertical-align:top">Member since</th>
+            <th style="vertical-align:top">Added by</th>
             <th style="vertical-align:top">Facebook KidsZone</th>
             <th style="vertical-align:top">Member since</th>
+            <th style="vertical-align:top">Added by</th>
             <th style="vertical-align:top; width:100%">Signup Date</th>
             <th style="vertical-align:top">Status</th>
             <th style="vertical-align:top">Name</th>
@@ -139,21 +142,26 @@
           {% for entry in query %}
             <tr {% if entry.status == 0 %}class="danger"{% endif %}>
               <td>
-                {% if entry.status != 0 and entry.ambassador != "" %}
-                  {{entry.ambassador}}
+                {% if entry.status != 0 and entry.ambassador_last >= 0 %}
+                  {{ admins_list[entry.ambassador_last][1] ~ " " ~ admins_list[entry.ambassador_last][2] }}
                 {% endif %}
               </td>
-              <td>
+              <td style="text-align:center">
                 {% if entry.status != 0 %}
                   <input type="checkbox" class="on_google_group" id="on_gg{{loop.index0}}" name="on_gg{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_google_group %}checked disabled{% endif %}>
                 {% endif %}
               </td>
               <td>
-                {% if entry.status != 0 %}
+                {% if entry.status != 0%}
                   {{entry.on_google_group_date}}
                 {% endif %}
               </td>
               <td>
+                {% if entry.status != 0 and entry.ambassador_gg >= 0 %}
+                  {{ admins_list[entry.ambassador_gg][1] ~ " " ~ admins_list[entry.ambassador_gg][2] }}
+                {% endif %}
+              </td>
+              <td style="text-align:center">
                 {% if entry.status != 0 %}
                   <input type="checkbox" class="on_facebook" id="on_facebook{{loop.index0}}" name="on_facebook{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_facebook %}checked disabled{% endif %}>
                 {% endif %}
@@ -164,6 +172,11 @@
                 {% endif %}
               </td>
               <td>
+                {% if entry.status != 0 and entry.ambassador_fb >= 0 %}
+                  {{ admins_list[entry.ambassador_fb][1] ~ " " ~ admins_list[entry.ambassador_fb][2] }}
+                {% endif %}
+              </td>
+              <td style="text-align:center">
                 {% if entry.status != 0 %}
                   <input type="checkbox" class="on_fb_kidsZone" id="on_fb_kidsZone{{loop.index0}}" name="on_fb_kidsZone{{loop.index0}}" value="{{entry.googler_ldap}}" {%if entry.on_fb_kids %}checked disabled{% endif %}>
                 {% endif %}
@@ -171,6 +184,11 @@
               <td>
                 {% if entry.status != 0 %}
                   {{entry.on_fb_kids_date}}
+                {% endif %}
+              </td>
+              <td>
+                {% if entry.status != 0 and entry.ambassador_fbk >= 0 %}
+                  {{ admins_list[entry.ambassador_fbk][1] ~ " " ~ admins_list[entry.ambassador_fbk][2] }}
                 {% endif %}
               </td>
               <td>{{entry.date_created}}</td>

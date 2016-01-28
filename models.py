@@ -5,11 +5,12 @@ from google.appengine.api import users
 
 
 # List of ambassadors
-ambassadors_list = [
-    (0, "Spooglers Webmaster", "", "bayareaspooglers.webmaster@gmail.com"),
-    (1, "Bay Area Spooglers", "", "bayareaspooglers@gmail.com"),
+admins_list = [
+    (0, "BASpooglers", "Webmaster", "bayareaspooglers.webmaster@gmail.com"),
+    (1, "Bay Area", "Spooglers", "bayareaspooglers@gmail.com"),
     (2, "Puja", "Sharma", "puja.sharma159@gmail.com"),
-    (3, "Sarah", "Ison", "ison.sarahj@gmail.com")]
+    (3, "Sarah", "Ison", "ison.sarahj@gmail.com"),
+    (4, "Mariana", "Lopez Jaimez", "mariana.lopez.jaimez@gmail.com")]
 
 # Spoogler's current work status
 work_status_list = [
@@ -422,7 +423,10 @@ class Spoogler(ndb.Model):
     on_facebook_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     on_fb_kids = ndb.BooleanProperty(default=False)
     on_fb_kids_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
-    ambassador = ndb.StringProperty(repeated=False)  # See ambasadors_list
+    ambassador_gg = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to Google group
+    ambassador_fb = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to Facebook
+    ambassador_fbk = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to FB KidsZone
+    ambassador_last = ndb.IntegerProperty(repeated=False, default=-1)  # Last ambassador who modified Spoogler
     migrated = ndb.BooleanProperty(default=False)
     test = ndb.BooleanProperty(default=False)
 
@@ -430,6 +434,7 @@ class Spoogler(ndb.Model):
 def init_multiple_options(template_context):
     """Initializes the template fields that contains multiple options
     in the form."""
+    template_context['admins_list'] = admins_list
     template_context['countries_list'] = countries_list
     template_context['work_status_list'] = work_status_list
     template_context['languages_list'] = languages_list
