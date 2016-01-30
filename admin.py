@@ -45,14 +45,39 @@ class AdminHandler(webapp2.RequestHandler):
     def post(self):
         # get context
         template_context = {}
-        spoogler_emails = []
-        spoogler_fb_emails = []
         get_spoogler_context(self.request, template_context)
 
-        # build query
+        # Build query
         query = Spoogler.query()
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
         #logging.info(template_context['work_status'])
+
+        # Apply filters
+        template_context['query'] = self._apply_filters(query, template_context)
+
+        self.update(template_context)
+
+    def update(self, template_context):
+        init_multiple_options(template_context)
+
+        self.response.out.write(self._render_template('admin.html',
+                                template_context))
+
+    @classmethod
+    def _render_template(cls, template_name, context=None):
+        """It displays the form according to the template context given."""
+
+        if context is None:
+            context = {}
+
+        template = JINJA_ENV.get_template(template_name)
+
+        return template.render(context)
+
+
+    def _apply_filters(self, query, template_context):
+        spoogler_emails = []
+        spoogler_fb_emails = []
 
         if template_context['show_only_active']:  # Show active members only
             query = query.filter(Spoogler.status == 1)
@@ -74,33 +99,61 @@ class AdminHandler(webapp2.RequestHandler):
         # Filter only by social media options
         query = AdminHandler._filter_by_social_media(query, template_context)
 
+        # Filter by full name
+        if template_context["full_name"]:
+            query = query.filter(Spoogler.full_name == template_context["full_name"])
+
+        # Filter by primary email
+        if template_context["spoogler_email"]:
+            query = query.filter(Spoogler.spoogler_email == template_context["spoogler_email"])
+
+        # Filter by facebook email
+        if template_context["spoogler_fb_email"]:
+            query = query.filter(Spoogler.spoogler_fb_email == template_context["spoogler_fb_email"])
+
+        # Filter by Googler's full name
+        if template_context["googler_full_name"]:
+            query = query.filter(Spoogler.googler_full_name == template_context["googler_full_name"])
+
+        # Filter by Googler's ldap
+        if template_context["googler_ldap"]:
+            query = query.filter(Spoogler.googler_ldap == template_context["googler_ldap"])
+
+        # Filter by country of origin
+        if template_context["spoogler_country"] != 0:
+            query = query.filter(Spoogler.spoogler_country == template_context["spoogler_country"])
+
+        # If the spoogler's country of origin is the U.S., filter by U.S. state
+        if template_context["spoogler_us_state"] != 0:
+            query = query.filter(Spoogler.spoogler_us_state == template_context["spoogler_us_state"])
+
+        # Filter by work status
+        if template_context["work_status"] != 0:
+            query = query.filter(Spoogler.work_status == template_context["work_status"])
+
+        # Filter by english proficiency
+        if template_context["english_proficiency"] != 0:
+            query = query.filter(Spoogler.english_proficiency == template_context["english_proficiency"])
+
         # Filter by native language
         if template_context['native_lang'] != 0:
             query = query.filter(Spoogler.native_lang == template_context['native_lang'])
+
+        # Filter by address
         if template_context['address'] != 0:
             query = query.filter(Spoogler.address == template_context['address'])
 
-        template_context['query'] = query
+        # Filter by time living in the Bay Area
+        if template_context["time_in_area"] != 0:
+            query = query.filter(Spoogler.time_in_area == template_context["time_in_area"])
 
-        self.update(template_context)
+        # Filter by local forms of support
+        if template_context["support_others"]:
+            for group in template_context["support_others"]:
 
-    def update(self, template_context):
-        init_multiple_options(template_context)
 
-        self.response.out.write(self._render_template('admin.html',
-                                template_context))
+        return query
 
-    @classmethod
-    def _render_template(cls, template_name, context=None):
-        """It displays the form according to the template context given."""
-
-        if context is None:
-            context = {}
-
-        template = JINJA_ENV.get_template(template_name)
-
-        return template.render(context)
-    
     @classmethod
     def _filter_by_social_media(cls, query, template_context):
         """

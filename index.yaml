@@ -57,6 +57,12 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: full_name
+  - name: date_created
+    direction: desc
+
+- kind: Spoogler
+  properties:
   - name: kidszone_invite
   - name: on_fb_kids
   - name: date_created
@@ -126,6 +132,20 @@ indexes:
   properties:
   - name: on_google_group
   - name: status
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: spoogler_email
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: spoogler_fb_email
   - name: date_created
     direction: desc
   - name: full_name

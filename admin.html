@@ -43,17 +43,17 @@
         <div class="checkbox">
           <label><input type="checkbox" id="show_only_active" name="show_only_active" value="1" {% if show_only_active %}checked{% endif %}> Show only active members</label><br>
         </div>
-        <label class="control-label" for="not_on_google_group">Social media options:</label>
+        <label class="control-label" for="not_on_google_group">Show members that need to be added to:</label>
         <div class="radio">
-          <label><input type="radio" id="not_on_google_group" name="not_on_groups" value="1" {% if not_on_groups == 1 %}checked{% endif %}> Not added to Google group</label><br>
-          <label><input type="radio" id="not_on_facebook" name="not_on_groups" value="2" {% if not_on_groups == 2 %}checked{% endif %}> Not added to Facebook<br></label><br>
-          <label><input type="radio" id="not_on_fb_kidsZone" name="not_on_groups" value="3" {% if not_on_groups == 3 %}checked{% endif %}> Not added to Facebook KidsZone</label><br>
+          <label><input type="radio" id="not_on_google_group" name="not_on_groups" value="1" {% if not_on_groups == 1 %}checked{% endif %}>Google group</label><br>
+          <label><input type="radio" id="not_on_facebook" name="not_on_groups" value="2" {% if not_on_groups == 2 %}checked{% endif %}>Facebook<br></label><br>
+          <label><input type="radio" id="not_on_fb_kidsZone" name="not_on_groups" value="3" {% if not_on_groups == 3 %}checked{% endif %}>Facebook KidsZone</label><br>
           <label><input type="radio" id="clear_social_media_options" name="not_on_groups" value="0" {% if not_on_groups == 0 %}checked{% endif %}> Clear social media options</label>
         </div>
-        <label class="control-label" for="show_only_email">Show email list:</label>
+        <label class="control-label" for="show_only_email">Show a list of:</label>
         <div class="radio">
-          <label><input type="radio" id="show_only_email" name="email_lists" value="1" {% if email_lists == 1 %}checked{% endif %}> Primary email</label><br>
-          <label><input type="radio" id="show_only_fb_email" name="email_lists" value="2" {% if email_lists == 2 %}checked{% endif %}> Facebook account email</label><br>
+          <label><input type="radio" id="show_only_email" name="email_lists" value="1" {% if email_lists == 1 %}checked{% endif %}>Primary emails</label><br>
+          <label><input type="radio" id="show_only_fb_email" name="email_lists" value="2" {% if email_lists == 2 %}checked{% endif %}>Facebook emails</label><br>
           <label><input type="radio" id="clear_list_options" name="email_lists" value="0" {% if email_lists == 0 %}checked{% endif %}> Clear list options</label>
         </div>
         <label class="control-label" for="show_only_email">Filter Spooglers by:</label>
@@ -252,7 +252,7 @@
                 {% if entry.kidszone_invite %}
                   <td>Yes</td>
                 {% else %}
-                  <td></td>
+                  <td>No</td>
                 {% endif %}
                 {% if entry.children_ages %}
                   <td>
