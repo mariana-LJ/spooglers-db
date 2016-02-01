@@ -147,9 +147,20 @@ class AdminHandler(webapp2.RequestHandler):
         if template_context["time_in_area"] != 0:
             query = query.filter(Spoogler.time_in_area == template_context["time_in_area"])
 
-        # Filter by local forms of support
+        # Filter by other local forms of support
         if template_context["support_others"]:
-            for group in template_context["support_others"]:
+            support_groups = template_context["support_others"]
+            for index in range(0, len(support_groups)):
+                query = query.filter(Spoogler.support_others == support_groups[index])
+
+        # Filter if spoogler is a parent and/or children ages
+        if template_context["spoogler_is_parent"] == 1:
+            is_parent = template_context["spoogler_is_parent"]
+            query = query.filter(Spoogler.spoogler_is_parent == is_parent)
+            if template_context["children_ages"]:
+                children = template_context["children_ages"]
+                for index in range(0, len(children)):
+                    query = query.filter(Spoogler.children_ages == children[index])
 
 
         return query

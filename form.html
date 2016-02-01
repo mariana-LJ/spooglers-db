@@ -70,7 +70,7 @@
       </div>
       <!-- Spoogler's preferred or native language -->
       <div class="form-group">
-        <label class="control-label" for="native_lang">Spoogler's preferred or native language: </label>
+        <label class="control-label" for="native_lang">Spoogler's native language: </label>
         <select class="form-control" id="native_lang" name="native_lang">
           {% for language in languages_list %}
           <option value="{{ language[0] }}" {% if language[0] == native_lang %}selected{% endif %}>{{ language[1] }}</option>
@@ -118,22 +118,33 @@
         {% endfor %}
         <input type = "text" class="form-control" id="support_others_other" name="support_others_other" value="{{ support_others_other }}" placeholder="Other..." />
       </div>
-      <!-- If you have any children or are planning to have children, would you like to join our Facebook KidsZone group? -->
+      <!-- Do you have children? Are you expecting? -->
+      <div class="form-group">
+        <label class="control-label" for="spoogler_is_parent">Do you have children? Are you expecting?</label>
+        <select class="form-control" id="spoogler_is_parent" name="spoogler_is_parent">
+          {% for option in spoogler_is_parent_list %}
+          <option value="{{ option[0] }}" {% if option[0] == spoogler_is_parent %}selected{% endif %}>{{ option[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Please select the age group of your children -->
+      <div class="form-group">
+        <label class="control-label" for="children_ages" id="children_ages_label">Please select the age group of your children:</label>
+        <div id="ages">
+          {% for age in children_ages_list %}
+          <div class="checkbox">
+            <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}" {% if age[0] in children_ages %}checked{% endif %}> {{ age[1] }}</label>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+      <!-- If you have children or are expecting, would you like to join our Facebook KidsZone group? -->
       <div class="form-group {% if kidszone_invite_error %} has-error {% endif %}">
-        <label class="control-label required" for="kidszone_invite">*If you have children or are expecting, would you like to join our Facebook KidsZone group?</label>
+        <label class="control-label required" for="kidszone_invite">*If you have children or if you are expecting, would you like to join our Facebook KidsZone group?</label>
         <select class="form-control" id="kidszone_invite" name="kidszone_invite">
           {% for option in kidszone_options_list %}
           <option value="{{ option[0] }}" {% if option[0] == kidszone_invite %}selected{% endif %}>{{ option[1] }}</option>
           {% endfor %}
         </select>
-      </div>
-      <!-- If you have any children, please select their age group: -->
-      <div class="form-group">
-        <label class="control-label" for="children_ages">If you have any children, please select their age group:</label>
-        {% for age in children_ages_list %}
-        <div class="checkbox">
-          <label><input type="checkbox" id="children_ages" name="children_ages" value="{{ age[0] }}" {% if age[0] in children_ages %}checked{% endif %}> {{ age[1] }}</label>
-        </div>
-        {% endfor %}
       </div>
     </div>

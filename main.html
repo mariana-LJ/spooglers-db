@@ -50,7 +50,7 @@
     please contact us at <b><a href="mailto:bayareaspooglers.webmaster@gmail.com?subject=Problem%20while%20filling%20out%20the%20Spooglers%20form&amp;body=Please%20describe%20the%20problem%20here">
         bayareaspooglers.webmaster@gmail.com</a></b></p>
     
-    <p class="required">* Required</p>
+    <p class="required">*Required</p>
     
     {% if not valid_form %}
       <p style="color:red"><b>There are errors in the form.</b></p>
@@ -66,7 +66,7 @@
       {% if googler_ldap_error and googler_ldap_duplicate %}
         <p style="color:red">Googler's ldap already exists. If you are trying with the correct Googler's ldap and still receive this message, contact us: bayareaspooglers.webmaster@gmail.com</p>
       {% endif %}
-      {% if kidszone_invite_error and kidszone_invite == 0 %}
+      {% if kidszone_invite_error %}
         <p style="color:red">Please indicate if you want to join our Facebook KidsZone group.</p>
       {% endif %}
       {% if kidszone_invite_error and fb_email_error %}

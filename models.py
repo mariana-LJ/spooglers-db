@@ -377,6 +377,12 @@ kidszone_options_list = [
     (1, "Yes"),
     (2, "No")]
 
+# Spoogler's status as parents
+spoogler_is_parent = [
+    (0, "Please select"),
+    (1, "Yes"),
+    (2, "No")]
+
 # Spoogler's children ages
 children_ages_list = [
     (0, "Expecting"),
@@ -406,6 +412,7 @@ class Spoogler(ndb.Model):
     work_status = ndb.IntegerProperty(repeated=False)  # See work_status_list
     english_proficiency = ndb.IntegerProperty(repeated=False)  # See proficiency_list
     native_lang = ndb.IntegerProperty(repeated=False)  # See languages_list
+    native_lang_other = ndb.StringProperty(repeated=False)  # "Other" option of languages list
     address = ndb.IntegerProperty(repeated=False)  # See address_options_list
     other_address = ndb.StringProperty(repeated=False)  # Spoogler address if option "Other" is selected
     time_in_area = ndb.IntegerProperty(repeated=False)  # See times_list
@@ -413,9 +420,11 @@ class Spoogler(ndb.Model):
     support_others = ndb.IntegerProperty(repeated=True)  # See support_other_list
     support_others_other = ndb.StringProperty(repeated=False)  # Other type of support accessed by Spoogler
     kidszone_invite = ndb.BooleanProperty(default=True)  # Option to be invited to KidsZone Facebook group
+    spoogler_is_parent = ndb.IntegerProperty(repeated=False)  # See spoogler_is_parent options list
     children_ages = ndb.IntegerProperty(repeated=True)  # See children_ages_list
     status = ndb.IntegerProperty(repeated=False)  # See status_list
     token = ndb.IntegerProperty()
+    test = ndb.BooleanProperty(default=False)
     date_created = ndb.DateProperty(auto_now_add=True)
     on_google_group = ndb.BooleanProperty(default=False)
     on_google_group_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
@@ -428,7 +437,6 @@ class Spoogler(ndb.Model):
     ambassador_fbk = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to FB KidsZone
     ambassador_last = ndb.IntegerProperty(repeated=False, default=-1)  # Last ambassador who modified Spoogler
     migrated = ndb.BooleanProperty(default=False)
-    test = ndb.BooleanProperty(default=False)
 
 
 def init_multiple_options(template_context):
@@ -444,6 +452,7 @@ def init_multiple_options(template_context):
     template_context['times_list'] = times_list
     template_context['support_other_list'] = support_other_list
     template_context['kidszone_options_list'] = kidszone_options_list
+    template_context['spoogler_is_parent_list'] = spoogler_is_parent
     template_context['children_ages_list'] = children_ages_list
     template_context['status_list'] = status_list
 
@@ -459,7 +468,6 @@ def get_spoogler_context(request, template_context):
         'full_name': request.get('full_name').strip(),
         'spoogler_email': request.get('spoogler_email').strip(),
         'same_as_spoogler_email': int(request.get('same_as_spoogler_email', '0').strip()),
-        #'spoogler_fb_email': request.get('spoogler_fb_email').strip(),
         'googler_full_name': request.get('googler_full_name').strip(),
         'googler_ldap': request.get('googler_ldap').strip(),
         'spoogler_country': int(request.get('spoogler_country', '0').strip()),
@@ -467,6 +475,7 @@ def get_spoogler_context(request, template_context):
         'work_status': int(request.get('work_status', '0').strip()),
         'english_proficiency': int(request.get('english_proficiency', '0').strip()),
         'native_lang': int(request.get('native_lang', '0').strip()),
+        'native_lang_other': request.get('native_lang_other').strip(),
         'address': int(request.get('address', '0').strip()),
         'other_address': request.get('other_address').strip(),
         'time_in_area': int(request.get('time_in_area', '0').strip()),
@@ -474,6 +483,7 @@ def get_spoogler_context(request, template_context):
         'support_others': [int(o) for o in request.get_all('support_others')],
         'support_others_other': request.get('support_others_other').strip(),
         'kidszone_invite': int(request.get('kidszone_invite', '0').strip()),
+        'spoogler_is_parent': int(request.get('spoogler_is_parent', '0').strip()),
         'children_ages': [int(a) for a in request.get_all('children_ages')],
         'test': request.get('test', 'False').strip() == 'True',  # to set test flag, append ?test=True to the URL
         'user': user,

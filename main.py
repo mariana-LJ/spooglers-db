@@ -99,6 +99,7 @@ class FormHandler(webapp2.RequestHandler):
         template_context['work_status'] = 0
         template_context['english_proficiency'] = 0
         template_context['native_lang'] = 0
+        template_context['native_lang_other'] = ""
         template_context['address'] = 0
         template_context['other_address'] = ""
         template_context['time_in_area'] = 0
@@ -106,6 +107,7 @@ class FormHandler(webapp2.RequestHandler):
         template_context['support_others'] = []
         template_context['support_others_other'] = ""
         template_context['kidszone_invite'] = 0
+        template_context['spoogler_is_parent'] = 0
         template_context['children_ages'] = []
         template_context['not_on_groups'] = 0
         template_context['email_lists'] = []
@@ -184,6 +186,8 @@ class FormHandler(webapp2.RequestHandler):
                 template_context['googler_ldap_duplicate'] = True
                 result = False
         # Check that an option to get in the Facebook KidsZone group is selected
+        # Although the final variable will be a bool, we need an integer here
+        # The conversion to a bool is done when the Spoogler entity is created below
         if template_context['kidszone_invite'] == 0:
             template_context['kidszone_invite_error'] = True
             result = False
@@ -251,17 +255,19 @@ class FormHandler(webapp2.RequestHandler):
                     work_status = template_context['work_status'],
                     english_proficiency = template_context['english_proficiency'],
                     native_lang = template_context['native_lang'],
+                    native_lang_other = template_context['native_lang_other'],
                     address = template_context['address'],
                     other_address = template_context['other_address'],
                     time_in_area = template_context['time_in_area'],
                     spoogler_relo = template_context['spoogler_relo'],
                     support_others = template_context['support_others'],
-                    kidszone_invite = template_context['kidszone_invite'] == 1,
                     support_others_other = template_context['support_others_other'],
+                    kidszone_invite = template_context['kidszone_invite'] == 1,  # it needs to be converted to bool here
+                    spoogler_is_parent = template_context['spoogler_is_parent'],
                     children_ages = template_context['children_ages'],
-                    test = template_context['test'],
                     status = 0,
-                    token = token_value)
+                    token = token_value,
+                    test = template_context['test'],)
         logging.info(spoogler.work_status)
                         
         # An entity is persisted in the Datastore:

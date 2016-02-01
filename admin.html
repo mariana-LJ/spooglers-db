@@ -121,7 +121,7 @@
               <th style="vertical-align:top">U.S. State</th>
               <th style="vertical-align:top">Work status</th>
               <th style="vertical-align:top">English proficiency</th>
-              <th style="vertical-align:top">Preferred Language</th>
+              <th style="vertical-align:top">Native Language</th>
               <th style="vertical-align:top">Region</th>
               <th style="vertical-align:top">Time in the Bay Area</th>
               <th style="vertical-align:top">Challenges during relocation</th>
@@ -267,7 +267,11 @@
                 {% endif %}
               {% else %}
                 {% if native_lang != 0 %}
-                  <td>{{languages_list[entry.native_lang][1]}}</td>
+                  {% if native_lang == 11 %}
+                    <td>{{ native_lang_other }}</td>
+                  {% else %}
+                    <td>{{languages_list[entry.native_lang][1]}}</td>
+                  {% endif %}
                 {% endif %}
                 {% if address != 0 %}
                   <td>{{address_list[entry.address][1]}}</td>

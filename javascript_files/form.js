@@ -35,19 +35,6 @@ $(document).ready(function() {
       return false;
     });
 
-    // Disable the facebook email text box if it is the same as the primary email
-    var fb_is_primary_email = $("#same_as_spoogler_email")
-    var spoogler_fb_email = $("#spoogler_fb_email")
-    var spoogler_email = $("#spoogler_email")
-    fb_is_primary_email.click(function(){
-      if (this.checked) {
-        document.getElementById("spoogler_fb_email").disabled = true;
-        spoogler_fb_email.val(spoogler_email.val());
-      } else {
-        document.getElementById("spoogler_fb_email").disabled = false;
-      }
-    });
-
     var address = $("#address")
     var other_address = $("#other_address")
     other_address.hide();
