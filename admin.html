@@ -142,8 +142,8 @@
           {% for entry in query %}
             <tr {% if entry.status == 0 %}class="danger"{% endif %}>
               <td>
-                {% if entry.status != 0 and entry.ambassador_last >= 0 %}
-                  {{ admins_list[entry.ambassador_last][1] ~ " " ~ admins_list[entry.ambassador_last][2] }}
+                {% if entry.status != 0 and entry.ambassador_last %}
+                  {{ entry.ambassador_last }}
                 {% endif %}
               </td>
               <td style="text-align:center">
@@ -157,8 +157,8 @@
                 {% endif %}
               </td>
               <td>
-                {% if entry.status != 0 and entry.ambassador_gg >= 0 %}
-                  {{ admins_list[entry.ambassador_gg][1] ~ " " ~ admins_list[entry.ambassador_gg][2] }}
+                {% if entry.status != 0 and entry.ambassador_gg %}
+                  {{ entry.ambassador_gg }}
                 {% endif %}
               </td>
               <td style="text-align:center">
@@ -172,8 +172,8 @@
                 {% endif %}
               </td>
               <td>
-                {% if entry.status != 0 and entry.ambassador_fb >= 0 %}
-                  {{ admins_list[entry.ambassador_fb][1] ~ " " ~ admins_list[entry.ambassador_fb][2] }}
+                {% if entry.status != 0 and entry.ambassador_fb %}
+                  {{ entry.ambassador_fb }}
                 {% endif %}
               </td>
               <td style="text-align:center">
@@ -187,8 +187,8 @@
                 {% endif %}
               </td>
               <td>
-                {% if entry.status != 0 and entry.ambassador_fbk >= 0 %}
-                  {{ admins_list[entry.ambassador_fbk][1] ~ " " ~ admins_list[entry.ambassador_fbk][2] }}
+                {% if entry.status != 0 and entry.ambassador_fbk %}
+                  {{ entry.ambassador_fbk }}
                 {% endif %}
               </td>
               <td>{{entry.date_created}}</td>

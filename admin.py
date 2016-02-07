@@ -32,9 +32,9 @@ class AdminHandler(webapp2.RequestHandler):
         get_spoogler_context(self.request, template_context)
         # Find the name of the admin that is logged in
         current_user = template_context['user']
-        for i in range(len(admins_list)):
-            if current_user.email() == admins_list[i][3]:
-                template_context['user_name'] = str(admins_list[i][1]) + " " + str(admins_list[i][2])
+        user_email = current_user.email()
+        strip_at_index = user_email.find("@")
+        template_context['user_name'] = user_email[0:strip_at_index]
 
         query = Spoogler.query()
         query = query.order(-Spoogler.date_created).order(Spoogler.full_name)
@@ -205,11 +205,8 @@ class GoogleGroupHandler(webapp2.RequestHandler):
 
         if self.request.get("status") == "true":
             spoogler.on_google_group = True
-            # Find the the ambassador number in the admins_list
-            for i in range(len(admins_list)):
-                if current_user.email() == admins_list[i][3]:
-                    spoogler.ambassador_gg = i
-                    spoogler.ambassador_last = i
+            spoogler.ambassador_gg = current_user.email()
+            spoogler.ambassador_last = current_user.email()
 
         try:
             spoogler.put()
@@ -234,11 +231,8 @@ class FacebookHandler(webapp2.RequestHandler):
 
         if self.request.get("status") == "true":
             spoogler.on_facebook = True
-            # Find the the ambassador number in the admins_list
-            for i in range(len(admins_list)):
-                if current_user.email() == admins_list[i][3]:
-                    spoogler.ambassador_fb = i
-                    spoogler.ambassador_last = i
+            spoogler.ambassador_fb = current_user.email()
+            spoogler.ambassador_last = current_user.email()
 
         try:
             spoogler.put()
@@ -262,11 +256,8 @@ class FacebookKidsHandler(webapp2.RequestHandler):
 
         if self.request.get("status") == "true":
             spoogler.on_fb_kids = True
-            # Find the the ambassador number in the admins_list
-            for i in range(len(admins_list)):
-                if current_user.email() == admins_list[i][3]:
-                    spoogler.ambassador_fbk = i
-                    spoogler.ambassador_last = i
+            spoogler.ambassador_fbk = current_user.email()
+            spoogler.ambassador_last = current_user.email()
         try:
             spoogler.put()
             self.response.out.write(spoogler.full_name + ' was registered as part of the Facebook KidsZone group.')

@@ -432,10 +432,10 @@ class Spoogler(ndb.Model):
     on_facebook_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
     on_fb_kids = ndb.BooleanProperty(default=False)
     on_fb_kids_date = ndb.DateProperty(auto_now=True)  # The date changes when there is an update
-    ambassador_gg = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to Google group
-    ambassador_fb = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to Facebook
-    ambassador_fbk = ndb.IntegerProperty(repeated=False, default=-1)  # Ambassador who added Spoogler to FB KidsZone
-    ambassador_last = ndb.IntegerProperty(repeated=False, default=-1)  # Last ambassador who modified Spoogler
+    ambassador_gg = ndb.StringProperty(repeated=False)  # Ambassador who added Spoogler to Google group
+    ambassador_fb = ndb.StringProperty(repeated=False)  # Ambassador who added Spoogler to Facebook
+    ambassador_fbk = ndb.StringProperty(repeated=False)  # Ambassador who added Spoogler to FB KidsZone
+    ambassador_last = ndb.StringProperty(repeated=False)  # Last ambassador who modified Spoogler
     migrated = ndb.BooleanProperty(default=False)
 
 
