@@ -40,8 +40,8 @@ children_ages.show();
 children_ages_label.hide();
 children_ages.hide();
 }
-//children_ages_label.hide()
-//children_ages.hide()
+
+// Hide children age options as user indicates that she is not a parent/expecting
 spoogler_is_parent.change(function(){
   if($("#spoogler_is_parent option:selected").text() == "Yes"){
     children_ages_label.show();

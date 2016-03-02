@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var signup_form = $("#signup");
 
+    // Validate that the required fields have been filled and have the correct format
     signup_form.submit(function (event) {
       signup_form.validate({
         rules: {
@@ -30,11 +31,13 @@ $(document).ready(function() {
         return;
       }
 
+      // Automatically scroll to the top of the form if there where errors with the required fields
       $("html, body").animate({ scrollTop: 0}, 500);
       event.preventDefault();
       return false;
     });
 
+    // Show a text box for the user to fill out if the option "Other" is selected among the options for address
     var address = $("#address")
     var other_address = $("#other_address")
     other_address.hide();
@@ -47,6 +50,7 @@ $(document).ready(function() {
       }
     });
 
+    // Show a text box for the user to fill out if the option "Other" is selected among the language options
     var native_lang = $("#native_lang")
     var other_native_lang = $("#native_lang_other")
     other_native_lang.hide();

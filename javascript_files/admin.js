@@ -96,6 +96,7 @@ $(document).ready(function() {
   function reset_filters(myform){
   }
 
+  // Hide questions that are difficult to use with filters
   var other_native_lang = $("#native_lang_other")
   other_native_lang.hide();
   var other_address = $("#other_address")
