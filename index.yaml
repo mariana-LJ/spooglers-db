@@ -65,9 +65,30 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: english_proficiency
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
   - name: full_name
   - name: date_created
     direction: desc
+
+- kind: Spoogler
+  properties:
+  - name: googler_full_name
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: googler_ldap
+  - name: date_created
+    direction: desc
+  - name: full_name
 
 - kind: Spoogler
   properties:
@@ -140,6 +161,13 @@ indexes:
   properties:
   - name: on_google_group
   - name: status
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
+  - name: spoogler_country
   - name: date_created
     direction: desc
   - name: full_name
