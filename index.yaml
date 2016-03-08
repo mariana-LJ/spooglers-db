@@ -209,6 +209,13 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: time_in_area
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
   - name: website_status
   - name: date_created
     direction: desc

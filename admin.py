@@ -154,9 +154,9 @@ class AdminHandler(webapp2.RequestHandler):
                 query = query.filter(Spoogler.support_others == support_groups[index])
 
         # Filter if spoogler is a parent and/or children ages
-        if template_context["spoogler_is_parent"] == 1:
-            is_parent = template_context["spoogler_is_parent"]
-            query = query.filter(Spoogler.spoogler_is_parent == is_parent)
+        is_parent_option = template_context["spoogler_is_parent"]
+        query = query.filter(Spoogler.spoogler_is_parent == is_parent_option)
+        if is_parent_option == 1:
             if template_context["children_ages"]:
                 children = template_context["children_ages"]
                 for index in range(0, len(children)):
