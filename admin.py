@@ -163,6 +163,11 @@ class AdminHandler(webapp2.RequestHandler):
                     for index in range(0, len(children)):
                         query = query.filter(Spoogler.children_ages == children[index])
 
+        # Filter if Spoogler requested to join the FB KidsZone group or not
+        join_FBKZ = template_context["kidszone_invite"]
+        if join_FBKZ != 0:
+            KZ_option = (join_FBKZ == 1)
+            query = query.filter(Spoogler.kidszone_invite == KZ_option)
 
         return query
 
