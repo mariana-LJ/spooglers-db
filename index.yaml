@@ -195,6 +195,14 @@ indexes:
 
 - kind: Spoogler
   properties:
+  - name: spoogler_is_parent
+  - name: time_in_area
+  - name: date_created
+    direction: desc
+  - name: full_name
+
+- kind: Spoogler
+  properties:
   - name: status
   - name: date_created
     direction: desc
