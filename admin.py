@@ -74,8 +74,8 @@ class AdminHandler(webapp2.RequestHandler):
 
         return template.render(context)
 
-
-    def _apply_filters(self, query, template_context):
+    @staticmethod
+    def _apply_filters(query, template_context):
         spoogler_emails = []
         spoogler_fb_emails = []
 
@@ -194,7 +194,6 @@ class AdminHandler(webapp2.RequestHandler):
 
 
 # Handlers for AJAX requests
-
 
 class GoogleGroupHandler(webapp2.RequestHandler):
     """ Handles the event where the administrator selects a checkbox

@@ -396,8 +396,8 @@ children_ages_list = [
 
 # Spoogler's registration status
 status_list = [
-    (0, "Inactive"),
-    (1, "Active"),]
+    (0, "Unconfirmed"),
+    (1, "Confirmed"),]
 
 
 class Spoogler(ndb.Model):
